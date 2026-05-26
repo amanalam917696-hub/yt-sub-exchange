@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Sub Exchange</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f9f9f9}
+.container{max-width:500px;margin:0 auto;padding:20px}
+h2{color:#ff0000;margin-bottom:10px}
+p{color:#666;margin-bottom:15px;line-height:1.5}
+input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:10px;font-size:15px}
+.btn{width:100%;padding:15px;background:#ff0000;color:white;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:10px}
+.btn:disabled{background:#ccc}
+.step{display:none}
+.step.active{display:block}
+.ad-box{background:white;border:2px dashed #ff0000;border-radius:15px;padding:40px 20px;text-align:center;margin:15px 0}
+.timer{font-size:30px;font-weight:bold;color:#ff0000;margin:10px 0}
+.progress-wrap{background:#eee;border-radius:20px;height:25px;margin:15px 0;overflow:hidden}
+.progress-bar{background:#ff0000;height:100%;border-radius:20px;transition:width 0.5s;display:flex;align-items:center;justify-content:center;color:white;font-size:12px}
+.channel-card{background:white;border:1px solid #eee;border-radius:12px;padding:15px;margin:10px 0;display:flex;align-items:center;justify-content:space-between}
+.channel-card a{color:#ff0000;font-size:13px;flex:1;margin-right:10px;word-break:break-all}
+.sub-btn{padding:8px 15px;background:#ff0000;color:white;border:none;border-radius:8px;cursor:pointer}
+.sub-btn:disabled{background:#28a745}
+.header{background:#ff0000;color:white;padding:15px 20px;font-size:18px;font-weight:bold}
+.success-box{background:white;border-radius:15px;padding:30px;text-align:center}
+.link-box{background:#f0fff4;border:2px solid #28a745;border-radius:10px;padding:15px;margin:15px 0;word-break:break-all;font-size:13px}
+.err{background:#fff3f3;border:1px solid #ff0000;color:#cc0000;padding:10px;border-radius:8px;margin:10px 0;display:none;font-size:14px}
+</style>
+</head>
+<body>
+<div class="header">▶️ YouTube Sub Exchange</div>
+<div class="container">
+
+<div id="step1" class="step active">
+<h2>🎯 Free Subscribe Pao!</h2>
+<p>Apna YouTube channel register karo aur subscribers pao!</p>
+<div class="err" id="err1"></div>
+<input type="email" id="email" placeholder="📧 Email Address">
+<input type="url" id="ytLink" placeholder="🔗 YouTube Channel Link">
+<button class="btn" onclick="register()">Aage Badho →</button>
+</div>
+
+<div id="step2" class="step">
+<h2>📺 3 Ads Dekho</h2>
+<p>Har ad 15 second ka hai</p>
+<div class="progress-wrap">
+<div class="progress-bar" id="adBar" style="width:0%">0%</div>
+</div>
+<p id="adTxt" style="text-align:center">0 / 3 ads dekhe</p>
+<div class="ad-box">
+<p>📢 Advertisement</p>
+<div class="timer" id="timerNum">15</div>
+<p style="font-size:13px;color:#999">seconds remaining</p>
+</div>
+<button class="btn" id="adBtn" onclick="adWatched()" disabled>⏳ Ad chal rahi hai...</button>
+</div>
+
+<div id="step3" class="step">
+<h2>✅ 4 Channels Subscribe Karo</h2>
+<p>Inhe subscribe karo phir Done dabao</p>
+<p id="subTxt" style="text-align:center;font-weight:bold;color:#ff0000">0 / 4 subscribe kiye</p>
+<div id="channelsList"></div>
+</div>
+
+<div id="step4" class="step">
+<div class="success-box">
+<p style="font-size:50px">🎉</p>
+<h2>Badhai Ho!</h2>
+<p>Aapka channel active hai! Log subscribe karenge.</p>
+<div class="link-box" id="myLink"></div>
+<button class="btn" style="background:#28a745" onclick="shareLink()">📤 Share Karo</button>
+</div>
+</div>
+
+</div>
+<script>
+let userId=null,ytLink='',adsWatched=0,subsGiven=0,adInt=null;
+
+async function register(){
+  const em=document.getElementById('email').value.trim();
+  const yt=document.getElementById('ytLink').value.trim();
+  if(!em||!yt){showErr('err1','Sab fields bharo!');return}
+  if(!yt.includes('youtube.com')&&!yt.includes('youtu.be')){showErr('err1','Valid YouTube link daalo!');return}
+  ytLink=yt;
+  const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,youtubeLink:yt})});
+  const d=await r.json();
+  if(d.success){userId=d.userId;showStep(2);startTimer()}
+  else showErr('err1',d.msg);
+}
+
+function startTimer(){
+  let s=15;
+  const btn=document.getElementById('adBtn');
+  const num=document.getElementById('timerNum');
+  btn.disabled=true;btn.textContent='⏳ Ad chal rahi hai...';
+  clearInterval(adInt);
+  adInt=setInterval(()=>{s--;num.textContent=s;if(s<=0){clearInterval(adInt);btn.disabled=false;btn.textContent='✅ Ad Dekh Li! Next →'}},1000);
+}
+
+async function adWatched(){
+  const r=await fetch('/api/ad-watched',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId})});
+  const d=await r.json();
+  adsWatched=d.adsWatched;
+  const p=Math.round((adsWatched/3)*100);
+  document.getElementById('adBar').style.width=p+'%';
+  document.getElementById('adBar').textContent=p+'%';
+  document.getElementById('adTxt').textContent=adsWatched+' / 3 ads dekhe';
+  if(adsWatched>=3){await loadChannels();showStep(3)}
+  else{startTimer();document.getElementById('adBtn').disabled=true;document.getElementById('adBtn').textContent='⏳ Ad chal rahi hai...'}
+}
+
+async function loadChannels(){
+  const r=await fetch('/api/get-channels/'+userId);
+  const d=await r.json();
+  const list=document.getElementById('channelsList');
+  if(!d.channels.length){list.innerHTML='<p style="text-align:center">Abhi koi user nahi hai. Aap pehle hain!</p><button class="btn" onclick="goSuccess()">Active Ho Jao →</button>';return}
+  list.innerHTML=d.channels.map((c,i)=>`<div class="channel-card"><div style="flex:1;margin-right:10px"><b>Channel ${i+1}</b><br><a href="${c.youtubeLink}" target="_blank">🔗 ${c.youtubeLink.substring(0,30)}...</a></div><button class="sub-btn" id="sb${c.id}" onclick="openSub('${c.youtubeLink}',${c.id},this)">Subscribe →</button></div>`).join('');
+}
+
+function openSub(link,id,btn){
+  window.open(link,'_blank');
+  setTimeout(()=>{btn.disabled=true;btn.textContent='✅ Done';markSub(id)},3000);
+}
+
+async function markSub(id){
+  const r=await fetch('/api/sub-done',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,subscribedToId:id})});
+  const d=await r.json();
+  subsGiven=d.subsGiven;
+  document.getElementById('subTxt').textContent=subsGiven+' / 4 subscribe kiye';
+  if(d.isActive)goSuccess();
+}
+
+function goSuccess(){
+  document.getElementById('myLink').textContent=ytLink;
+  showStep(4);
+}
+
+function shareLink(){
+  if(navigator.share)navigator.share({title:'Mera YouTube Channel',url:ytLink});
+  else{navigator.clipboard.writeText(ytLink);alert('Link copy ho gaya!')}
+}
+
+function showStep(n){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showErr(id,msg){
+  const e=document.getElementById(id);
+  e.textContent=msg;e.style.display='block';
+}
+</script>
+</body>
+</html>
