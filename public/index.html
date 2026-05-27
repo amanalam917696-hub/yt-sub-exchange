@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YouTube Sub Exchange</title>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8771359433113858" crossorigin="anonymous"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,sans-serif;background:#f9f9f9}
@@ -60,7 +61,13 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 </div>
 <p id="adTxt" style="text-align:center">0 / 3 ads dekhe</p>
 <div class="ad-box">
-<p>📢 Advertisement</p>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8771359433113858"
+     data-ad-slot="auto"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 <div class="timer" id="timerNum">15</div>
 <p style="font-size:13px;color:#999">seconds remaining</p>
 </div>
@@ -78,23 +85,19 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 <div class="success-box">
 <p style="font-size:50px">🎉</p>
 <h2>Badhai Ho!</h2>
-
 <div class="welcome-box" id="welcomeBox">
 <p id="welcomeMsg" style="font-weight:bold;color:#28a745"></p>
 </div>
-
 <p style="font-size:14px;color:#666;margin-bottom:5px">👇 Apna link — click karo YouTube pe jao:</p>
 <a class="my-link-box" id="myLinkBox" href="#" target="_blank">
   <div style="font-size:13px;color:#999;margin-bottom:5px">🔗 Aapka YouTube Channel</div>
   <div class="my-link-url" id="myLinkUrl"></div>
   <div class="click-hint">▶️ Click karo — YouTube khulega!</div>
 </a>
-
 <div id="queueBox" class="queue-box" style="display:none">
 <p id="queueMsg" style="font-weight:bold;color:#856404"></p>
 <p style="font-size:13px;margin-top:5px">Jald hi active hoga!</p>
 </div>
-
 <button class="btn btn-green" onclick="shareLink()">📤 Share Karo</button>
 <button class="btn btn-grey" style="margin-top:8px" onclick="logout()">🚪 Logout</button>
 </div>
