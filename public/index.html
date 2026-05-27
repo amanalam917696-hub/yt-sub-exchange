@@ -24,8 +24,13 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 .sub-btn{padding:8px 15px;background:#ff0000;color:white;border:none;border-radius:8px;cursor:pointer}
 .sub-btn:disabled{background:#28a745}
 .header{background:#ff0000;color:white;padding:15px 20px;font-size:18px;font-weight:bold}
-.success-box{background:white;border-radius:15px;padding:30px;text-align:center}
-.link-box{background:#f0fff4;border:2px solid #28a745;border-radius:10px;padding:15px;margin:15px 0;word-break:break-all;font-size:13px}
+.success-box{background:white;border-radius:15px;padding:30px;text-align:center;box-shadow:0 5px 20px rgba(0,0,0,0.1)}
+.my-link-box{background:#fff;border:2px solid #ff0000;border-radius:12px;padding:20px;margin:15px 0;text-align:center;cursor:pointer;text-decoration:none;display:block}
+.my-link-box:hover{background:#fff5f5}
+.my-link-title{font-size:14px;color:#999;margin-bottom:8px}
+.my-link-url{color:#ff0000;font-weight:bold;font-size:15px;word-break:break-all}
+.click-hint{font-size:12px;color:#28a745;margin-top:8px}
+.queue-box{background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:15px;margin:15px 0;text-align:center}
 .err{background:#fff3f3;border:1px solid #ff0000;color:#cc0000;padding:10px;border-radius:8px;margin:10px 0;display:none;font-size:14px}
 </style>
 </head>
@@ -68,15 +73,28 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 <div class="success-box">
 <p style="font-size:50px">🎉</p>
 <h2>Badhai Ho!</h2>
-<p>Aapka channel active hai! Log subscribe karenge.</p>
-<div class="link-box" id="myLink"></div>
-<button class="btn" style="background:#28a745" onclick="shareLink()">📤 Share Karo</button>
+<p style="margin:10px 0">Aapka channel active hai!</p>
+
+<!-- Yahan link click karne pe YouTube khulega -->
+<p style="font-size:14px;color:#666;margin-bottom:5px">👇 Apna link — click karo YouTube pe jao:</p>
+<a class="my-link-box" id="myLinkBox" href="#" target="_blank">
+  <div class="my-link-title">🔗 Aapka YouTube Channel</div>
+  <div class="my-link-url" id="myLinkUrl"></div>
+  <div class="click-hint">▶️ Click karo — YouTube khulega!</div>
+</a>
+
+<div id="queueBox" class="queue-box" style="display:none">
+<p id="queueMsg" style="font-weight:bold;color:#856404"></p>
+<p style="font-size:13px;margin-top:5px">Aapka link queue mein hai — jald hi active hoga!</p>
+</div>
+
+<button class="btn" style="background:#28a745;margin-top:10px" onclick="copyLink()">📋 Link Copy Karo</button>
 </div>
 </div>
 
 </div>
 <script>
-let userId=null,ytLink='',adsWatched=0,subsGiven=0,adInt=null;
+let userId=null,ytLink='',adsWatched=0,subsGiven=0,adInt=null,shareLink='';
 
 async function register(){
   const em=document.getElementById('email').value.trim();
@@ -86,8 +104,12 @@ async function register(){
   ytLink=yt;
   const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,youtubeLink:yt})});
   const d=await r.json();
-  if(d.success){userId=d.userId;showStep(2);startTimer()}
-  else showErr('err1',d.msg);
+  if(d.success){
+    userId=d.userId;
+    shareLink=d.shareLink||yt;
+    showStep(2);
+    startTimer();
+  } else showErr('err1',d.msg);
 }
 
 function startTimer(){
@@ -115,8 +137,18 @@ async function loadChannels(){
   const r=await fetch('/api/get-channels/'+userId);
   const d=await r.json();
   const list=document.getElementById('channelsList');
-  if(!d.channels.length){list.innerHTML='<p style="text-align:center">Abhi koi user nahi hai. Aap pehle hain!</p><button class="btn" onclick="goSuccess()">Active Ho Jao →</button>';return}
-  list.innerHTML=d.channels.map((c,i)=>`<div class="channel-card"><div style="flex:1;margin-right:10px"><b>Channel ${i+1}</b><br><a href="${c.youtubeLink}" target="_blank">🔗 ${c.youtubeLink.substring(0,30)}...</a></div><button class="sub-btn" id="sb${c.id}" onclick="openSub('${c.youtubeLink}',${c.id},this)">Subscribe →</button></div>`).join('');
+  if(!d.channels||d.channels.length===0){
+    list.innerHTML='<p style="text-align:center;padding:20px">Abhi koi user nahi — Aap pehle hain!</p><button class="btn" onclick="goSuccess()">Active Ho Jao →</button>';
+    return;
+  }
+  list.innerHTML=d.channels.map((c,i)=>`
+    <div class="channel-card">
+      <div style="flex:1;margin-right:10px">
+        <b>Channel ${i+1}</b><br>
+        <a href="${c.youtubeLink}" target="_blank">🔗 ${c.youtubeLink.substring(0,35)}...</a>
+      </div>
+      <button class="sub-btn" id="sb${c.id}" onclick="openSub('${c.youtubeLink}',${c.id},this)">Subscribe →</button>
+    </div>`).join('');
 }
 
 function openSub(link,id,btn){
@@ -129,17 +161,32 @@ async function markSub(id){
   const d=await r.json();
   subsGiven=d.subsGiven;
   document.getElementById('subTxt').textContent=subsGiven+' / 4 subscribe kiye';
-  if(d.isActive)goSuccess();
+  if(subsGiven>=4)goSuccess();
 }
 
 function goSuccess(){
-  document.getElementById('myLink').textContent=ytLink;
+  // Link box set karo - click karne pe YouTube khulega
+  const linkBox=document.getElementById('myLinkBox');
+  linkBox.href=ytLink;
+  document.getElementById('myLinkUrl').textContent=ytLink;
+
+  // Queue message
+  fetch('/api/status/'+userId).then(r=>r.json()).then(d=>{
+    if(d.message){
+      document.getElementById('queueBox').style.display='block';
+      document.getElementById('queueMsg').textContent=d.message;
+    }
+  }).catch(()=>{});
+
   showStep(4);
 }
 
-function shareLink(){
-  if(navigator.share)navigator.share({title:'Mera YouTube Channel',url:ytLink});
-  else{navigator.clipboard.writeText(ytLink);alert('Link copy ho gaya!')}
+function copyLink(){
+  navigator.clipboard.writeText(ytLink).then(()=>{
+    alert('✅ Link copy ho gaya!');
+  }).catch(()=>{
+    alert('Link: '+ytLink);
+  });
 }
 
 function showStep(n){
