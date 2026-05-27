@@ -15,6 +15,10 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 .btn:disabled{background:#ccc}
 .btn-green{background:#28a745}
 .btn-grey{background:#666}
+.btn-blue{background:#0088cc}
+.btn-wa{background:#25D366}
+.btn-fb{background:#1877f2}
+.btn-ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
 .step{display:none}
 .step.active{display:block}
 .ad-box{background:white;border:2px dashed #ff0000;border-radius:15px;padding:40px 20px;text-align:center;margin:15px 0}
@@ -28,22 +32,24 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 .logout-btn{background:rgba(255,255,255,0.2);border:1px solid white;color:white;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:13px}
 .success-box{background:white;border-radius:15px;padding:30px;text-align:center;box-shadow:0 5px 20px rgba(0,0,0,0.1)}
 .my-link-box{background:#fff;border:2px solid #ff0000;border-radius:12px;padding:20px;margin:15px 0;text-align:center;cursor:pointer;text-decoration:none;display:block}
-.my-link-url{color:#ff0000;font-weight:bold;font-size:15px;word-break:break-all}
-.click-hint{font-size:12px;color:#28a745;margin-top:8px}
+.my-link-url{color:#ff0000;font-weight:bold;font-size:14px;word-break:break-all}
 .queue-box{background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:15px;margin:15px 0;text-align:center}
+.refresh-box{background:#fff3f3;border:2px solid #ff0000;border-radius:10px;padding:15px;margin:15px 0;text-align:center}
 .err{background:#fff3f3;border:1px solid #ff0000;color:#cc0000;padding:10px;border-radius:8px;margin:10px 0;display:none;font-size:14px}
-.welcome-box{background:#f0fff4;border:1px solid #28a745;border-radius:10px;padding:15px;margin:15px 0}
+.share-section{margin:15px 0}
+.share-title{font-size:14px;color:#666;margin-bottom:8px;text-align:center}
+.share-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.add-link-box{background:#f0f8ff;border:2px dashed #0088cc;border-radius:12px;padding:15px;margin:15px 0}
 </style>
 </head>
 <body>
-
 <div class="header">
   <span>▶️ YouTube Sub Exchange</span>
   <button class="logout-btn" id="logoutBtn" onclick="logout()" style="display:none">Logout</button>
 </div>
-
 <div class="container">
 
+<!-- STEP 1: Register -->
 <div id="step1" class="step active">
 <h2>🎯 Free Subscribe Pao!</h2>
 <p>Apna YouTube channel register karo aur subscribers pao!</p>
@@ -53,6 +59,7 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 <button class="btn" onclick="register()">Aage Badho →</button>
 </div>
 
+<!-- STEP 2: Ads -->
 <div id="step2" class="step">
 <h2>📺 3 Ads Dekho</h2>
 <p>Har ad 15 second ka hai</p>
@@ -68,6 +75,7 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 <button class="btn" id="adBtn" onclick="adWatched()" disabled>⏳ Ad chal rahi hai...</button>
 </div>
 
+<!-- STEP 3: Subscribe -->
 <div id="step3" class="step">
 <h2>✅ 4 Channels Subscribe Karo</h2>
 <p>Inhe subscribe karo phir Done dabao</p>
@@ -75,102 +83,123 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 <div id="channelsList"></div>
 </div>
 
+<!-- STEP 4: Dashboard -->
 <div id="step4" class="step">
 <div class="success-box">
-<p style="font-size:50px">🎉</p>
-<h2>Badhai Ho!</h2>
+<p style="font-size:40px">🎉</p>
+<h2 id="dashTitle">Badhai Ho!</h2>
+<p id="dashMsg" style="margin:10px 0;color:#28a745;font-weight:bold"></p>
 
-<div class="welcome-box" id="welcomeBox">
-<p id="welcomeMsg" style="font-weight:bold;color:#28a745"></p>
-</div>
-
-<p style="font-size:14px;color:#666;margin-bottom:5px">👇 Apna link — click karo YouTube pe jao:</p>
+<!-- Active link -->
+<div id="activeLinkDiv" style="display:none">
+<p style="font-size:13px;color:#666;margin-bottom:5px">👇 Aapka active YouTube link:</p>
 <a class="my-link-box" id="myLinkBox" href="#" target="_blank">
-  <div style="font-size:13px;color:#999;margin-bottom:5px">🔗 Aapka YouTube Channel</div>
+  <div style="font-size:12px;color:#999;margin-bottom:5px">🔗 Click karo — YouTube khulega!</div>
   <div class="my-link-url" id="myLinkUrl"></div>
-  <div class="click-hint">▶️ Click karo — YouTube khulega!</div>
 </a>
 
-<div id="queueBox" class="queue-box" style="display:none">
-<p id="queueMsg" style="font-weight:bold;color:#856404"></p>
-<p style="font-size:13px;margin-top:5px">Jald hi active hoga!</p>
+<!-- Share Section -->
+<div class="share-section">
+  <p class="share-title">📤 Apni website share karo — zyada log = zyada paisa!</p>
+  <div class="share-buttons">
+    <button class="btn btn-wa" onclick="shareWhatsApp()">📱 WhatsApp</button>
+    <button class="btn btn-fb" onclick="shareFacebook()">👥 Facebook</button>
+    <button class="btn btn-ig" onclick="shareInstagram()">📸 Instagram</button>
+    <button class="btn btn-blue" onclick="copyLink()">📋 Link Copy</button>
+  </div>
+</div>
 </div>
 
-<button class="btn btn-green" onclick="copyLink()">📋 Link Copy Karo</button>
-<button class="btn btn-grey" style="margin-top:8px" onclick="logout()">🚪 Logout</button>
+<!-- Queue message -->
+<div id="queueBox" class="queue-box" style="display:none">
+<p id="queueMsg" style="font-weight:bold;color:#856404"></p>
+</div>
+
+<!-- Refresh ads -->
+<div id="refreshBox" class="refresh-box" style="display:none">
+<p style="font-weight:bold;color:#cc0000">⚠️ 12 ghante ho gaye!</p>
+<p style="font-size:13px;margin:8px 0">3 ads dekho — link active rakhne ke liye</p>
+<button class="btn" onclick="startRefreshAds()">Ads Dekho →</button>
+</div>
+
+<!-- Naya link add karo -->
+<div class="add-link-box" style="margin-top:15px">
+<p style="font-weight:bold;color:#0088cc;margin-bottom:8px">➕ Naya YouTube Link Add Karo</p>
+<input type="url" id="newYtLink" placeholder="🔗 Naya YouTube Channel Link">
+<button class="btn btn-blue" onclick="addNewLink()">Link Add Karo →</button>
+</div>
+
+<button class="btn btn-grey" style="margin-top:10px" onclick="logout()">🚪 Logout</button>
 </div>
 </div>
 
 </div>
 
 <script>
-let userId=null,ytLink='',adsWatched=0,subsGiven=0,adInt=null;
+let userId=null, ytLink='', linkIndex=0, adsWatched=0, subsGiven=0, adInt=null;
+const WEBSITE_URL = 'https://ytsubexchange.online';
 
-// ✅ Page load pe check karo — pehle se logged in hai?
 window.onload = function() {
   const saved = localStorage.getItem('yt_user');
   if(saved) {
     const data = JSON.parse(saved);
     userId = data.userId;
     ytLink = data.ytLink;
+    linkIndex = data.linkIndex || 0;
     document.getElementById('logoutBtn').style.display='block';
-    restoreDashboard(data);
+    checkStatus();
+    showStep(4);
   }
 }
 
-// Saved user ka dashboard dikhaao
-function restoreDashboard(data) {
-  document.getElementById('myLinkBox').href = data.ytLink;
-  document.getElementById('myLinkUrl').textContent = data.ytLink;
-  document.getElementById('welcomeMsg').textContent = '👋 Wapas aaye! Aapka account active hai.';
-
-  fetch('/api/status/'+data.userId).then(r=>r.json()).then(d=>{
-    if(d.message){
-      document.getElementById('queueBox').style.display='block';
-      document.getElementById('queueMsg').textContent=d.message;
-    }
-  }).catch(()=>{});
-
-  showStep(4);
-}
-
 async function register(){
-  const em=document.getElementById('email').value.trim();
-  const yt=document.getElementById('ytLink').value.trim();
+  const em = document.getElementById('email').value.trim();
+  const yt = document.getElementById('ytLink').value.trim();
   if(!em||!yt){showErr('err1','Sab fields bharo!');return}
   if(!yt.includes('youtube.com')&&!yt.includes('youtu.be')){showErr('err1','Valid YouTube link daalo!');return}
-  ytLink=yt;
-  const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,youtubeLink:yt})});
-  const d=await r.json();
+  ytLink = yt;
+  const r = await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,youtubeLink:yt})});
+  const d = await r.json();
   if(d.success){
-    userId=d.userId;
-    // ✅ LocalStorage mein save karo
-    localStorage.setItem('yt_user', JSON.stringify({userId:d.userId, ytLink:yt, email:em}));
+    userId = d.userId;
+    linkIndex = d.linkIndex || 0;
+    localStorage.setItem('yt_user', JSON.stringify({userId, ytLink:yt, linkIndex}));
     document.getElementById('logoutBtn').style.display='block';
     showStep(2);
     startTimer();
-  } else showErr('err1',d.msg);
+  } else showErr('err1', d.msg);
 }
 
 function startTimer(){
   let s=15;
   const btn=document.getElementById('adBtn');
   const num=document.getElementById('timerNum');
-  btn.disabled=true;btn.textContent='⏳ Ad chal rahi hai...';
+  btn.disabled=true;
+  btn.textContent='⏳ Ad chal rahi hai...';
   clearInterval(adInt);
-  adInt=setInterval(()=>{s--;num.textContent=s;if(s<=0){clearInterval(adInt);btn.disabled=false;btn.textContent='✅ Ad Dekh Li! Next →'}},1000);
+  adInt=setInterval(()=>{
+    s--;
+    num.textContent=s;
+    if(s<=0){clearInterval(adInt);btn.disabled=false;btn.textContent='✅ Ad Dekh Li! Next →'}
+  },1000);
 }
 
 async function adWatched(){
-  const r=await fetch('/api/ad-watched',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId})});
+  const r=await fetch('/api/ad-watched',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,linkIndex})});
   const d=await r.json();
   adsWatched=d.adsWatched;
   const p=Math.round((adsWatched/3)*100);
   document.getElementById('adBar').style.width=p+'%';
   document.getElementById('adBar').textContent=p+'%';
   document.getElementById('adTxt').textContent=adsWatched+' / 3 ads dekhe';
-  if(adsWatched>=3){await loadChannels();showStep(3)}
-  else{startTimer();document.getElementById('adBtn').disabled=true;document.getElementById('adBtn').textContent='⏳ Ad chal rahi hai...'}
+  if(adsWatched>=3){
+    if(subsGiven>=4){goSuccess()}
+    else{await loadChannels();showStep(3)}
+  } else {
+    startTimer();
+    document.getElementById('adBtn').disabled=true;
+    document.getElementById('adBtn').textContent='⏳ Ad chal rahi hai...';
+  }
 }
 
 async function loadChannels(){
@@ -187,48 +216,119 @@ async function loadChannels(){
         <b>Channel ${i+1}</b><br>
         <a href="${c.youtubeLink}" target="_blank" style="color:#ff0000;font-size:13px;word-break:break-all">🔗 ${c.youtubeLink.substring(0,35)}...</a>
       </div>
-      <button class="sub-btn" id="sb${c.id}" onclick="openSub('${c.youtubeLink}',${c.id},this)">Subscribe →</button>
+      <button class="sub-btn" onclick="openSub('${c.youtubeLink}','${c.id}',${c.linkIndex},this)">Subscribe →</button>
     </div>`).join('');
 }
 
-function openSub(link,id,btn){
+function openSub(link,id,li,btn){
   window.open(link,'_blank');
-  setTimeout(()=>{btn.disabled=true;btn.textContent='✅ Done';markSub(id)},3000);
+  setTimeout(()=>{btn.disabled=true;btn.textContent='✅ Done';markSub(id,li)},3000);
 }
 
-async function markSub(id){
-  const r=await fetch('/api/sub-done',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,subscribedToId:id})});
+async function markSub(id,li){
+  const r=await fetch('/api/sub-done',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,linkIndex})});
   const d=await r.json();
   subsGiven=d.subsGiven;
   document.getElementById('subTxt').textContent=subsGiven+' / 4 subscribe kiye';
-  if(subsGiven>=4)goSuccess();
+  if(d.approved) goSuccess();
 }
 
-function goSuccess(){
+async function goSuccess(){
+  const r=await fetch('/api/activate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,linkIndex})});
+  const d=await r.json();
   document.getElementById('myLinkBox').href=ytLink;
   document.getElementById('myLinkUrl').textContent=ytLink;
-  document.getElementById('welcomeMsg').textContent='🎉 Aapka channel active hai!';
-
-  fetch('/api/status/'+userId).then(r=>r.json()).then(d=>{
-    if(d.message){
-      document.getElementById('queueBox').style.display='block';
-      document.getElementById('queueMsg').textContent=d.message;
-    }
-  }).catch(()=>{});
-
+  document.getElementById('dashMsg').textContent=d.message||'Aapka channel active hai!';
+  if(d.isActive){
+    document.getElementById('activeLinkDiv').style.display='block';
+    document.getElementById('queueBox').style.display='none';
+  } else {
+    document.getElementById('activeLinkDiv').style.display='none';
+    document.getElementById('queueBox').style.display='block';
+    document.getElementById('queueMsg').textContent=d.message;
+  }
   showStep(4);
 }
 
-function copyLink(){
-  navigator.clipboard.writeText(ytLink).then(()=>{
-    alert('✅ Link copy ho gaya!');
-  }).catch(()=>{alert('Link: '+ytLink)});
+async function checkStatus(){
+  if(!userId) return;
+  const r=await fetch(`/api/status/${userId}/${linkIndex}`);
+  const d=await r.json();
+  if(!d.found) return;
+  document.getElementById('myLinkBox').href=d.youtubeLink||ytLink;
+  document.getElementById('myLinkUrl').textContent=d.youtubeLink||ytLink;
+  document.getElementById('dashMsg').textContent=d.message||'';
+  if(d.needsRefresh){
+    document.getElementById('refreshBox').style.display='block';
+    document.getElementById('activeLinkDiv').style.display='block';
+  } else if(d.isActive){
+    document.getElementById('activeLinkDiv').style.display='block';
+    document.getElementById('refreshBox').style.display='none';
+  } else {
+    document.getElementById('queueBox').style.display='block';
+    document.getElementById('queueMsg').textContent=d.message;
+  }
 }
 
-// ✅ Logout
+// Refresh ads (12 ghante baad)
+async function startRefreshAds(){
+  const r=await fetch('/api/refresh-ads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,linkIndex})});
+  const d=await r.json();
+  if(d.canRefresh){
+    adsWatched=0;
+    document.getElementById('adBar').style.width='0%';
+    document.getElementById('adTxt').textContent='0 / 3 ads dekhe';
+    document.getElementById('refreshBox').style.display='none';
+    showStep(2);
+    startTimer();
+  } else {
+    alert(`Abhi ${d.hoursLeft} ghante aur wait karo!`);
+  }
+}
+
+// Naya link add karo
+async function addNewLink(){
+  const yt=document.getElementById('newYtLink').value.trim();
+  if(!yt){alert('YouTube link daalo!');return}
+  if(!yt.includes('youtube.com')&&!yt.includes('youtu.be')){alert('Valid YouTube link daalo!');return}
+  ytLink=yt;
+  const saved=JSON.parse(localStorage.getItem('yt_user'));
+  const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:saved.email||'',youtubeLink:yt})});
+  const d=await r.json();
+  if(d.success){
+    linkIndex=d.linkIndex;
+    localStorage.setItem('yt_user',JSON.stringify({...saved,ytLink:yt,linkIndex}));
+    adsWatched=0;subsGiven=0;
+    document.getElementById('adBar').style.width='0%';
+    document.getElementById('adTxt').textContent='0 / 3 ads dekhe';
+    showStep(2);
+    startTimer();
+  }
+}
+
+// Share functions
+function shareWhatsApp(){
+  const msg=`🎯 YouTube Subscribe Exchange!\n\nFree mein apna YouTube channel grow karo!\n\n👉 ${WEBSITE_URL}\n\nJoin karo aur subscribers pao! 🚀`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+function shareFacebook(){
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(WEBSITE_URL)}`,'_blank');
+}
+
+function shareInstagram(){
+  navigator.clipboard.writeText(`🎯 YouTube Subscribe Exchange!\n\nFree mein apna YouTube channel grow karo!\n\n👉 ${WEBSITE_URL}\n\nJoin karo aur subscribers pao! 🚀`).then(()=>{
+    alert('✅ Link copy ho gaya!\n\nInstagram pe post banao aur paste karo!');
+  });
+}
+
+function copyLink(){
+  navigator.clipboard.writeText(WEBSITE_URL).then(()=>{alert('✅ Website link copy ho gaya!')});
+}
+
 function logout(){
   localStorage.removeItem('yt_user');
-  userId=null;ytLink='';adsWatched=0;subsGiven=0;
+  userId=null;ytLink='';adsWatched=0;subsGiven=0;linkIndex=0;
   document.getElementById('logoutBtn').style.display='none';
   document.getElementById('email').value='';
   document.getElementById('ytLink').value='';
@@ -247,4 +347,4 @@ function showErr(id,msg){
 }
 </script>
 </body>
-</html>
+  </html>
