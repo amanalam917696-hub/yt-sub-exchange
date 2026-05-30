@@ -8,41 +8,57 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,sans-serif;background:#f9f9f9}
-.container{max-width:500px;margin:0 auto;padding:20px}
+.container{max-width:500px;margin:0 auto;padding:15px}
 h2{color:#ff0000;margin-bottom:10px}
-p{color:#666;margin-bottom:15px;line-height:1.5}
-input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:10px;font-size:15px}
-.btn{width:100%;padding:15px;background:#ff0000;color:white;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:10px}
+p{color:#666;margin-bottom:10px;line-height:1.5}
+input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:10px;font-size:15px}
+.btn{width:100%;padding:14px;background:#ff0000;color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;margin-top:8px}
 .btn:disabled{background:#ccc}
 .btn-green{background:#28a745}
 .btn-grey{background:#555}
-.btn-blue{background:#0088cc}
 .step{display:none}
 .step.active{display:block}
-.tabs{display:flex;margin-bottom:20px;border-radius:10px;overflow:hidden;border:2px solid #ff0000}
-.tab{flex:1;padding:12px;text-align:center;cursor:pointer;background:white;color:#ff0000;font-weight:bold;font-size:15px}
+.tabs{display:flex;margin-bottom:15px;border-radius:10px;overflow:hidden;border:2px solid #ff0000}
+.tab{flex:1;padding:12px;text-align:center;cursor:pointer;background:white;color:#ff0000;font-weight:bold}
 .tab.active{background:#ff0000;color:white}
-.ad-box{background:white;border:2px dashed #ff0000;border-radius:15px;padding:20px;text-align:center;margin:15px 0}
-.timer{font-size:30px;font-weight:bold;color:#ff0000;margin:10px 0}
-.progress-wrap{background:#eee;border-radius:20px;height:25px;margin:15px 0;overflow:hidden}
-.progress-bar{background:#ff0000;height:100%;border-radius:20px;transition:width 0.5s;display:flex;align-items:center;justify-content:center;color:white;font-size:12px}
-.channel-card{background:white;border:1px solid #eee;border-radius:12px;padding:15px;margin:10px 0;display:flex;align-items:center;justify-content:space-between}
-.channel-card a{color:#ff0000;font-size:13px;flex:1;margin-right:10px;word-break:break-all}
-.sub-btn{padding:8px 15px;background:#ff0000;color:white;border:none;border-radius:8px;cursor:pointer}
-.sub-btn:disabled{background:#28a745}
-.header{background:#ff0000;color:white;padding:15px 20px;font-size:18px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
-.logout-btn{background:rgba(255,255,255,0.2);border:1px solid white;color:white;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:13px}
-.profile-box{background:white;border-radius:15px;padding:20px;box-shadow:0 5px 20px rgba(0,0,0,0.1);margin-bottom:15px}
+.header{background:#ff0000;color:white;padding:12px 15px;font-size:17px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+.logout-btn{background:rgba(255,255,255,0.2);border:1px solid white;color:white;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:13px}
+.err{background:#fff3f3;border:1px solid #ff0000;color:#cc0000;padding:10px;border-radius:8px;margin:8px 0;display:none;font-size:13px}
+
+/* Profile Layout */
+.profile-header{background:white;border-radius:15px;padding:15px;box-shadow:0 2px 10px rgba(0,0,0,0.08);margin-bottom:12px}
+.profile-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.avatar{width:55px;height:55px;background:#ff0000;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:22px;font-weight:bold;flex-shrink:0}
+.profile-info{flex:1}
+.profile-name{font-size:16px;font-weight:bold;color:#333}
+.profile-email{font-size:12px;color:#999;margin-top:2px}
+
+/* Details Grid */
+.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.detail-card{background:#f9f9f9;border-radius:10px;padding:12px;text-align:center}
+.detail-label{font-size:11px;color:#999;margin-bottom:4px}
+.detail-value{font-size:13px;font-weight:bold;color:#333;word-break:break-all}
+
+/* Status Cards */
 .status-active{background:#f0fff4;border:2px solid #28a745;border-radius:12px;padding:15px;margin:10px 0;text-align:center}
 .status-queue{background:#fff3cd;border:2px solid #ffc107;border-radius:12px;padding:15px;margin:10px 0;text-align:center}
 .status-expire{background:#fff3f3;border:2px solid #ff0000;border-radius:12px;padding:15px;margin:10px 0;text-align:center}
-.my-link-box{background:#fff5f5;border:2px solid #ff0000;border-radius:12px;padding:15px;margin:10px 0;text-align:center;cursor:pointer;text-decoration:none;display:block}
-.my-link-url{color:#ff0000;font-weight:bold;font-size:13px;word-break:break-all;margin-top:5px}
-.err{background:#fff3f3;border:1px solid #ff0000;color:#cc0000;padding:10px;border-radius:8px;margin:10px 0;display:none;font-size:14px}
-.divider{height:1px;background:#eee;margin:15px 0}
-.info-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:14px}
-.info-label{color:#999}
-.info-value{color:#333;font-weight:bold}
+
+.yt-link-box{background:white;border:2px solid #ff0000;border-radius:12px;padding:12px;margin:10px 0;text-align:center;cursor:pointer;text-decoration:none;display:block}
+.yt-link-url{color:#ff0000;font-weight:bold;font-size:12px;word-break:break-all;margin-top:4px}
+
+/* Ad box */
+.ad-box{background:white;border:2px dashed #ff0000;border-radius:12px;padding:15px;text-align:center;margin:12px 0}
+.timer{font-size:28px;font-weight:bold;color:#ff0000;margin:8px 0}
+.progress-wrap{background:#eee;border-radius:20px;height:22px;margin:10px 0;overflow:hidden}
+.progress-bar{background:#ff0000;height:100%;border-radius:20px;transition:width 0.5s;display:flex;align-items:center;justify-content:center;color:white;font-size:11px}
+
+/* Channel cards */
+.channel-card{background:white;border:1px solid #eee;border-radius:10px;padding:12px;margin:8px 0;display:flex;align-items:center;justify-content:space-between}
+.channel-card a{color:#ff0000;font-size:12px;flex:1;margin-right:8px;word-break:break-all}
+.sub-btn{padding:7px 12px;background:#ff0000;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;white-space:nowrap}
+.sub-btn:disabled{background:#28a745}
+.divider{height:1px;background:#eee;margin:12px 0}
 </style>
 </head>
 <body>
@@ -61,31 +77,27 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
     <div class="tab" id="registerTab" onclick="showTab('register')">✨ Sign Up</div>
   </div>
 
-  <!-- Login -->
   <div id="loginForm">
     <h2>👋 Wapas Aao!</h2>
-    <p>Email aur password se login karo</p>
     <div class="err" id="errLogin"></div>
     <input type="email" id="loginEmail" placeholder="📧 Email Address">
     <input type="password" id="loginPassword" placeholder="🔒 Password">
     <button class="btn" onclick="login()">Login →</button>
-    <p style="text-align:center;margin-top:10px;font-size:14px">
+    <p style="text-align:center;margin-top:10px;font-size:13px">
       Naya account? <span style="color:#ff0000;cursor:pointer;font-weight:bold" onclick="showTab('register')">Sign Up karo</span>
     </p>
   </div>
 
-  <!-- Register -->
   <div id="registerForm" style="display:none">
     <h2>🎯 Free Subscribe Pao!</h2>
-    <p>Naya account banao aur YouTube channel grow karo!</p>
     <div class="err" id="errRegister"></div>
     <input type="email" id="regEmail" placeholder="📧 Email Address">
-    <input type="password" id="regPassword" placeholder="🔒 Password banao (6+ characters)">
-    <input type="password" id="regPassword2" placeholder="🔒 Password dobara likho">
+    <input type="password" id="regPassword" placeholder="🔒 Password (6+ characters)">
+    <input type="password" id="regPassword2" placeholder="🔒 Password dobara">
     <input type="url" id="ytLink" placeholder="🔗 YouTube Channel Link">
     <button class="btn" onclick="register()">Aage Badho →</button>
-    <p style="text-align:center;margin-top:10px;font-size:14px">
-      Pehle se account hai? <span style="color:#ff0000;cursor:pointer;font-weight:bold" onclick="showTab('login')">Login karo</span>
+    <p style="text-align:center;margin-top:10px;font-size:13px">
+      Account hai? <span style="color:#ff0000;cursor:pointer;font-weight:bold" onclick="showTab('login')">Login karo</span>
     </p>
   </div>
 </div>
@@ -93,11 +105,11 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 <!-- STEP 2: Ads -->
 <div id="step2" class="step">
   <h2>📺 3 Ads Dekho</h2>
-  <p>Har ad 15 second ka hai — link active hoga!</p>
+  <p style="font-size:13px">Har ad 15 second ka hai</p>
   <div class="progress-wrap">
     <div class="progress-bar" id="adBar" style="width:0%">0%</div>
   </div>
-  <p id="adTxt" style="text-align:center;margin-bottom:10px">0 / 3 ads dekhe</p>
+  <p id="adTxt" style="text-align:center;font-size:14px">0 / 3 ads dekhe</p>
   <div class="ad-box">
     <ins class="adsbygoogle"
          style="display:block"
@@ -106,7 +118,7 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
          data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     <div class="timer" id="timerNum">15</div>
-    <p style="font-size:13px;color:#999">seconds remaining</p>
+    <p style="font-size:12px;color:#999">seconds remaining</p>
   </div>
   <button class="btn" id="adBtn" onclick="adWatched()" disabled>⏳ Ad chal rahi hai...</button>
 </div>
@@ -114,62 +126,66 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 <!-- STEP 3: Subscribe -->
 <div id="step3" class="step">
   <h2>✅ Channels Subscribe Karo</h2>
-  <p>Inhe subscribe karo phir Done dabao</p>
-  <p id="subTxt" style="text-align:center;font-weight:bold;color:#ff0000;margin-bottom:10px">0 subscribe kiye</p>
+  <p style="font-size:13px">Subscribe karo phir Done dabao</p>
+  <p id="subTxt" style="text-align:center;font-weight:bold;color:#ff0000;font-size:14px">0 subscribe kiye</p>
   <div id="channelsList"></div>
 </div>
 
-<!-- STEP 4: Dashboard/Profile -->
+<!-- STEP 4: Dashboard -->
 <div id="step4" class="step">
 
-  <!-- Profile Box -->
-  <div class="profile-box">
-    <h2 style="margin-bottom:15px">👤 Mera Profile</h2>
-
-    <div class="info-row">
-      <span class="info-label">📧 Email</span>
-      <span class="info-value" id="profileEmail"></span>
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <div class="profile-top">
+      <div class="avatar" id="avatarLetter">A</div>
+      <div class="profile-info">
+        <div class="profile-name" id="profileName">Loading...</div>
+        <div class="profile-email" id="profileEmail"></div>
+      </div>
     </div>
-    <div class="info-row">
-      <span class="info-label">🔗 YouTube Link</span>
-      <span class="info-value" style="font-size:12px" id="profileLink"></span>
+
+    <!-- Details Grid -->
+    <div class="details-grid">
+      <div class="detail-card">
+        <div class="detail-label">📺 YouTube</div>
+        <div class="detail-value" id="detailYT" style="font-size:11px"></div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-label">📊 Status</div>
+        <div class="detail-value" id="detailStatus"></div>
+      </div>
     </div>
-    <div class="info-row">
-      <span class="info-label">📅 Joined</span>
-      <span class="info-value" id="profileJoined"></span>
+
+    <!-- Status Message -->
+    <div id="statusActive" class="status-active" style="display:none">
+      <p style="font-size:18px">✅</p>
+      <p style="font-weight:bold;color:#28a745;font-size:15px">Link Active Hai!</p>
+      <p id="hoursLeftMsg" style="font-size:13px;color:#555;margin-top:4px"></p>
+      <p style="font-size:12px;color:#888;margin-top:4px">⚠️ 24 ghante baad link automatically hatega — phir 3 ads dekho!</p>
     </div>
-  </div>
 
-  <!-- Link Status -->
-  <div id="statusActive" class="status-active" style="display:none">
-    <p style="font-size:20px">✅</p>
-    <p style="font-weight:bold;color:#28a745;font-size:16px">Aapka Link Active Hai!</p>
-    <p id="hoursLeftMsg" style="font-size:14px;margin-top:5px;color:#555"></p>
-  </div>
+    <div id="statusQueue" class="status-queue" style="display:none">
+      <p style="font-size:18px">⏳</p>
+      <p id="queueMsg" style="font-weight:bold;color:#856404;font-size:14px"></p>
+    </div>
 
-  <div id="statusQueue" class="status-queue" style="display:none">
-    <p style="font-size:20px">⏳</p>
-    <p id="queueMsg" style="font-weight:bold;color:#856404;font-size:15px"></p>
-  </div>
-
-  <div id="statusExpire" class="status-expire" style="display:none">
-    <p style="font-size:20px">⚠️</p>
-    <p style="font-weight:bold;color:#cc0000">24 Ghante Ho Gaye!</p>
-    <p style="font-size:13px;margin:8px 0">3 ads dekho — link dobara active karo</p>
-    <button class="btn" onclick="startAds()">Ads Dekho →</button>
+    <div id="statusExpire" class="status-expire" style="display:none">
+      <p style="font-size:18px">⚠️</p>
+      <p style="font-weight:bold;color:#cc0000;font-size:14px">24 Ghante Ho Gaye!</p>
+      <p style="font-size:12px;margin:6px 0">3 ads dekho — link dobara active karo</p>
+      <button class="btn" style="margin-top:8px" onclick="startAds()">Ads Dekho →</button>
+    </div>
   </div>
 
   <!-- YouTube Link -->
-  <a class="my-link-box" id="myLinkBox" href="#" target="_blank">
-    <p style="font-size:12px;color:#999">🔗 Aapka YouTube Channel — Click karo:</p>
-    <div class="my-link-url" id="myLinkUrl"></div>
-    <p style="font-size:12px;color:#28a745;margin-top:5px">▶️ YouTube khulega!</p>
+  <a class="yt-link-box" id="myLinkBox" href="#" target="_blank">
+    <p style="font-size:12px;color:#999">🔗 Aapka YouTube Channel</p>
+    <div class="yt-link-url" id="myLinkUrl"></div>
+    <p style="font-size:11px;color:#28a745;margin-top:4px">▶️ Click karo — YouTube khulega!</p>
   </a>
 
   <div class="divider"></div>
 
-  <!-- Share -->
-  <p style="font-size:14px;font-weight:bold;text-align:center;margin-bottom:8px">📤 Website Share Karo — Zyada Log = Zyada Paisa! 💰</p>
   <button class="btn btn-green" onclick="shareLink()">📤 Share Karo</button>
   <button class="btn btn-grey" style="margin-top:8px" onclick="logout()">🚪 Logout</button>
 
@@ -178,16 +194,16 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 </div>
 
 <script>
-let userId=null, ytLink='', userEmail='', adsWatched=0, subsGiven=0, adInt=null, requiredSubs=0;
+let userId=null,ytLink='',userEmail='',adsWatched=0,subsGiven=0,adInt=null,requiredSubs=0;
 
-window.onload = function(){
-  const saved = localStorage.getItem('yt_user');
+window.onload=function(){
+  const saved=localStorage.getItem('yt_user');
   if(saved){
-    const data = JSON.parse(saved);
-    userId = data.userId;
-    ytLink = data.ytLink;
-    userEmail = data.email;
-    document.getElementById('logoutBtn').style.display = 'block';
+    const data=JSON.parse(saved);
+    userId=data.userId;
+    ytLink=data.ytLink;
+    userEmail=data.email;
+    document.getElementById('logoutBtn').style.display='block';
     loadStatus();
   }
 }
@@ -213,18 +229,12 @@ async function login(){
   const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
   const d=await r.json();
   if(d.success){
-    userId=d.userId;
-    ytLink=d.youtubeLink;
-    userEmail=email;
-    adsWatched=d.adsWatched;
-    subsGiven=d.subsGiven;
+    userId=d.userId;ytLink=d.youtubeLink;userEmail=email;
+    adsWatched=d.adsWatched;subsGiven=d.subsGiven;
     localStorage.setItem('yt_user',JSON.stringify({userId,ytLink,email}));
     document.getElementById('logoutBtn').style.display='block';
-    if(!d.isActive && adsWatched<3){
-      startAds();
-    } else {
-      loadStatus();
-    }
+    if(!d.isActive&&adsWatched<3){startAds()}
+    else{loadStatus()}
   } else showErr('errLogin',d.msg);
 }
 
@@ -237,8 +247,7 @@ async function register(){
   if(password!==password2){showErr('errRegister','Dono password same hone chahiye!');return}
   if(password.length<6){showErr('errRegister','Password 6+ characters ka hona chahiye!');return}
   if(!yt.includes('youtube.com')&&!yt.includes('youtu.be')){showErr('errRegister','Valid YouTube link daalo!');return}
-  ytLink=yt;
-  userEmail=email;
+  ytLink=yt;userEmail=email;
   const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password,youtubeLink:yt})});
   const d=await r.json();
   if(d.success){
@@ -254,16 +263,14 @@ function startAds(){
   document.getElementById('adBar').style.width='0%';
   document.getElementById('adBar').textContent='0%';
   document.getElementById('adTxt').textContent='0 / 3 ads dekhe';
-  showStep(2);
-  startTimer();
+  showStep(2);startTimer();
 }
 
 function startTimer(){
   let s=15;
   const btn=document.getElementById('adBtn');
   const num=document.getElementById('timerNum');
-  btn.disabled=true;
-  btn.textContent='⏳ Ad chal rahi hai...';
+  btn.disabled=true;btn.textContent='⏳ Ad chal rahi hai...';
   clearInterval(adInt);
   adInt=setInterval(()=>{
     s--;num.textContent=s;
@@ -280,15 +287,10 @@ async function adWatched(){
   document.getElementById('adBar').textContent=p+'%';
   document.getElementById('adTxt').textContent=adsWatched+' / 3 ads dekhe';
   if(adsWatched>=3){
-    // Check if can activate directly
     const cr=await fetch('/api/can-activate/'+userId);
     const cd=await cr.json();
-    if(cd.isActive){
-      loadStatus();
-    } else {
-      await loadChannels();
-      showStep(3);
-    }
+    if(cd.isActive){loadStatus()}
+    else{await loadChannels();showStep(3)}
   } else {
     startTimer();
     document.getElementById('adBtn').disabled=true;
@@ -301,21 +303,19 @@ async function loadChannels(){
   const d=await r.json();
   const list=document.getElementById('channelsList');
   requiredSubs=d.totalActive||0;
-
   if(!d.channels||d.channels.length===0){
-    list.innerHTML='<p style="text-align:center;padding:20px;background:#f0fff4;border-radius:10px">🎉 Aap pehle user hain — link active ho raha hai!</p>';
+    list.innerHTML='<p style="text-align:center;padding:15px;background:#f0fff4;border-radius:10px;font-size:14px">🎉 Aap pehle user hain!</p>';
     setTimeout(()=>loadStatus(),2000);
     return;
   }
-
   document.getElementById('subTxt').textContent=`0 / ${d.channels.length} subscribe kiye`;
   list.innerHTML=d.channels.map((c,i)=>`
     <div class="channel-card">
-      <div style="flex:1;margin-right:10px">
-        <b>Channel ${i+1}</b><br>
-        <a href="${c.youtubeLink}" target="_blank">🔗 ${c.youtubeLink.substring(0,30)}...</a>
+      <div style="flex:1;margin-right:8px">
+        <b style="font-size:13px">Channel ${i+1}</b><br>
+        <a href="${c.youtubeLink}" target="_blank">🔗 ${c.youtubeLink.substring(0,28)}...</a>
       </div>
-      <button class="sub-btn" onclick="openSub('${c.youtubeLink}','${c._id}',this)">Subscribe →</button>
+      <button class="sub-btn" onclick="openSub('${c.youtubeLink}','${c._id}',this)">Subscribe</button>
     </div>`).join('');
 }
 
@@ -329,21 +329,25 @@ async function markSub(id){
   const d=await r.json();
   subsGiven=d.subsGiven;
   document.getElementById('subTxt').textContent=`${subsGiven} / ${d.requiredSubs||requiredSubs} subscribe kiye`;
-  if(d.isActive) loadStatus();
+  if(d.isActive)loadStatus();
 }
 
 async function loadStatus(){
-  if(!userId) return;
+  if(!userId)return;
   try{
     const r=await fetch('/api/status/'+userId);
     const d=await r.json();
-    if(!d.found) return;
+    if(!d.found)return;
+    if(d.youtubeLink)ytLink=d.youtubeLink;
 
-    if(d.youtubeLink) ytLink=d.youtubeLink;
-
-    // Profile
+    // Avatar
+    const name=userEmail||(d.email||'U');
+    const letter=name.charAt(0).toUpperCase();
+    document.getElementById('avatarLetter').textContent=letter;
+    document.getElementById('profileName').textContent=name.split('@')[0];
     document.getElementById('profileEmail').textContent=userEmail||d.email||'';
-    document.getElementById('profileLink').textContent=ytLink;
+    document.getElementById('detailYT').textContent=ytLink.replace('https://www.youtube.com/','').replace('https://youtube.com/','');
+    document.getElementById('detailStatus').textContent=d.isActive?'✅ Active':'⏳ Queue';
     document.getElementById('myLinkBox').href=ytLink;
     document.getElementById('myLinkUrl').textContent=ytLink;
 
@@ -361,26 +365,21 @@ async function loadStatus(){
     } else {
       document.getElementById('statusExpire').style.display='block';
     }
-
     showStep(4);
   }catch(e){console.log(e)}
 }
 
 function shareLink(){
   const msg='🎯 YouTube Subscribe Exchange!\n\nFree mein apna YouTube channel grow karo!\n\n👉 https://ytsubexchange.online\n\nJoin karo aur subscribers pao! 🚀';
-  if(navigator.share){
-    navigator.share({title:'YouTube Sub Exchange',text:msg,url:'https://ytsubexchange.online'});
-  } else {
-    navigator.clipboard.writeText('https://ytsubexchange.online').then(()=>{alert('✅ Link copy ho gaya!')});
-  }
+  if(navigator.share){navigator.share({title:'YT Sub Exchange',text:msg,url:'https://ytsubexchange.online'});}
+  else{navigator.clipboard.writeText('https://ytsubexchange.online').then(()=>{alert('✅ Link copy ho gaya!')})}
 }
 
 function logout(){
   localStorage.removeItem('yt_user');
   userId=null;ytLink='';userEmail='';adsWatched=0;subsGiven=0;
   document.getElementById('logoutBtn').style.display='none';
-  showStep(1);
-  showTab('login');
+  showStep(1);showTab('login');
 }
 
 function showStep(n){
@@ -395,4 +394,4 @@ function showErr(id,msg){
 }
 </script>
 </body>
-</html>
+  </html>
