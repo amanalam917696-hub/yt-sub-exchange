@@ -15,10 +15,13 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 .btn{width:100%;padding:15px;background:#ff0000;color:white;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:10px}
 .btn:disabled{background:#ccc}
 .btn-green{background:#28a745}
-.btn-grey{background:#666}
+.btn-grey{background:#555}
 .btn-blue{background:#0088cc}
 .step{display:none}
 .step.active{display:block}
+.tabs{display:flex;margin-bottom:20px;border-radius:10px;overflow:hidden;border:2px solid #ff0000}
+.tab{flex:1;padding:12px;text-align:center;cursor:pointer;background:white;color:#ff0000;font-weight:bold;font-size:15px}
+.tab.active{background:#ff0000;color:white}
 .ad-box{background:white;border:2px dashed #ff0000;border-radius:15px;padding:20px;text-align:center;margin:15px 0}
 .timer{font-size:30px;font-weight:bold;color:#ff0000;margin:10px 0}
 .progress-wrap{background:#eee;border-radius:20px;height:25px;margin:15px 0;overflow:hidden}
@@ -29,16 +32,17 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 .sub-btn:disabled{background:#28a745}
 .header{background:#ff0000;color:white;padding:15px 20px;font-size:18px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
 .logout-btn{background:rgba(255,255,255,0.2);border:1px solid white;color:white;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:13px}
-.success-box{background:white;border-radius:15px;padding:25px;text-align:center;box-shadow:0 5px 20px rgba(0,0,0,0.1)}
-.my-link-box{background:#fff5f5;border:2px solid #ff0000;border-radius:12px;padding:15px;margin:15px 0;text-align:center;cursor:pointer;text-decoration:none;display:block}
-.my-link-url{color:#ff0000;font-weight:bold;font-size:14px;word-break:break-all}
-.queue-box{background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:15px;margin:15px 0;text-align:center}
-.refresh-box{background:#fff3f3;border:2px solid #ff0000;border-radius:10px;padding:15px;margin:15px 0;text-align:center}
+.profile-box{background:white;border-radius:15px;padding:20px;box-shadow:0 5px 20px rgba(0,0,0,0.1);margin-bottom:15px}
+.status-active{background:#f0fff4;border:2px solid #28a745;border-radius:12px;padding:15px;margin:10px 0;text-align:center}
+.status-queue{background:#fff3cd;border:2px solid #ffc107;border-radius:12px;padding:15px;margin:10px 0;text-align:center}
+.status-expire{background:#fff3f3;border:2px solid #ff0000;border-radius:12px;padding:15px;margin:10px 0;text-align:center}
+.my-link-box{background:#fff5f5;border:2px solid #ff0000;border-radius:12px;padding:15px;margin:10px 0;text-align:center;cursor:pointer;text-decoration:none;display:block}
+.my-link-url{color:#ff0000;font-weight:bold;font-size:13px;word-break:break-all;margin-top:5px}
 .err{background:#fff3f3;border:1px solid #ff0000;color:#cc0000;padding:10px;border-radius:8px;margin:10px 0;display:none;font-size:14px}
-.tabs{display:flex;margin-bottom:20px;border-radius:10px;overflow:hidden;border:2px solid #ff0000}
-.tab{flex:1;padding:12px;text-align:center;cursor:pointer;background:white;color:#ff0000;font-weight:bold;font-size:15px}
-.tab.active{background:#ff0000;color:white}
 .divider{height:1px;background:#eee;margin:15px 0}
+.info-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:14px}
+.info-label{color:#999}
+.info-value{color:#333;font-weight:bold}
 </style>
 </head>
 <body>
@@ -52,40 +56,38 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 
 <!-- STEP 1: Login/Register -->
 <div id="step1" class="step active">
-
   <div class="tabs">
-    <div class="tab active" id="loginTab" onclick="showTab('login')">Login</div>
-    <div class="tab" id="registerTab" onclick="showTab('register')">Sign Up</div>
+    <div class="tab active" id="loginTab" onclick="showTab('login')">🔑 Login</div>
+    <div class="tab" id="registerTab" onclick="showTab('register')">✨ Sign Up</div>
   </div>
 
-  <!-- Login Form -->
+  <!-- Login -->
   <div id="loginForm">
     <h2>👋 Wapas Aao!</h2>
-    <p>Apne account mein login karo</p>
+    <p>Email aur password se login karo</p>
     <div class="err" id="errLogin"></div>
     <input type="email" id="loginEmail" placeholder="📧 Email Address">
     <input type="password" id="loginPassword" placeholder="🔒 Password">
     <button class="btn" onclick="login()">Login →</button>
     <p style="text-align:center;margin-top:10px;font-size:14px">
-      Naya account? <span style="color:#ff0000;cursor:pointer" onclick="showTab('register')">Sign Up karo</span>
+      Naya account? <span style="color:#ff0000;cursor:pointer;font-weight:bold" onclick="showTab('register')">Sign Up karo</span>
     </p>
   </div>
 
-  <!-- Register Form -->
+  <!-- Register -->
   <div id="registerForm" style="display:none">
     <h2>🎯 Free Subscribe Pao!</h2>
-    <p>Naya account banao aur YouTube subscribers pao!</p>
+    <p>Naya account banao aur YouTube channel grow karo!</p>
     <div class="err" id="errRegister"></div>
     <input type="email" id="regEmail" placeholder="📧 Email Address">
-    <input type="password" id="regPassword" placeholder="🔒 Password banao">
+    <input type="password" id="regPassword" placeholder="🔒 Password banao (6+ characters)">
     <input type="password" id="regPassword2" placeholder="🔒 Password dobara likho">
     <input type="url" id="ytLink" placeholder="🔗 YouTube Channel Link">
     <button class="btn" onclick="register()">Aage Badho →</button>
     <p style="text-align:center;margin-top:10px;font-size:14px">
-      Pehle se account hai? <span style="color:#ff0000;cursor:pointer" onclick="showTab('login')">Login karo</span>
+      Pehle se account hai? <span style="color:#ff0000;cursor:pointer;font-weight:bold" onclick="showTab('login')">Login karo</span>
     </p>
   </div>
-
 </div>
 
 <!-- STEP 2: Ads -->
@@ -95,7 +97,7 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
   <div class="progress-wrap">
     <div class="progress-bar" id="adBar" style="width:0%">0%</div>
   </div>
-  <p id="adTxt" style="text-align:center">0 / 3 ads dekhe</p>
+  <p id="adTxt" style="text-align:center;margin-bottom:10px">0 / 3 ads dekhe</p>
   <div class="ad-box">
     <ins class="adsbygoogle"
          style="display:block"
@@ -111,46 +113,72 @@ input{width:100%;padding:14px;margin:8px 0;border:2px solid #ddd;border-radius:1
 
 <!-- STEP 3: Subscribe -->
 <div id="step3" class="step">
-  <h2>✅ 4 Channels Subscribe Karo</h2>
+  <h2>✅ Channels Subscribe Karo</h2>
   <p>Inhe subscribe karo phir Done dabao</p>
-  <p id="subTxt" style="text-align:center;font-weight:bold;color:#ff0000">0 / 4 subscribe kiye</p>
+  <p id="subTxt" style="text-align:center;font-weight:bold;color:#ff0000;margin-bottom:10px">0 subscribe kiye</p>
   <div id="channelsList"></div>
 </div>
 
-<!-- STEP 4: Dashboard -->
+<!-- STEP 4: Dashboard/Profile -->
 <div id="step4" class="step">
-  <div class="success-box">
-    <p style="font-size:40px">🎉</p>
-    <h2 id="dashTitle">Badhai Ho!</h2>
-    <p id="dashMsg" style="color:#28a745;font-weight:bold;margin:10px 0"></p>
 
-    <a class="my-link-box" id="myLinkBox" href="#" target="_blank">
-      <p style="font-size:12px;color:#999">🔗 Aapka YouTube Channel</p>
-      <div class="my-link-url" id="myLinkUrl"></div>
-      <p style="font-size:12px;color:#28a745;margin-top:5px">▶️ Click karo — YouTube khulega!</p>
-    </a>
+  <!-- Profile Box -->
+  <div class="profile-box">
+    <h2 style="margin-bottom:15px">👤 Mera Profile</h2>
 
-    <div id="queueBox" class="queue-box" style="display:none">
-      <p id="queueMsg" style="font-weight:bold;color:#856404"></p>
+    <div class="info-row">
+      <span class="info-label">📧 Email</span>
+      <span class="info-value" id="profileEmail"></span>
     </div>
-
-    <div id="refreshBox" class="refresh-box" style="display:none">
-      <p style="font-weight:bold;color:#cc0000">⚠️ 24 Ghante Ho Gaye!</p>
-      <p style="font-size:13px;margin:8px 0">3 ads dekho — link dobara active karo</p>
-      <button class="btn" onclick="startAds()">Ads Dekho →</button>
+    <div class="info-row">
+      <span class="info-label">🔗 YouTube Link</span>
+      <span class="info-value" style="font-size:12px" id="profileLink"></span>
     </div>
-
-    <div class="divider"></div>
-
-    <button class="btn btn-green" onclick="shareLink()">📤 Share Karo</button>
-    <button class="btn btn-grey" style="margin-top:8px" onclick="logout()">🚪 Logout</button>
+    <div class="info-row">
+      <span class="info-label">📅 Joined</span>
+      <span class="info-value" id="profileJoined"></span>
+    </div>
   </div>
+
+  <!-- Link Status -->
+  <div id="statusActive" class="status-active" style="display:none">
+    <p style="font-size:20px">✅</p>
+    <p style="font-weight:bold;color:#28a745;font-size:16px">Aapka Link Active Hai!</p>
+    <p id="hoursLeftMsg" style="font-size:14px;margin-top:5px;color:#555"></p>
+  </div>
+
+  <div id="statusQueue" class="status-queue" style="display:none">
+    <p style="font-size:20px">⏳</p>
+    <p id="queueMsg" style="font-weight:bold;color:#856404;font-size:15px"></p>
+  </div>
+
+  <div id="statusExpire" class="status-expire" style="display:none">
+    <p style="font-size:20px">⚠️</p>
+    <p style="font-weight:bold;color:#cc0000">24 Ghante Ho Gaye!</p>
+    <p style="font-size:13px;margin:8px 0">3 ads dekho — link dobara active karo</p>
+    <button class="btn" onclick="startAds()">Ads Dekho →</button>
+  </div>
+
+  <!-- YouTube Link -->
+  <a class="my-link-box" id="myLinkBox" href="#" target="_blank">
+    <p style="font-size:12px;color:#999">🔗 Aapka YouTube Channel — Click karo:</p>
+    <div class="my-link-url" id="myLinkUrl"></div>
+    <p style="font-size:12px;color:#28a745;margin-top:5px">▶️ YouTube khulega!</p>
+  </a>
+
+  <div class="divider"></div>
+
+  <!-- Share -->
+  <p style="font-size:14px;font-weight:bold;text-align:center;margin-bottom:8px">📤 Website Share Karo — Zyada Log = Zyada Paisa! 💰</p>
+  <button class="btn btn-green" onclick="shareLink()">📤 Share Karo</button>
+  <button class="btn btn-grey" style="margin-top:8px" onclick="logout()">🚪 Logout</button>
+
 </div>
 
 </div>
 
 <script>
-let userId=null, ytLink='', adsWatched=0, subsGiven=0, adInt=null;
+let userId=null, ytLink='', userEmail='', adsWatched=0, subsGiven=0, adInt=null, requiredSubs=0;
 
 window.onload = function(){
   const saved = localStorage.getItem('yt_user');
@@ -158,73 +186,74 @@ window.onload = function(){
     const data = JSON.parse(saved);
     userId = data.userId;
     ytLink = data.ytLink;
+    userEmail = data.email;
     document.getElementById('logoutBtn').style.display = 'block';
-    checkStatus();
-    showStep(4);
+    loadStatus();
   }
 }
 
 function showTab(tab){
-  if(tab === 'login'){
-    document.getElementById('loginForm').style.display = 'block';
-    document.getElementById('registerForm').style.display = 'none';
+  if(tab==='login'){
+    document.getElementById('loginForm').style.display='block';
+    document.getElementById('registerForm').style.display='none';
     document.getElementById('loginTab').classList.add('active');
     document.getElementById('registerTab').classList.remove('active');
   } else {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('registerForm').style.display = 'block';
+    document.getElementById('loginForm').style.display='none';
+    document.getElementById('registerForm').style.display='block';
     document.getElementById('loginTab').classList.remove('active');
     document.getElementById('registerTab').classList.add('active');
   }
 }
 
 async function login(){
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value.trim();
+  const email=document.getElementById('loginEmail').value.trim();
+  const password=document.getElementById('loginPassword').value.trim();
   if(!email||!password){showErr('errLogin','Sab fields bharo!');return}
-  const r = await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
-  const d = await r.json();
+  const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+  const d=await r.json();
   if(d.success){
-    userId = d.userId;
-    ytLink = d.youtubeLink;
-    adsWatched = d.adsWatched;
-    subsGiven = d.subsGiven;
-    localStorage.setItem('yt_user', JSON.stringify({userId, ytLink, email}));
-    document.getElementById('logoutBtn').style.display = 'block';
-    if(!d.isActive && adsWatched < 3){
+    userId=d.userId;
+    ytLink=d.youtubeLink;
+    userEmail=email;
+    adsWatched=d.adsWatched;
+    subsGiven=d.subsGiven;
+    localStorage.setItem('yt_user',JSON.stringify({userId,ytLink,email}));
+    document.getElementById('logoutBtn').style.display='block';
+    if(!d.isActive && adsWatched<3){
       startAds();
     } else {
-      checkStatus();
-      showStep(4);
+      loadStatus();
     }
-  } else showErr('errLogin', d.msg);
+  } else showErr('errLogin',d.msg);
 }
 
 async function register(){
-  const email = document.getElementById('regEmail').value.trim();
-  const password = document.getElementById('regPassword').value.trim();
-  const password2 = document.getElementById('regPassword2').value.trim();
-  const yt = document.getElementById('ytLink').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const password=document.getElementById('regPassword').value.trim();
+  const password2=document.getElementById('regPassword2').value.trim();
+  const yt=document.getElementById('ytLink').value.trim();
   if(!email||!password||!yt){showErr('errRegister','Sab fields bharo!');return}
-  if(password !== password2){showErr('errRegister','Dono password same hone chahiye!');return}
-  if(password.length < 6){showErr('errRegister','Password kam se kam 6 characters ka hona chahiye!');return}
+  if(password!==password2){showErr('errRegister','Dono password same hone chahiye!');return}
+  if(password.length<6){showErr('errRegister','Password 6+ characters ka hona chahiye!');return}
   if(!yt.includes('youtube.com')&&!yt.includes('youtu.be')){showErr('errRegister','Valid YouTube link daalo!');return}
-  ytLink = yt;
-  const r = await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password,youtubeLink:yt})});
-  const d = await r.json();
+  ytLink=yt;
+  userEmail=email;
+  const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password,youtubeLink:yt})});
+  const d=await r.json();
   if(d.success){
-    userId = d.userId;
-    localStorage.setItem('yt_user', JSON.stringify({userId, ytLink:yt, email}));
-    document.getElementById('logoutBtn').style.display = 'block';
+    userId=d.userId;
+    localStorage.setItem('yt_user',JSON.stringify({userId,ytLink:yt,email}));
+    document.getElementById('logoutBtn').style.display='block';
     startAds();
-  } else showErr('errRegister', d.msg);
+  } else showErr('errRegister',d.msg);
 }
 
 function startAds(){
-  adsWatched = 0;
-  document.getElementById('adBar').style.width = '0%';
-  document.getElementById('adBar').textContent = '0%';
-  document.getElementById('adTxt').textContent = '0 / 3 ads dekhe';
+  adsWatched=0;
+  document.getElementById('adBar').style.width='0%';
+  document.getElementById('adBar').textContent='0%';
+  document.getElementById('adTxt').textContent='0 / 3 ads dekhe';
   showStep(2);
   startTimer();
 }
@@ -251,8 +280,15 @@ async function adWatched(){
   document.getElementById('adBar').textContent=p+'%';
   document.getElementById('adTxt').textContent=adsWatched+' / 3 ads dekhe';
   if(adsWatched>=3){
-    if(subsGiven>=4){showDashboard()}
-    else{await loadChannels();showStep(3)}
+    // Check if can activate directly
+    const cr=await fetch('/api/can-activate/'+userId);
+    const cd=await cr.json();
+    if(cd.isActive){
+      loadStatus();
+    } else {
+      await loadChannels();
+      showStep(3);
+    }
   } else {
     startTimer();
     document.getElementById('adBtn').disabled=true;
@@ -264,15 +300,20 @@ async function loadChannels(){
   const r=await fetch('/api/get-channels/'+userId);
   const d=await r.json();
   const list=document.getElementById('channelsList');
+  requiredSubs=d.totalActive||0;
+
   if(!d.channels||d.channels.length===0){
-    list.innerHTML='<p style="text-align:center;padding:20px">Abhi koi user nahi!</p><button class="btn" onclick="showDashboard()">Active Ho Jao →</button>';
+    list.innerHTML='<p style="text-align:center;padding:20px;background:#f0fff4;border-radius:10px">🎉 Aap pehle user hain — link active ho raha hai!</p>';
+    setTimeout(()=>loadStatus(),2000);
     return;
   }
+
+  document.getElementById('subTxt').textContent=`0 / ${d.channels.length} subscribe kiye`;
   list.innerHTML=d.channels.map((c,i)=>`
     <div class="channel-card">
       <div style="flex:1;margin-right:10px">
         <b>Channel ${i+1}</b><br>
-        <a href="${c.youtubeLink}" target="_blank">🔗 ${c.youtubeLink.substring(0,35)}...</a>
+        <a href="${c.youtubeLink}" target="_blank">🔗 ${c.youtubeLink.substring(0,30)}...</a>
       </div>
       <button class="sub-btn" onclick="openSub('${c.youtubeLink}','${c._id}',this)">Subscribe →</button>
     </div>`).join('');
@@ -287,42 +328,48 @@ async function markSub(id){
   const r=await fetch('/api/sub-done',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,subscribedToId:id})});
   const d=await r.json();
   subsGiven=d.subsGiven;
-  document.getElementById('subTxt').textContent=subsGiven+' / 4 subscribe kiye';
-  if(d.isActive) showDashboard();
+  document.getElementById('subTxt').textContent=`${subsGiven} / ${d.requiredSubs||requiredSubs} subscribe kiye`;
+  if(d.isActive) loadStatus();
 }
 
-async function checkStatus(){
+async function loadStatus(){
   if(!userId) return;
   try{
     const r=await fetch('/api/status/'+userId);
     const d=await r.json();
     if(!d.found) return;
+
     if(d.youtubeLink) ytLink=d.youtubeLink;
-    adsWatched=d.adsWatched||0;
-    subsGiven=d.subsGiven||0;
+
+    // Profile
+    document.getElementById('profileEmail').textContent=userEmail||d.email||'';
+    document.getElementById('profileLink').textContent=ytLink;
     document.getElementById('myLinkBox').href=ytLink;
     document.getElementById('myLinkUrl').textContent=ytLink;
-    document.getElementById('dashMsg').textContent=d.message||'';
-    if(!d.isActive && adsWatched < 3){
-      document.getElementById('refreshBox').style.display='block';
-    }
+
+    // Status
+    document.getElementById('statusActive').style.display='none';
+    document.getElementById('statusQueue').style.display='none';
+    document.getElementById('statusExpire').style.display='none';
+
     if(d.isActive){
-      document.getElementById('refreshBox').style.display='none';
-      document.getElementById('queueBox').style.display='none';
+      document.getElementById('statusActive').style.display='block';
+      document.getElementById('hoursLeftMsg').textContent=d.message;
+    } else if(d.adsWatched>=3){
+      document.getElementById('statusQueue').style.display='block';
+      document.getElementById('queueMsg').textContent=d.message;
+    } else {
+      document.getElementById('statusExpire').style.display='block';
     }
+
+    showStep(4);
   }catch(e){console.log(e)}
 }
 
-function showDashboard(){
-  document.getElementById('myLinkBox').href=ytLink;
-  document.getElementById('myLinkUrl').textContent=ytLink;
-  document.getElementById('dashMsg').textContent='🎉 Aapka channel active hai!';
-  showStep(4);
-}
-
 function shareLink(){
+  const msg='🎯 YouTube Subscribe Exchange!\n\nFree mein apna YouTube channel grow karo!\n\n👉 https://ytsubexchange.online\n\nJoin karo aur subscribers pao! 🚀';
   if(navigator.share){
-    navigator.share({title:'YouTube Sub Exchange',text:'Free mein YouTube subscribers pao!',url:'https://ytsubexchange.online'});
+    navigator.share({title:'YouTube Sub Exchange',text:msg,url:'https://ytsubexchange.online'});
   } else {
     navigator.clipboard.writeText('https://ytsubexchange.online').then(()=>{alert('✅ Link copy ho gaya!')});
   }
@@ -330,7 +377,7 @@ function shareLink(){
 
 function logout(){
   localStorage.removeItem('yt_user');
-  userId=null;ytLink='';adsWatched=0;subsGiven=0;
+  userId=null;ytLink='';userEmail='';adsWatched=0;subsGiven=0;
   document.getElementById('logoutBtn').style.display='none';
   showStep(1);
   showTab('login');
