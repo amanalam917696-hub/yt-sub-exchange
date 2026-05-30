@@ -140,3 +140,12 @@ app.get('/c/:userId', async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log('Server running on port ' + PORT));
+// Admin - force activate user
+app.get('/admin/activate/:email', async (req, res) => {
+  const user = await User.findOne({ email: req.params.email });
+  if (!user) return res.send('User nahi mila!');
+  user.isActive = true;
+  user.startTime = new Date();
+  await user.save();
+  res.send('User activate ho gaya: ' + req.params.email);
+});
