@@ -24,36 +24,25 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
 .header{background:#ff0000;color:white;padding:12px 15px;font-size:17px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
 .logout-btn{background:rgba(255,255,255,0.2);border:1px solid white;color:white;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:13px}
 .err{background:#fff3f3;border:1px solid #ff0000;color:#cc0000;padding:10px;border-radius:8px;margin:8px 0;display:none;font-size:13px}
-
-/* Profile Layout */
 .profile-header{background:white;border-radius:15px;padding:15px;box-shadow:0 2px 10px rgba(0,0,0,0.08);margin-bottom:12px}
 .profile-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .avatar{width:55px;height:55px;background:#ff0000;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:22px;font-weight:bold;flex-shrink:0}
 .profile-info{flex:1}
 .profile-name{font-size:16px;font-weight:bold;color:#333}
 .profile-email{font-size:12px;color:#999;margin-top:2px}
-
-/* Details Grid */
 .details-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .detail-card{background:#f9f9f9;border-radius:10px;padding:12px;text-align:center}
 .detail-label{font-size:11px;color:#999;margin-bottom:4px}
 .detail-value{font-size:13px;font-weight:bold;color:#333;word-break:break-all}
-
-/* Status Cards */
 .status-active{background:#f0fff4;border:2px solid #28a745;border-radius:12px;padding:15px;margin:10px 0;text-align:center}
 .status-queue{background:#fff3cd;border:2px solid #ffc107;border-radius:12px;padding:15px;margin:10px 0;text-align:center}
 .status-expire{background:#fff3f3;border:2px solid #ff0000;border-radius:12px;padding:15px;margin:10px 0;text-align:center}
-
 .yt-link-box{background:white;border:2px solid #ff0000;border-radius:12px;padding:12px;margin:10px 0;text-align:center;cursor:pointer;text-decoration:none;display:block}
 .yt-link-url{color:#ff0000;font-weight:bold;font-size:12px;word-break:break-all;margin-top:4px}
-
-/* Ad box */
 .ad-box{background:white;border:2px dashed #ff0000;border-radius:12px;padding:15px;text-align:center;margin:12px 0}
 .timer{font-size:28px;font-weight:bold;color:#ff0000;margin:8px 0}
 .progress-wrap{background:#eee;border-radius:20px;height:22px;margin:10px 0;overflow:hidden}
 .progress-bar{background:#ff0000;height:100%;border-radius:20px;transition:width 0.5s;display:flex;align-items:center;justify-content:center;color:white;font-size:11px}
-
-/* Channel cards */
 .channel-card{background:white;border:1px solid #eee;border-radius:10px;padding:12px;margin:8px 0;display:flex;align-items:center;justify-content:space-between}
 .channel-card a{color:#ff0000;font-size:12px;flex:1;margin-right:8px;word-break:break-all}
 .sub-btn{padding:7px 12px;background:#ff0000;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;white-space:nowrap}
@@ -70,13 +59,11 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
 
 <div class="container">
 
-<!-- STEP 1: Login/Register -->
 <div id="step1" class="step active">
   <div class="tabs">
     <div class="tab active" id="loginTab" onclick="showTab('login')">🔑 Login</div>
     <div class="tab" id="registerTab" onclick="showTab('register')">✨ Sign Up</div>
   </div>
-
   <div id="loginForm">
     <h2>👋 Wapas Aao!</h2>
     <div class="err" id="errLogin"></div>
@@ -87,7 +74,6 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
       Naya account? <span style="color:#ff0000;cursor:pointer;font-weight:bold" onclick="showTab('register')">Sign Up karo</span>
     </p>
   </div>
-
   <div id="registerForm" style="display:none">
     <h2>🎯 Free Subscribe Pao!</h2>
     <div class="err" id="errRegister"></div>
@@ -102,7 +88,6 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
   </div>
 </div>
 
-<!-- STEP 2: Ads -->
 <div id="step2" class="step">
   <h2>📺 3 Ads Dekho</h2>
   <p style="font-size:13px">Har ad 15 second ka hai</p>
@@ -111,9 +96,11 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
   </div>
   <p id="adTxt" style="text-align:center;font-size:14px">0 / 3 ads dekhe</p>
   <div class="ad-box">
+    <!-- Google AdSense Ad -->
     <ins class="adsbygoogle"
          style="display:block"
          data-ad-client="ca-pub-8771359433113858"
+         data-ad-slot="1900287488"
          data-ad-format="auto"
          data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -123,7 +110,6 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
   <button class="btn" id="adBtn" onclick="adWatched()" disabled>⏳ Ad chal rahi hai...</button>
 </div>
 
-<!-- STEP 3: Subscribe -->
 <div id="step3" class="step">
   <h2>✅ Channels Subscribe Karo</h2>
   <p style="font-size:13px">Subscribe karo phir Done dabao</p>
@@ -131,10 +117,7 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
   <div id="channelsList"></div>
 </div>
 
-<!-- STEP 4: Dashboard -->
 <div id="step4" class="step">
-
-  <!-- Profile Header -->
   <div class="profile-header">
     <div class="profile-top">
       <div class="avatar" id="avatarLetter">A</div>
@@ -143,8 +126,6 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
         <div class="profile-email" id="profileEmail"></div>
       </div>
     </div>
-
-    <!-- Details Grid -->
     <div class="details-grid">
       <div class="detail-card">
         <div class="detail-label">📺 YouTube</div>
@@ -155,20 +136,16 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
         <div class="detail-value" id="detailStatus"></div>
       </div>
     </div>
-
-    <!-- Status Message -->
     <div id="statusActive" class="status-active" style="display:none">
       <p style="font-size:18px">✅</p>
       <p style="font-weight:bold;color:#28a745;font-size:15px">Link Active Hai!</p>
       <p id="hoursLeftMsg" style="font-size:13px;color:#555;margin-top:4px"></p>
       <p style="font-size:12px;color:#888;margin-top:4px">⚠️ 24 ghante baad link automatically hatega — phir 3 ads dekho!</p>
     </div>
-
     <div id="statusQueue" class="status-queue" style="display:none">
       <p style="font-size:18px">⏳</p>
       <p id="queueMsg" style="font-weight:bold;color:#856404;font-size:14px"></p>
     </div>
-
     <div id="statusExpire" class="status-expire" style="display:none">
       <p style="font-size:18px">⚠️</p>
       <p style="font-weight:bold;color:#cc0000;font-size:14px">24 Ghante Ho Gaye!</p>
@@ -177,7 +154,6 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
     </div>
   </div>
 
-  <!-- YouTube Link -->
   <a class="yt-link-box" id="myLinkBox" href="#" target="_blank">
     <p style="font-size:12px;color:#999">🔗 Aapka YouTube Channel</p>
     <div class="yt-link-url" id="myLinkUrl"></div>
@@ -185,10 +161,8 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
   </a>
 
   <div class="divider"></div>
-
   <button class="btn btn-green" onclick="shareLink()">📤 Share Karo</button>
   <button class="btn btn-grey" style="margin-top:8px" onclick="logout()">🚪 Logout</button>
-
 </div>
 
 </div>
@@ -200,9 +174,7 @@ window.onload=function(){
   const saved=localStorage.getItem('yt_user');
   if(saved){
     const data=JSON.parse(saved);
-    userId=data.userId;
-    ytLink=data.ytLink;
-    userEmail=data.email;
+    userId=data.userId;ytLink=data.ytLink;userEmail=data.email;
     document.getElementById('logoutBtn').style.display='block';
     loadStatus();
   }
@@ -339,8 +311,6 @@ async function loadStatus(){
     const d=await r.json();
     if(!d.found)return;
     if(d.youtubeLink)ytLink=d.youtubeLink;
-
-    // Avatar
     const name=userEmail||(d.email||'U');
     const letter=name.charAt(0).toUpperCase();
     document.getElementById('avatarLetter').textContent=letter;
@@ -350,12 +320,9 @@ async function loadStatus(){
     document.getElementById('detailStatus').textContent=d.isActive?'✅ Active':'⏳ Queue';
     document.getElementById('myLinkBox').href=ytLink;
     document.getElementById('myLinkUrl').textContent=ytLink;
-
-    // Status
     document.getElementById('statusActive').style.display='none';
     document.getElementById('statusQueue').style.display='none';
     document.getElementById('statusExpire').style.display='none';
-
     if(d.isActive){
       document.getElementById('statusActive').style.display='block';
       document.getElementById('hoursLeftMsg').textContent=d.message;
