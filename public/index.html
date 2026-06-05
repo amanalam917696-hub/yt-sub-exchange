@@ -17,6 +17,7 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
 .btn:disabled{background:#ccc}
 .btn-green{background:#28a745}
 .btn-grey{background:#555}
+.btn-google{background:white;color:#333;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;gap:10px;font-weight:bold}
 .step{display:none}
 .step.active{display:block}
 .tabs{display:flex;margin-bottom:15px;border-radius:10px;overflow:hidden;border:2px solid #ff0000}
@@ -49,6 +50,10 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
 .sub-btn{padding:7px 12px;background:#ff0000;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;white-space:nowrap}
 .sub-btn:disabled{background:#28a745}
 .divider{height:1px;background:#eee;margin:12px 0}
+.or-divider{text-align:center;margin:10px 0;color:#999;font-size:13px;position:relative}
+.or-divider::before{content:'';position:absolute;left:0;top:50%;width:45%;height:1px;background:#ddd}
+.or-divider::after{content:'';position:absolute;right:0;top:50%;width:45%;height:1px;background:#ddd}
+.yt-input-section{background:#f0f8ff;border:2px dashed #0088cc;border-radius:12px;padding:15px;margin:10px 0}
 </style>
 </head>
 <body>
@@ -60,14 +65,31 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
 
 <div class="container">
 
+<!-- STEP 1: Login/Register -->
 <div id="step1" class="step active">
   <div class="tabs">
     <div class="tab active" id="loginTab" onclick="showTab('login')">🔑 Login</div>
     <div class="tab" id="registerTab" onclick="showTab('register')">✨ Sign Up</div>
   </div>
+
+  <!-- Login Form -->
   <div id="loginForm">
     <h2>👋 Wapas Aao!</h2>
     <div class="err" id="errLogin"></div>
+
+    <!-- Google Login Button -->
+    <a href="/auth/google" class="btn btn-google" style="text-decoration:none;display:flex;margin-top:8px">
+      <svg width="20" height="20" viewBox="0 0 48 48">
+        <path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/>
+        <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.1 18.9 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+        <path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.4-5l-6.2-5.2C29.4 35.6 26.8 36 24 36c-5.2 0-9.6-3-11.3-7.3l-6.5 5C9.6 39.6 16.3 44 24 44z"/>
+        <path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.4-2.5 4.4-4.7 5.8l6.2 5.2C40.7 35.5 44 30.1 44 24c0-1.3-.1-2.7-.4-4z"/>
+      </svg>
+      Google se Login karo
+    </a>
+
+    <div class="or-divider">ya</div>
+
     <input type="email" id="loginEmail" placeholder="📧 Email Address">
     <input type="password" id="loginPassword" placeholder="🔒 Password">
     <button class="btn" onclick="login()">Login →</button>
@@ -75,9 +97,25 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
       Naya account? <span style="color:#ff0000;cursor:pointer;font-weight:bold" onclick="showTab('register')">Sign Up karo</span>
     </p>
   </div>
+
+  <!-- Register Form -->
   <div id="registerForm" style="display:none">
     <h2>🎯 Free Subscribe Pao!</h2>
     <div class="err" id="errRegister"></div>
+
+    <!-- Google Register Button -->
+    <a href="/auth/google" class="btn btn-google" style="text-decoration:none;display:flex;margin-top:8px">
+      <svg width="20" height="20" viewBox="0 0 48 48">
+        <path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/>
+        <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.1 18.9 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+        <path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.4-5l-6.2-5.2C29.4 35.6 26.8 36 24 36c-5.2 0-9.6-3-11.3-7.3l-6.5 5C9.6 39.6 16.3 44 24 44z"/>
+        <path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.4-2.5 4.4-4.7 5.8l6.2 5.2C40.7 35.5 44 30.1 44 24c0-1.3-.1-2.7-.4-4z"/>
+      </svg>
+      Google se Sign Up karo
+    </a>
+
+    <div class="or-divider">ya</div>
+
     <input type="email" id="regEmail" placeholder="📧 Email Address">
     <input type="password" id="regPassword" placeholder="🔒 Password (6+ characters)">
     <input type="password" id="regPassword2" placeholder="🔒 Password dobara">
@@ -89,6 +127,17 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
   </div>
 </div>
 
+<!-- STEP 1.5: YouTube Link (Google Login ke baad) -->
+<div id="step1b" class="step">
+  <h2>🔗 YouTube Link Daalo</h2>
+  <p>Google se login ho gaya! Ab apna YouTube channel link daalo.</p>
+  <div class="yt-input-section">
+    <input type="url" id="ytLinkGoogle" placeholder="🔗 YouTube Channel Link">
+    <button class="btn" onclick="saveYoutubeLink()">Aage Badho →</button>
+  </div>
+</div>
+
+<!-- STEP 2: Ads -->
 <div id="step2" class="step">
   <h2>📺 3 Ads Dekho</h2>
   <p style="font-size:13px">Har ad 15 second ka hai</p>
@@ -110,6 +159,7 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
   <button class="btn" id="adBtn" onclick="adWatched()" disabled>⏳ Ad chal rahi hai...</button>
 </div>
 
+<!-- STEP 3: Subscribe -->
 <div id="step3" class="step">
   <h2>✅ Channels Subscribe Karo</h2>
   <p style="font-size:13px">Subscribe karo phir Done dabao</p>
@@ -117,6 +167,7 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
   <div id="channelsList"></div>
 </div>
 
+<!-- STEP 4: Dashboard -->
 <div id="step4" class="step">
   <div class="profile-header">
     <div class="profile-top">
@@ -140,7 +191,7 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
       <p style="font-size:18px">✅</p>
       <p style="font-weight:bold;color:#28a745;font-size:15px">Link Active Hai!</p>
       <p id="hoursLeftMsg" style="font-size:13px;color:#555;margin-top:4px"></p>
-      <p style="font-size:12px;color:#888;margin-top:4px">⚠️ 24 ghante baad link automatically hatega — phir 3 ads dekho!</p>
+      <p style="font-size:12px;color:#888;margin-top:4px">⚠️ 24 ghante baad link automatically hatega!</p>
     </div>
     <div id="statusQueue" class="status-queue" style="display:none">
       <p style="font-size:18px">⏳</p>
@@ -171,12 +222,54 @@ input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:1
 let userId=null,ytLink='',userEmail='',adsWatched=0,subsGiven=0,adInt=null,requiredSubs=0;
 
 window.onload=function(){
+  // Google login redirect check
+  const urlParams=new URLSearchParams(window.location.search);
+  const gUserId=urlParams.get('userId');
+  const gEmail=urlParams.get('email');
+  const gYtLink=urlParams.get('ytLink');
+  const gIsActive=urlParams.get('isActive');
+  const gAdsWatched=urlParams.get('adsWatched');
+
+  if(gUserId){
+    userId=gUserId;
+    userEmail=gEmail;
+    ytLink=gYtLink||'';
+    adsWatched=parseInt(gAdsWatched)||0;
+    localStorage.setItem('yt_user',JSON.stringify({userId,ytLink,email:gEmail}));
+    document.getElementById('logoutBtn').style.display='block';
+    window.history.replaceState({},'','/');
+
+    if(!ytLink||ytLink===''){
+      showStep('1b');
+    } else if(gIsActive==='false'&&adsWatched<3){
+      startAds();
+    } else {
+      loadStatus();
+    }
+    return;
+  }
+
+  // Normal login check
   const saved=localStorage.getItem('yt_user');
   if(saved){
     const data=JSON.parse(saved);
     userId=data.userId;ytLink=data.ytLink;userEmail=data.email;
     document.getElementById('logoutBtn').style.display='block';
     loadStatus();
+  }
+}
+
+async function saveYoutubeLink(){
+  const yt=document.getElementById('ytLinkGoogle').value.trim();
+  if(!yt){alert('YouTube link daalo!');return}
+  if(!yt.includes('youtube.com')&&!yt.includes('youtu.be')){alert('Valid YouTube link daalo!');return}
+  ytLink=yt;
+  const r=await fetch('/api/update-youtube',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,youtubeLink:yt})});
+  const d=await r.json();
+  if(d.success){
+    const saved=JSON.parse(localStorage.getItem('yt_user')||'{}');
+    localStorage.setItem('yt_user',JSON.stringify({...saved,ytLink:yt}));
+    startAds();
   }
 }
 
@@ -318,47 +411,4 @@ async function loadStatus(){
     document.getElementById('profileEmail').textContent=userEmail||d.email||'';
     document.getElementById('detailYT').textContent=ytLink.replace('https://www.youtube.com/','').replace('https://youtube.com/','');
     document.getElementById('detailStatus').textContent=d.isActive?'✅ Active':'⏳ Queue';
-    document.getElementById('myLinkBox').href=ytLink;
-    document.getElementById('myLinkUrl').textContent=ytLink;
-    document.getElementById('statusActive').style.display='none';
-    document.getElementById('statusQueue').style.display='none';
-    document.getElementById('statusExpire').style.display='none';
-    if(d.isActive){
-      document.getElementById('statusActive').style.display='block';
-      document.getElementById('hoursLeftMsg').textContent=d.message;
-    } else if(d.adsWatched>=3){
-      document.getElementById('statusQueue').style.display='block';
-      document.getElementById('queueMsg').textContent=d.message;
-    } else {
-      document.getElementById('statusExpire').style.display='block';
-    }
-    showStep(4);
-  }catch(e){console.log(e)}
-}
-
-function shareLink(){
-  const msg='🎯 YouTube Subscribe Exchange!\n\nFree mein apna YouTube channel grow karo!\n\n👉 https://ytsubexchange.online\n\nJoin karo aur subscribers pao! 🚀';
-  if(navigator.share){navigator.share({title:'YT Sub Exchange',text:msg,url:'https://ytsubexchange.online'});}
-  else{navigator.clipboard.writeText('https://ytsubexchange.online').then(()=>{alert('✅ Link copy ho gaya!')})}
-}
-
-function logout(){
-  localStorage.removeItem('yt_user');
-  userId=null;ytLink='';userEmail='';adsWatched=0;subsGiven=0;
-  document.getElementById('logoutBtn').style.display='none';
-  showStep(1);showTab('login');
-}
-
-function showStep(n){
-  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-  document.getElementById('step'+n).classList.add('active');
-  window.scrollTo(0,0);
-}
-
-function showErr(id,msg){
-  const e=document.getElementById(id);
-  e.textContent=msg;e.style.display='block';
-}
-</script>
-</body>
-  </html>
+    document.
