@@ -7,14 +7,26 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');
 
 const app = express();
-app.use(cors());
+
+app.set('trust proxy', 1);
+
+app.use(cors({
+  origin: 'https://ytsubexchange.online',
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(express.static('public'));
 
 app.use(session({
   secret: 'ytsubexchange_secret_2024',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    secure: true,
+    sameSite: 'none',
+    maxAge: 24 * 60 * 60 * 1000
+  }
 }));
 
 app.use(passport.initialize());
@@ -101,18 +113,29 @@ passport.use(new GoogleStrategy({
 
 passport.serializeUser((user, done) => done(null, user._id));
 passport.deserializeUser(async (id, done) => {
-  const user = await User.findById(id);
-  done(null, user);
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch(err) {
+    done(err, null);
+  }
 });
 
 // Google Login Routes
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get('/auth/google', passport.authenticate('google', { 
+  scope: ['profile', 'email'],
+  prompt: 'select_account'
+}));
 
 app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/' }),
+  passport.authenticate('google', { failureRedirect: '/?error=login_failed' }),
   async (req, res) => {
-    const user = req.user;
-    res.redirect(`/?userId=${user._id}&email=${user.email}&ytLink=${user.youtubeLink}&isActive=${user.isActive}&adsWatched=${user.adsWatched}`);
+    try {
+      const user = req.user;
+      res.redirect(`/?userId=${user._id}&email=${encodeURIComponent(user.email)}&ytLink=${encodeURIComponent(user.youtubeLink||'')}&isActive=${user.isActive}&adsWatched=${user.adsWatched}`);
+    } catch(err) {
+      res.redirect('/?error=callback_failed');
+    }
   }
 );
 
