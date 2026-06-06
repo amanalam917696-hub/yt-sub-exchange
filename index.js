@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.use(session({
-  secret: 'ytsubexchange_secret_2024',
+  secret: process.env.SESSION_SECRET || 'ytsubexchange_secret_2024',
   resave: false,
   saveUninitialized: false,
   cookie: { secure: true, sameSite: 'none', maxAge: 24 * 60 * 60 * 1000 }
@@ -97,7 +97,6 @@ async function updateSlots() {
   }
 }
 
-// Google OAuth
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -137,11 +136,9 @@ passport.deserializeUser(async (id, done) => {
   } catch(err) { done(err, null); }
 });
 
-// Google Login
 app.get('/auth/google', passport.authenticate('google', {
   scope: ['profile', 'email'],
-  prompt: 'select_account',
-  accessType: 'offline'
+  prompt: 'select_account'
 }));
 
 app.get('/auth/google/callback',
@@ -167,7 +164,6 @@ app.get('/auth/google/callback',
   }
 );
 
-// Ad watched
 app.post('/api/ad-watched', async (req, res) => {
   try {
     const user = await User.findById(req.body.userId);
@@ -178,7 +174,6 @@ app.post('/api/ad-watched', async (req, res) => {
   } catch(err) { res.json({ success: false }); }
 });
 
-// Get channels
 app.get('/api/get-channels/:userId', async (req, res) => {
   try {
     await updateSlots();
@@ -189,7 +184,6 @@ app.get('/api/get-channels/:userId', async (req, res) => {
   } catch(err) { res.json({ channels: [], totalActive: 0, required: 4 }); }
 });
 
-// Sub done
 app.post('/api/sub-done', async (req, res) => {
   try {
     const user = await User.findById(req.body.userId);
@@ -207,7 +201,6 @@ app.post('/api/sub-done', async (req, res) => {
   } catch(err) { res.json({ success: false }); }
 });
 
-// Can activate
 app.get('/api/can-activate/:userId', async (req, res) => {
   try {
     const activeCount = await User.countDocuments({ isActive: true });
@@ -224,7 +217,6 @@ app.get('/api/can-activate/:userId', async (req, res) => {
   } catch(err) { res.json({ canActivate: false }); }
 });
 
-// Update YouTube link
 app.post('/api/update-youtube', async (req, res) => {
   try {
     const { userId, youtubeLink } = req.body;
@@ -236,7 +228,6 @@ app.post('/api/update-youtube', async (req, res) => {
   } catch(err) { res.json({ success: false }); }
 });
 
-// Status
 app.get('/api/status/:userId', async (req, res) => {
   try {
     await updateSlots();
@@ -265,7 +256,6 @@ app.get('/api/status/:userId', async (req, res) => {
   } catch(err) { res.json({ found: false }); }
 });
 
-// Live stats
 app.get('/api/stats', async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
@@ -275,7 +265,6 @@ app.get('/api/stats', async (req, res) => {
   } catch(err) { res.json({ totalUsers: 0, activePromos: 0, premiumUsers: 0 }); }
 });
 
-// Payment
 app.post('/api/payment/create', async (req, res) => {
   try {
     const { userId, plan, amount } = req.body;
@@ -299,7 +288,6 @@ app.post('/api/payment/verify', async (req, res) => {
   } catch(err) { res.json({ success: false }); }
 });
 
-// Admin
 app.get('/admin/activate/:email', async (req, res) => {
   try {
     const user = await User.findOne({ email: req.params.email });
