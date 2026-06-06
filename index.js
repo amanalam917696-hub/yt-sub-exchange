@@ -7,14 +7,8 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');
 
 const app = express();
-
 app.set('trust proxy', 1);
-
-app.use(cors({
-  origin: 'https://ytsubexchange.online',
-  credentials: true
-}));
-
+app.use(cors({ origin: 'https://ytsubexchange.online', credentials: true }));
 app.use(express.json());
 app.use(express.static('public'));
 
@@ -22,11 +16,7 @@ app.use(session({
   secret: 'ytsubexchange_secret_2024',
   resave: false,
   saveUninitialized: false,
-  cookie: {
-    secure: true,
-    sameSite: 'none',
-    maxAge: 24 * 60 * 60 * 1000
-  }
+  cookie: { secure: true, sameSite: 'none', maxAge: 24 * 60 * 60 * 1000 }
 }));
 
 app.use(passport.initialize());
@@ -36,28 +26,58 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected!'))
   .catch(err => console.log('MongoDB error:', err));
 
+// Schemas
 const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
-  password: { type: String, default: '' },
   googleId: { type: String, default: '' },
+  name: { type: String, default: '' },
+  photo: { type: String, default: '' },
   youtubeLink: { type: String, default: '' },
+  plan: { type: String, default: 'free', enum: ['free', 'starter', 'growth', 'pro', 'premium', 'vip', 'top'] },
   adsWatched: { type: Number, default: 0 },
   subsGiven: { type: Number, default: 0 },
   isActive: { type: Boolean, default: false },
   startTime: { type: Date, default: null },
+  totalViews: { type: Number, default: 0 },
+  totalClicks: { type: Number, default: 0 },
+  referralCode: { type: String, default: '' },
+  referredBy: { type: String, default: '' },
   joinedAt: { type: Date, default: Date.now }
 });
 
+const paymentSchema = new mongoose.Schema({
+  userId: mongoose.Schema.Types.ObjectId,
+  email: String,
+  plan: String,
+  amount: Number,
+  transactionId: String,
+  status: { type: String, default: 'pending' },
+  createdAt: { type: Date, default: Date.now }
+});
+
 const User = mongoose.model('User', userSchema);
+const Payment = mongoose.model('Payment', paymentSchema);
+
 const SLOT_LIMIT = 4;
 const ACTIVE_DURATION = 24 * 60 * 60 * 1000;
 
+const PLANS = {
+  free: { ads: 3, subs: 4, priority: 0 },
+  starter: { ads: 2, subs: 4, priority: 1 },
+  growth: { ads: 3, subs: 6, priority: 2 },
+  pro: { ads: 5, subs: 10, priority: 3 },
+  premium: { ads: 2, subs: 3, priority: 4, price: 5 },
+  vip: { ads: 2, subs: 2, priority: 5, price: 20 },
+  top: { ads: 1, subs: 1, priority: 6, price: 50 }
+};
+
+function generateReferralCode() {
+  return Math.random().toString(36).substring(2, 8).toUpperCase();
+}
+
 async function updateSlots() {
   const now = new Date();
-  const expired = await User.find({ 
-    isActive: true, 
-    startTime: { $lt: new Date(now - ACTIVE_DURATION) } 
-  });
+  const expired = await User.find({ isActive: true, startTime: { $lt: new Date(now - ACTIVE_DURATION) } });
   for (const u of expired) {
     u.isActive = false;
     u.adsWatched = 0;
@@ -67,18 +87,17 @@ async function updateSlots() {
   const activeCount = await User.countDocuments({ isActive: true });
   const needed = SLOT_LIMIT - activeCount;
   if (needed > 0) {
-    const waiting = await User.find({ 
-      isActive: false,
-      youtubeLink: { $ne: '' },
-      adsWatched: { $gte: 3 }
-    }).sort({ joinedAt: 1 }).limit(needed);
+    const waiting = await User.find({ isActive: false, youtubeLink: { $ne: '' }, adsWatched: { $gte: 1 } })
+      .sort({ 'plan': -1, joinedAt: 1 }).limit(needed * 3);
+    let activated = 0;
     for (const u of waiting) {
-      const activeUsers = await User.countDocuments({ isActive: true });
-      const requiredSubs = Math.min(activeUsers, 4);
-      if (u.subsGiven >= requiredSubs) {
+      if (activated >= needed) break;
+      const plan = PLANS[u.plan] || PLANS.free;
+      if (u.adsWatched >= plan.ads && u.subsGiven >= Math.min(plan.subs, await User.countDocuments({ isActive: true }))) {
         u.isActive = true;
         u.startTime = new Date();
         await u.save();
+        activated++;
       }
     }
   }
@@ -96,11 +115,16 @@ passport.use(new GoogleStrategy({
       user = await User.findOne({ email: profile.emails[0].value });
       if (user) {
         user.googleId = profile.id;
+        user.name = profile.displayName;
+        user.photo = profile.photos[0]?.value || '';
         await user.save();
       } else {
         user = new User({
           email: profile.emails[0].value,
-          googleId: profile.id
+          googleId: profile.id,
+          name: profile.displayName,
+          photo: profile.photos[0]?.value || '',
+          referralCode: generateReferralCode()
         });
         await user.save();
       }
@@ -116,81 +140,35 @@ passport.deserializeUser(async (id, done) => {
   try {
     const user = await User.findById(id);
     done(null, user);
-  } catch(err) {
-    done(err, null);
-  }
+  } catch(err) { done(err, null); }
 });
 
-// Google Login Routes
-app.get('/auth/google', passport.authenticate('google', { 
-  scope: ['profile', 'email'],
-  prompt: 'select_account'
-}));
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'], prompt: 'select_account' }));
 
-app.get('/auth/google/callback', 
+app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/?error=login_failed' }),
   async (req, res) => {
-    try {
-      const user = req.user;
-      res.redirect(`/?userId=${user._id}&email=${encodeURIComponent(user.email)}&ytLink=${encodeURIComponent(user.youtubeLink||'')}&isActive=${user.isActive}&adsWatched=${user.adsWatched}`);
-    } catch(err) {
-      res.redirect('/?error=callback_failed');
-    }
+    const user = req.user;
+    res.redirect(`/?userId=${user._id}&email=${encodeURIComponent(user.email)}&name=${encodeURIComponent(user.name)}&photo=${encodeURIComponent(user.photo)}&ytLink=${encodeURIComponent(user.youtubeLink||'')}&isActive=${user.isActive}&adsWatched=${user.adsWatched}&plan=${user.plan}`);
   }
 );
-
-// Register
-app.post('/api/register', async (req, res) => {
-  const { email, password, youtubeLink } = req.body;
-  try {
-    const exists = await User.findOne({ email });
-    if (exists) return res.json({ success: false, msg: 'Email already registered!' });
-    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
-    const user = new User({ email, password: hashedPassword, youtubeLink });
-    await user.save();
-    res.json({ success: true, userId: user._id });
-  } catch (err) {
-    res.json({ success: false, msg: err.message });
-  }
-});
-
-// Login
-app.post('/api/login', async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
-    const user = await User.findOne({ email, password: hashedPassword });
-    if (!user) return res.json({ success: false, msg: 'Email ya password galat hai!' });
-    await updateSlots();
-    res.json({ 
-      success: true, 
-      userId: user._id, 
-      youtubeLink: user.youtubeLink,
-      adsWatched: user.adsWatched,
-      subsGiven: user.subsGiven,
-      isActive: user.isActive
-    });
-  } catch (err) {
-    res.json({ success: false, msg: err.message });
-  }
-});
 
 // Ad watched
 app.post('/api/ad-watched', async (req, res) => {
   const user = await User.findById(req.body.userId);
   if (!user) return res.json({ success: false });
-  if (user.adsWatched < 3) { user.adsWatched += 1; await user.save(); }
-  res.json({ adsWatched: user.adsWatched });
+  const plan = PLANS[user.plan] || PLANS.free;
+  if (user.adsWatched < plan.ads) { user.adsWatched += 1; await user.save(); }
+  res.json({ adsWatched: user.adsWatched, required: plan.ads });
 });
 
 // Get channels
 app.get('/api/get-channels/:userId', async (req, res) => {
   await updateSlots();
-  const activeUsers = await User.find({ 
-    _id: { $ne: req.params.userId }, 
-    isActive: true 
-  }).limit(4);
-  res.json({ channels: activeUsers, totalActive: activeUsers.length });
+  const user = await User.findById(req.params.userId);
+  const plan = PLANS[user?.plan || 'free'];
+  const activeUsers = await User.find({ _id: { $ne: req.params.userId }, isActive: true }).limit(plan.subs);
+  res.json({ channels: activeUsers, totalActive: activeUsers.length, required: plan.subs });
 });
 
 // Sub done
@@ -198,9 +176,10 @@ app.post('/api/sub-done', async (req, res) => {
   const user = await User.findById(req.body.userId);
   if (!user) return res.json({ success: false });
   user.subsGiven += 1;
+  const plan = PLANS[user.plan] || PLANS.free;
   const activeCount = await User.countDocuments({ isActive: true });
-  const requiredSubs = Math.min(activeCount, 4);
-  if (user.adsWatched >= 3 && user.subsGiven >= requiredSubs) {
+  const requiredSubs = Math.min(plan.subs, activeCount);
+  if (user.adsWatched >= plan.ads && user.subsGiven >= requiredSubs) {
     user.isActive = true;
     user.startTime = new Date();
   }
@@ -213,7 +192,8 @@ app.get('/api/can-activate/:userId', async (req, res) => {
   const activeCount = await User.countDocuments({ isActive: true });
   const user = await User.findById(req.params.userId);
   if (!user) return res.json({ canActivate: false });
-  if (activeCount === 0 && user.adsWatched >= 3) {
+  const plan = PLANS[user.plan] || PLANS.free;
+  if (activeCount === 0 && user.adsWatched >= plan.ads) {
     user.isActive = true;
     user.startTime = new Date();
     await user.save();
@@ -238,41 +218,52 @@ app.get('/api/status/:userId', async (req, res) => {
   const user = await User.findById(req.params.userId);
   if (!user) return res.json({ found: false });
   let message = '';
-  let hoursLeft = 0;
   if (user.isActive && user.startTime) {
     const timeLeft = ACTIVE_DURATION - (Date.now() - user.startTime);
-    hoursLeft = Math.ceil(timeLeft / (1000 * 60 * 60));
-    message = `✅ Aapka link active hai — ${hoursLeft} ghante baaki!`;
+    const hoursLeft = Math.ceil(timeLeft / (1000 * 60 * 60));
+    message = `✅ Link active hai — ${hoursLeft} ghante baaki!`;
   } else {
-    const aheadInQueue = await User.countDocuments({
-      isActive: false,
-      adsWatched: { $gte: 3 },
-      joinedAt: { $lt: user.joinedAt }
-    });
+    const aheadInQueue = await User.countDocuments({ isActive: false, adsWatched: { $gte: 1 }, joinedAt: { $lt: user.joinedAt } });
     const activeCount = await User.countDocuments({ isActive: true });
-    if (activeCount < SLOT_LIMIT && user.adsWatched >= 3) {
-      message = '⏳ Aapka link jald active hoga!';
-    } else if (aheadInQueue === 0) {
-      message = '📅 Aapka link kal active hoga!';
-    } else if (aheadInQueue <= SLOT_LIMIT) {
-      message = '📅 Aapka link parson active hoga!';
-    } else {
-      const daysToWait = Math.ceil(aheadInQueue / SLOT_LIMIT);
-      message = `📅 Aapka link ${daysToWait} din baad active hoga!`;
-    }
+    if (activeCount < SLOT_LIMIT) message = '⏳ Jald active hoga!';
+    else if (aheadInQueue === 0) message = '📅 Kal active hoga!';
+    else if (aheadInQueue <= SLOT_LIMIT) message = '📅 Parson active hoga!';
+    else message = `📅 ${Math.ceil(aheadInQueue / SLOT_LIMIT)} din baad active hoga!`;
   }
-  res.json({ 
-    found: true, 
-    isActive: user.isActive, 
-    message, hoursLeft,
-    youtubeLink: user.youtubeLink, 
-    adsWatched: user.adsWatched, 
-    subsGiven: user.subsGiven,
-    email: user.email
-  });
+  res.json({ found: true, isActive: user.isActive, message, youtubeLink: user.youtubeLink, adsWatched: user.adsWatched, subsGiven: user.subsGiven, email: user.email, name: user.name, photo: user.photo, plan: user.plan, totalViews: user.totalViews, totalClicks: user.totalClicks });
 });
 
-// Admin activate
+// Live stats
+app.get('/api/stats', async (req, res) => {
+  const totalUsers = await User.countDocuments();
+  const activePromos = await User.countDocuments({ isActive: true });
+  const premiumUsers = await User.countDocuments({ plan: { $in: ['premium', 'vip', 'top'] } });
+  res.json({ totalUsers, activePromos, premiumUsers });
+});
+
+// Payment - PhonePe (Manual verify ke liye)
+app.post('/api/payment/create', async (req, res) => {
+  const { userId, plan } = req.body;
+  const planData = PLANS[plan];
+  if (!planData || !planData.price) return res.json({ success: false, msg: 'Invalid plan!' });
+  const payment = new Payment({ userId, plan, amount: planData.price, transactionId: 'TXN' + Date.now() });
+  await payment.save();
+  res.json({ success: true, paymentId: payment._id, amount: planData.price, upiId: 'amanalam917696@okicici' });
+});
+
+app.post('/api/payment/verify', async (req, res) => {
+  const { paymentId, transactionId } = req.body;
+  const payment = await Payment.findById(paymentId);
+  if (!payment) return res.json({ success: false });
+  payment.transactionId = transactionId;
+  payment.status = 'completed';
+  await payment.save();
+  const user = await User.findById(payment.userId);
+  if (user) { user.plan = payment.plan; await user.save(); }
+  res.json({ success: true, msg: 'Payment verified! Plan active ho gaya!' });
+});
+
+// Admin
 app.get('/admin/activate/:email', async (req, res) => {
   const user = await User.findOne({ email: req.params.email });
   if (!user) return res.send('User nahi mila!');
@@ -282,24 +273,20 @@ app.get('/admin/activate/:email', async (req, res) => {
   res.send('User activate ho gaya: ' + req.params.email);
 });
 
-// Password reset
-app.post('/api/reset-password', async (req, res) => {
-  const { email, newPassword } = req.body;
-  try {
-    const user = await User.findOne({ email });
-    if (!user) return res.json({ success: false, msg: 'Email nahi mila!' });
-    user.password = crypto.createHash('sha256').update(newPassword).digest('hex');
-    await user.save();
-    res.json({ success: true, msg: 'Password reset ho gaya!' });
-  } catch (err) {
-    res.json({ success: false, msg: err.message });
-  }
+app.get('/admin/stats', async (req, res) => {
+  const totalUsers = await User.countDocuments();
+  const activeUsers = await User.countDocuments({ isActive: true });
+  const premiumUsers = await User.countDocuments({ plan: { $in: ['premium', 'vip', 'top'] } });
+  const payments = await Payment.find({ status: 'completed' });
+  const revenue = payments.reduce((sum, p) => sum + p.amount, 0);
+  res.json({ totalUsers, activeUsers, premiumUsers, revenue, payments });
 });
 
-// YouTube redirect
 app.get('/c/:userId', async (req, res) => {
   const user = await User.findById(req.params.userId);
   if (!user) return res.send('Link expired!');
+  user.totalClicks += 1;
+  await user.save();
   res.redirect(user.youtubeLink);
 });
 
