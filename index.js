@@ -1,3 +1,9 @@
+// ============================================
+// PART 1: SETUP & CONFIGURATION
+// ============================================
+
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -10,7 +16,25 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 app.set('trust proxy', 1);
 
-// CORS setup
+// ========== DEBUG LOGGING ==========
+console.log('🚀 Server starting...');
+console.log('📍 NODE_ENV:', process.env.NODE_ENV || 'not set');
+console.log('📍 PORT:', process.env.PORT || '3000 (default)');
+
+// Check critical env vars
+const requiredEnv = ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'MONGO_URI', 'SESSION_SECRET'];
+let missingEnv = [];
+requiredEnv.forEach(key => {
+  if (!process.env[key]) missingEnv.push(key);
+  else console.log(`✅ ${key}: ${key.includes('SECRET') ? '***hidden***' : 'Set'}`);
+});
+if (missingEnv.length > 0) {
+  console.error('❌ MISSING ENV VARIABLES:', missingEnv);
+  console.error('❌ Server will crash - fix .env file!');
+}
+// =====================================
+
+// CORS Setup
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(',') 
   : ['https://ytsubexchange.online', 'http://localhost:3000'];
@@ -26,7 +50,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.static('public'));
 
-// Rate limiting
+// Rate Limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -35,9 +59,9 @@ const limiter = rateLimit({
 app.use('/api/', limiter);
 app.use('/auth/', limiter);
 
-// Session setup - FIXED for production
+// Session Setup
 if (!process.env.SESSION_SECRET) {
-  throw new Error('SESSION_SECRET is required');
+  throw new Error('SESSION_SECRET is required in environment variables');
 }
 
 app.use(session({
@@ -45,24 +69,31 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: { 
-    secure: process.env.NODE_ENV === 'production', // HTTPS pe true
+    secure: process.env.NODE_ENV === 'production', 
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    maxAge: 24 * 60 * 60 * 1000,
-    domain: process.env.COOKIE_DOMAIN || undefined
+    maxAge: 24 * 60 * 60 * 1000
   },
-  name: 'ytsubexchange.sid' // Custom name to avoid conflicts
+  name: 'ytsubexchange.sid'
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-// MongoDB
+// MongoDB Connection
+console.log('🔌 Connecting to MongoDB...');
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected!'))
+  .then(() => console.log('✅ MongoDB connected!'))
   .catch(err => {
-    console.error('MongoDB error:', err);
+    console.error('❌ MongoDB connection FAILED:', err.message);
     process.exit(1);
   });
+
+// ============================================
+// PART 1 END
+// ============================================
+// ============================================
+// PART 2: DATABASE MODELS & PASSPORT CONFIG
+// ============================================
 
 // Schemas
 const userSchema = new mongoose.Schema({
@@ -118,7 +149,6 @@ const PLANS = {
   top: { ads: 1, subs: 1, priority: 6, price: 50 }
 };
 
-// Admin Middleware
 const isAdmin = (req, res, next) => {
   if (req.isAuthenticated() && req.user && req.user.email === process.env.ADMIN_EMAIL) {
     return next();
@@ -128,15 +158,13 @@ const isAdmin = (req, res, next) => {
 
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
-// Slot Update
+// Slot Update Function
 async function updateSlots() {
   const now = new Date();
-  
   const expired = await User.find({ 
     isActive: true, 
     startTime: { $lt: new Date(now - ACTIVE_DURATION) } 
   });
-  
   for (const u of expired) {
     u.isActive = false;
     u.adsWatched = 0;
@@ -144,27 +172,20 @@ async function updateSlots() {
     u.subscribedTo = [];
     await u.save();
   }
-  
   const activeCount = await User.countDocuments({ isActive: true });
   const needed = SLOT_LIMIT - activeCount;
-  
   if (needed <= 0) return;
-  
   const waiting = await User.find({ 
     isActive: false, 
     youtubeLink: { $ne: '' }, 
     adsWatched: { $gte: 1 } 
   }).sort({ joinedAt: 1 }).limit(needed);
-  
   const currentActive = await User.countDocuments({ isActive: true });
-  
   let activated = 0;
   for (const u of waiting) {
     if (activated >= needed) break;
-    
     const plan = PLANS[u.plan] || PLANS.free;
     const requiredSubs = Math.min(plan.subs, currentActive);
-    
     if (u.adsWatched >= plan.ads && u.subsGiven >= requiredSubs) {
       u.isActive = true;
       u.startTime = new Date();
@@ -174,30 +195,41 @@ async function updateSlots() {
   }
 }
 
-// Passport - FIXED with better error handling
+// ========== PASSPORT GOOGLE OAUTH ==========
+console.log('🔐 Setting up Google OAuth...');
+console.log('📍 Callback URL:', process.env.CALLBACK_URL || 'https://ytsubexchange.online/auth/google/callback');
+
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: process.env.CALLBACK_URL || 'https://ytsubexchange.online/auth/google/callback',
   scope: ['profile', 'email'],
-  proxy: true // IMPORTANT for production behind proxy
+  proxy: true
 }, async (accessToken, refreshToken, profile, done) => {
   try {
-    console.log('Google profile received:', profile.id, profile.emails?.[0]?.value);
+    console.log('✅ Google OAuth callback received!');
+    console.log('👤 Profile ID:', profile.id);
+    console.log('📧 Email:', profile.emails?.[0]?.value);
     
     const email = profile.emails?.[0]?.value?.toLowerCase();
-    if (!email) return done(new Error('No email from Google'), null);
+    if (!email) {
+      console.error('❌ No email from Google!');
+      return done(new Error('No email from Google'), null);
+    }
     
     let user = await User.findOne({ googleId: profile.id });
+    console.log('🔍 Existing user by googleId:', user ? 'Found' : 'Not found');
     
     if (!user) {
       user = await User.findOne({ email });
+      console.log('🔍 Existing user by email:', user ? 'Found' : 'Not found');
+      
       if (user) {
         user.googleId = profile.id;
         user.name = profile.displayName || '';
         user.photo = profile.photos?.[0]?.value || '';
         await user.save();
-        console.log('Existing user linked to Google:', email);
+        console.log('✅ Linked existing user to Google');
       } else {
         user = new User({
           email,
@@ -206,43 +238,52 @@ passport.use(new GoogleStrategy({
           photo: profile.photos?.[0]?.value || ''
         });
         await user.save();
-        console.log('New user created:', email);
+        console.log('✅ Created new user');
       }
     }
+    console.log('✅ Login successful for:', email);
     return done(null, user);
   } catch (err) {
-    console.error('Google auth error:', err);
+    console.error('❌ Google auth error:', err.message);
     return done(err, null);
   }
 }));
 
 passport.serializeUser((user, done) => {
-  console.log('Serializing user:', user._id);
+  console.log('💾 Serializing user:', user._id);
   done(null, user._id);
 });
 
 passport.deserializeUser(async (id, done) => {
   try {
+    console.log('📂 Deserializing user ID:', id);
     if (!isValidObjectId(id)) {
-      console.log('Invalid session ID:', id);
+      console.log('❌ Invalid session ID');
       return done(null, false);
     }
     const user = await User.findById(id);
     if (!user) {
-      console.log('User not found for session:', id);
+      console.log('❌ User not found in DB');
       return done(null, false);
     }
-    console.log('Deserialized user:', user.email);
+    console.log('✅ User loaded:', user.email);
     done(null, user);
   } catch(err) { 
-    console.error('Deserialize error:', err);
+    console.error('❌ Deserialize error:', err.message);
     done(err, null); 
   }
 });
 
-// Auth Routes - FIXED with better error handling
+// ============================================
+// PART 2 END
+// ============================================
+  // ============================================
+// PART 3: ALL ROUTES & SERVER START
+// ============================================
+
+// ========== AUTH ROUTES ==========
 app.get('/auth/google', (req, res, next) => {
-  console.log('Starting Google auth...');
+  console.log('👉 /auth/google hit - Starting OAuth...');
   passport.authenticate('google', {
     scope: ['profile', 'email'],
     prompt: 'select_account'
@@ -251,7 +292,7 @@ app.get('/auth/google', (req, res, next) => {
 
 app.get('/auth/google/callback',
   (req, res, next) => {
-    console.log('Callback received, processing...');
+    console.log('👉 /auth/google/callback hit - Processing...');
     next();
   },
   passport.authenticate('google', { 
@@ -260,7 +301,9 @@ app.get('/auth/google/callback',
   }),
   async (req, res) => {
     try {
-      console.log('Login successful for:', req.user?.email);
+      console.log('✅ Authentication successful!');
+      console.log('👤 User:', req.user?.email);
+      
       const user = req.user;
       const params = new URLSearchParams({
         userId: user._id.toString(),
@@ -274,17 +317,16 @@ app.get('/auth/google/callback',
       });
       res.redirect('/?' + params.toString());
     } catch(err) {
-      console.error('Callback error:', err);
+      console.error('❌ Callback error:', err.message);
       res.redirect('/?error=callback_failed');
     }
   }
 );
 
-// Logout route
 app.get('/auth/logout', (req, res) => {
   req.logout((err) => {
     if (err) {
-      console.error('Logout error:', err);
+      console.error('❌ Logout error:', err);
       return res.status(500).json({ success: false });
     }
     req.session.destroy();
@@ -292,8 +334,8 @@ app.get('/auth/logout', (req, res) => {
   });
 });
 
-// Check auth status
 app.get('/api/auth/status', (req, res) => {
+  console.log('👉 /api/auth/status - isAuthenticated:', req.isAuthenticated());
   if (req.isAuthenticated()) {
     res.json({ 
       success: true, 
@@ -310,23 +352,20 @@ app.get('/api/auth/status', (req, res) => {
   }
 });
 
-// API Routes with validation
+// ========== API ROUTES ==========
 app.post('/api/ad-watched', async (req, res) => {
   try {
     const { userId } = req.body;
     if (!userId || !isValidObjectId(userId)) {
       return res.status(400).json({ success: false, message: 'Valid userId required' });
     }
-    
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ success: false, message: 'User not found' });
-    
     const plan = PLANS[user.plan] || PLANS.free;
     if (user.adsWatched < plan.ads) { 
       user.adsWatched += 1; 
       await user.save(); 
     }
-    
     res.json({ success: true, adsWatched: user.adsWatched, required: plan.ads });
   } catch(err) { 
     console.error('ad-watched error:', err);
@@ -340,17 +379,14 @@ app.get('/api/get-channels/:userId', async (req, res) => {
     if (!isValidObjectId(userId)) {
       return res.status(400).json({ success: false, message: 'Invalid userId' });
     }
-    
     await updateSlots();
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ success: false, message: 'User not found' });
-    
     const plan = PLANS[user.plan] || PLANS.free;
     const activeUsers = await User.find({ 
       _id: { $ne: userId }, 
       isActive: true 
     }).select('-subscribedTo').limit(plan.subs);
-    
     res.json({ 
       success: true,
       channels: activeUsers, 
@@ -366,35 +402,27 @@ app.get('/api/get-channels/:userId', async (req, res) => {
 app.post('/api/sub-done', async (req, res) => {
   try {
     const { userId, subscribedToId } = req.body;
-    
     if (!userId || !isValidObjectId(userId) || !subscribedToId || !isValidObjectId(subscribedToId)) {
       return res.status(400).json({ success: false, message: 'Valid userId and subscribedToId required' });
     }
-    
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ success: false, message: 'User not found' });
-    
     if (user.subscribedTo.includes(subscribedToId)) {
       return res.status(400).json({ success: false, message: 'Already subscribed to this user' });
     }
-    
     const targetUser = await User.findById(subscribedToId);
     if (!targetUser || !targetUser.isActive) {
       return res.status(400).json({ success: false, message: 'Target channel not active' });
     }
-    
     user.subsGiven += 1;
     user.subscribedTo.push(subscribedToId);
-    
     const plan = PLANS[user.plan] || PLANS.free;
     const activeCount = await User.countDocuments({ isActive: true });
     const requiredSubs = Math.min(plan.subs, activeCount);
-    
     if (user.adsWatched >= plan.ads && user.subsGiven >= requiredSubs) {
       user.isActive = true;
       user.startTime = new Date();
     }
-    
     await user.save();
     res.json({ success: true, subsGiven: user.subsGiven, isActive: user.isActive, requiredSubs });
   } catch(err) { 
@@ -409,20 +437,16 @@ app.get('/api/can-activate/:userId', async (req, res) => {
     if (!isValidObjectId(userId)) {
       return res.status(400).json({ success: false, message: 'Invalid userId' });
     }
-    
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ success: false, message: 'User not found' });
-    
     const activeCount = await User.countDocuments({ isActive: true });
     const plan = PLANS[user.plan] || PLANS.free;
-    
     if (activeCount === 0 && user.adsWatched >= plan.ads && user.youtubeLink) {
       user.isActive = true;
       user.startTime = new Date();
       await user.save();
       return res.json({ success: true, canActivate: true, isActive: true });
     }
-    
     res.json({ success: true, canActivate: false, activeCount, message: 'Wait for your turn in queue' });
   } catch(err) { 
     console.error('can-activate error:', err);
@@ -433,18 +457,14 @@ app.get('/api/can-activate/:userId', async (req, res) => {
 app.post('/api/update-youtube', async (req, res) => {
   try {
     const { userId, youtubeLink } = req.body;
-    
     if (!userId || !isValidObjectId(userId)) {
       return res.status(400).json({ success: false, message: 'Valid userId required' });
     }
-    
     if (!youtubeLink || !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/.test(youtubeLink)) {
       return res.status(400).json({ success: false, message: 'Valid YouTube URL required' });
     }
-    
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ success: false, message: 'User not found' });
-    
     user.youtubeLink = youtubeLink;
     await user.save();
     res.json({ success: true, youtubeLink: user.youtubeLink });
@@ -460,11 +480,9 @@ app.get('/api/status/:userId', async (req, res) => {
     if (!isValidObjectId(userId)) {
       return res.status(400).json({ success: false, message: 'Invalid userId' });
     }
-    
     await updateSlots();
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ success: false, found: false, message: 'User not found' });
-    
     let message = '';
     if (user.isActive && user.startTime) {
       const timeLeft = ACTIVE_DURATION - (Date.now() - user.startTime.getTime());
@@ -479,13 +497,11 @@ app.get('/api/status/:userId', async (req, res) => {
         joinedAt: { $lt: user.joinedAt } 
       });
       const activeCount = await User.countDocuments({ isActive: true });
-      
       if (activeCount < SLOT_LIMIT) message = '⏳ Jald active hoga!';
       else if (aheadInQueue === 0) message = '📅 Kal active hoga!';
       else if (aheadInQueue <= SLOT_LIMIT) message = '📅 Parson active hoga!';
       else message = `📅 ${Math.ceil(aheadInQueue / SLOT_LIMIT)} din baad active hoga!`;
     }
-    
     res.json({
       success: true,
       found: true, 
@@ -519,22 +535,18 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
-// Payment Routes
+// ========== PAYMENT ROUTES ==========
 app.post('/api/payment/create', async (req, res) => {
   try {
     const { userId, plan, amount } = req.body;
-    
     if (!userId || !isValidObjectId(userId) || !plan || !PLANS[plan] || !PLANS[plan].price) {
       return res.status(400).json({ success: false, message: 'Valid userId and premium plan required' });
     }
-    
     if (!amount || amount <= 0) {
       return res.status(400).json({ success: false, message: 'Valid amount required' });
     }
-    
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ success: false, message: 'User not found' });
-    
     const payment = new Payment({ 
       userId, 
       email: user.email,
@@ -543,7 +555,6 @@ app.post('/api/payment/create', async (req, res) => {
       transactionId: 'TXN' + Date.now() + crypto.randomBytes(4).toString('hex') 
     });
     await payment.save();
-    
     res.json({ 
       success: true, 
       paymentId: payment._id, 
@@ -559,22 +570,17 @@ app.post('/api/payment/create', async (req, res) => {
 app.post('/api/payment/verify', async (req, res) => {
   try {
     const { paymentId, transactionId } = req.body;
-    
     if (!paymentId || !isValidObjectId(paymentId) || !transactionId) {
       return res.status(400).json({ success: false, message: 'Valid paymentId and transactionId required' });
     }
-    
     const payment = await Payment.findById(paymentId);
     if (!payment) return res.status(404).json({ success: false, message: 'Payment not found' });
-    
     if (payment.status === 'completed') {
       return res.status(400).json({ success: false, message: 'Payment already verified' });
     }
-    
     payment.transactionId = transactionId;
     payment.status = 'pending';
     await payment.save();
-    
     res.json({ 
       success: true, 
       message: 'Payment submitted for verification. Plan will upgrade after admin approval.' 
@@ -585,30 +591,25 @@ app.post('/api/payment/verify', async (req, res) => {
   }
 });
 
-// Admin Routes
+// ========== ADMIN ROUTES ==========
 app.post('/admin/payment/approve', isAdmin, async (req, res) => {
   try {
     const { paymentId } = req.body;
     if (!paymentId || !isValidObjectId(paymentId)) {
       return res.status(400).json({ success: false, message: 'Valid paymentId required' });
     }
-    
     const payment = await Payment.findById(paymentId);
     if (!payment) return res.status(404).json({ success: false, message: 'Payment not found' });
-    
     if (payment.status !== 'pending') {
       return res.status(400).json({ success: false, message: 'Payment already processed' });
     }
-    
     payment.status = 'completed';
     await payment.save();
-    
     const user = await User.findById(payment.userId);
     if (user) { 
       user.plan = payment.plan; 
       await user.save(); 
     }
-    
     res.json({ success: true, message: `Plan upgraded to ${payment.plan}` });
   } catch(err) { 
     console.error('admin-approve error:', err);
@@ -619,4 +620,97 @@ app.post('/admin/payment/approve', isAdmin, async (req, res) => {
 app.post('/admin/activate', isAdmin, async (req, res) => {
   try {
     const { email } = req.body;
-    if (!email
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ success: false, message: 'Valid email required' });
+    }
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) return res.status(404).json({ success: false, message: 'User nahi mila!' });
+    user.isActive = true;
+    user.startTime = new Date();
+    await user.save();
+    res.json({ success: true, message: 'User activate ho gaya: ' + email });
+  } catch(err) { 
+    console.error('admin-activate error:', err);
+    res.status(500).json({ success: false, message: err.message }); 
+  }
+});
+
+app.get('/admin/stats', isAdmin, async (req, res) => {
+  try {
+    const totalUsers = await User.countDocuments();
+    const activeUsers = await User.countDocuments({ isActive: true });
+    const premiumUsers = await User.countDocuments({ plan: { $in: ['premium', 'vip', 'top'] } });
+    const payments = await Payment.find({ status: 'completed' });
+    const revenue = payments.reduce((sum, p) => sum + p.amount, 0);
+    const pendingPayments = await Payment.find({ status: 'pending' });
+    res.json({ 
+      success: true,
+      totalUsers, 
+      activeUsers, 
+      premiumUsers, 
+      revenue,
+      pendingPayments: pendingPayments.length,
+      pendingPaymentDetails: pendingPayments
+    });
+  } catch(err) { 
+    console.error('admin-stats error:', err);
+    res.status(500).json({ success: false, message: err.message }); 
+  }
+});
+
+// ========== TRACKING ROUTES ==========
+app.get('/c/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    if (!isValidObjectId(userId)) return res.status(400).send('Invalid link');
+    const user = await User.findById(userId);
+    if (!user || !user.youtubeLink) return res.status(404).send('Link expired or invalid!');
+    user.totalClicks += 1;
+    await user.save();
+    res.redirect(user.youtubeLink);
+  } catch(err) { 
+    console.error('click-track error:', err);
+    res.status(500).send('Error!'); 
+  }
+});
+
+app.get('/v/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    if (!isValidObjectId(userId)) return res.status(400).send('Invalid link');
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).send('User not found');
+    user.totalViews += 1;
+    await user.save();
+    res.json({ success: true, totalViews: user.totalViews });
+  } catch(err) {
+    console.error('view-track error:', err);
+    res.status(500).send('Error!');
+  }
+});
+
+// ========== HEALTH & ERROR HANDLING ==========
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    env: process.env.NODE_ENV || 'development'
+  });
+});
+
+app.use((err, req, res, next) => {
+  console.error('❌ Unhandled error:', err.message);
+  res.status(500).json({ success: false, message: 'Internal server error' });
+});
+
+// ========== SERVER START ==========
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log('✅ Server running on port ' + PORT);
+  console.log('🌐 URL: https://ytsubexchange.online');
+});
+
+// ============================================
+// PART 3 END
+// ============================================
+      
