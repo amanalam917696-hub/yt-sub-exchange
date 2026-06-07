@@ -10,7 +10,7 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 app.set('trust proxy', 1);
 
-// CORS: Multiple origins support
+// CORS setup
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(',') 
   : ['https://ytsubexchange.online', 'http://localhost:3000'];
@@ -26,18 +26,18 @@ app.use(cors({
 app.use(express.json());
 app.use(express.static('public'));
 
-// Rate Limiting
+// Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000,
   max: 100,
   message: { success: false, message: 'Too many requests' }
 });
 app.use('/api/', limiter);
 app.use('/auth/', limiter);
 
-// Session
+// Session setup - FIXED for production
 if (!process.env.SESSION_SECRET) {
-  throw new Error('SESSION_SECRET is required in environment variables');
+  throw new Error('SESSION_SECRET is required');
 }
 
 app.use(session({
@@ -45,24 +45,26 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: { 
-    secure: process.env.NODE_ENV === 'production', 
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', 
-    maxAge: 24 * 60 * 60 * 1000 
-  }
+    secure: process.env.NODE_ENV === 'production', // HTTPS pe true
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 24 * 60 * 60 * 1000,
+    domain: process.env.COOKIE_DOMAIN || undefined
+  },
+  name: 'ytsubexchange.sid' // Custom name to avoid conflicts
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-// MongoDB Connection
+// MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected!'))
   .catch(err => {
-    console.log('MongoDB error:', err);
+    console.error('MongoDB error:', err);
     process.exit(1);
   });
 
-// Schemas with validation
+// Schemas
 const userSchema = new mongoose.Schema({
   email: { type: String, unique: true, required: true, lowercase: true, trim: true },
   googleId: { type: String, default: '', index: true },
@@ -87,7 +89,6 @@ const userSchema = new mongoose.Schema({
   totalViews: { type: Number, default: 0, min: 0 },
   totalClicks: { type: Number, default: 0, min: 0 },
   joinedAt: { type: Date, default: Date.now, immutable: true },
-  // Track which users this user has subscribed to (prevent spam)
   subscribedTo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 });
 
@@ -125,14 +126,12 @@ const isAdmin = (req, res, next) => {
   res.status(403).json({ success: false, message: 'Admin access required' });
 };
 
-// Input Validation Helper
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
-// Slot Update with proper locking
+// Slot Update
 async function updateSlots() {
   const now = new Date();
   
-  // Deactivate expired users
   const expired = await User.find({ 
     isActive: true, 
     startTime: { $lt: new Date(now - ACTIVE_DURATION) } 
@@ -151,17 +150,12 @@ async function updateSlots() {
   
   if (needed <= 0) return;
   
-  // Get eligible users sorted by priority and joinedAt
   const waiting = await User.find({ 
     isActive: false, 
     youtubeLink: { $ne: '' }, 
     adsWatched: { $gte: 1 } 
-  }).sort({ 
-    planPriority: -1, // Higher priority first
-    joinedAt: 1 
-  }).limit(needed);
+  }).sort({ joinedAt: 1 }).limit(needed);
   
-  // Pre-calculate active count for all
   const currentActive = await User.countDocuments({ isActive: true });
   
   let activated = 0;
@@ -180,14 +174,17 @@ async function updateSlots() {
   }
 }
 
-// Passport Configuration
+// Passport - FIXED with better error handling
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: process.env.CALLBACK_URL || 'https://ytsubexchange.online/auth/google/callback',
-  scope: ['profile', 'email']
+  scope: ['profile', 'email'],
+  proxy: true // IMPORTANT for production behind proxy
 }, async (accessToken, refreshToken, profile, done) => {
   try {
+    console.log('Google profile received:', profile.id, profile.emails?.[0]?.value);
+    
     const email = profile.emails?.[0]?.value?.toLowerCase();
     if (!email) return done(new Error('No email from Google'), null);
     
@@ -200,6 +197,7 @@ passport.use(new GoogleStrategy({
         user.name = profile.displayName || '';
         user.photo = profile.photos?.[0]?.value || '';
         await user.save();
+        console.log('Existing user linked to Google:', email);
       } else {
         user = new User({
           email,
@@ -208,35 +206,61 @@ passport.use(new GoogleStrategy({
           photo: profile.photos?.[0]?.value || ''
         });
         await user.save();
+        console.log('New user created:', email);
       }
     }
     return done(null, user);
   } catch (err) {
+    console.error('Google auth error:', err);
     return done(err, null);
   }
 }));
 
-passport.serializeUser((user, done) => done(null, user._id));
+passport.serializeUser((user, done) => {
+  console.log('Serializing user:', user._id);
+  done(null, user._id);
+});
+
 passport.deserializeUser(async (id, done) => {
   try {
-    if (!isValidObjectId(id)) return done(null, false);
+    if (!isValidObjectId(id)) {
+      console.log('Invalid session ID:', id);
+      return done(null, false);
+    }
     const user = await User.findById(id);
-    done(null, user || false);
+    if (!user) {
+      console.log('User not found for session:', id);
+      return done(null, false);
+    }
+    console.log('Deserialized user:', user.email);
+    done(null, user);
   } catch(err) { 
+    console.error('Deserialize error:', err);
     done(err, null); 
   }
 });
 
-// Auth Routes
-app.get('/auth/google', passport.authenticate('google', {
-  scope: ['profile', 'email'],
-  prompt: 'select_account'
-}));
+// Auth Routes - FIXED with better error handling
+app.get('/auth/google', (req, res, next) => {
+  console.log('Starting Google auth...');
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    prompt: 'select_account'
+  })(req, res, next);
+});
 
 app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/?error=login_failed' }),
+  (req, res, next) => {
+    console.log('Callback received, processing...');
+    next();
+  },
+  passport.authenticate('google', { 
+    failureRedirect: '/?error=login_failed',
+    failureMessage: true 
+  }),
   async (req, res) => {
     try {
+      console.log('Login successful for:', req.user?.email);
       const user = req.user;
       const params = new URLSearchParams({
         userId: user._id.toString(),
@@ -250,15 +274,43 @@ app.get('/auth/google/callback',
       });
       res.redirect('/?' + params.toString());
     } catch(err) {
-      console.log('Callback error:', err);
+      console.error('Callback error:', err);
       res.redirect('/?error=callback_failed');
     }
   }
 );
 
-// API Routes with Validation
+// Logout route
+app.get('/auth/logout', (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      console.error('Logout error:', err);
+      return res.status(500).json({ success: false });
+    }
+    req.session.destroy();
+    res.json({ success: true, message: 'Logged out' });
+  });
+});
 
-// Ad Watched
+// Check auth status
+app.get('/api/auth/status', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json({ 
+      success: true, 
+      isAuthenticated: true,
+      user: {
+        id: req.user._id,
+        email: req.user.email,
+        name: req.user.name,
+        photo: req.user.photo
+      }
+    });
+  } else {
+    res.json({ success: true, isAuthenticated: false });
+  }
+});
+
+// API Routes with validation
 app.post('/api/ad-watched', async (req, res) => {
   try {
     const { userId } = req.body;
@@ -282,7 +334,6 @@ app.post('/api/ad-watched', async (req, res) => {
   }
 });
 
-// Get Channels
 app.get('/api/get-channels/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
@@ -312,7 +363,6 @@ app.get('/api/get-channels/:userId', async (req, res) => {
   }
 });
 
-// Subscribe Done (Anti-Spam)
 app.post('/api/sub-done', async (req, res) => {
   try {
     const { userId, subscribedToId } = req.body;
@@ -324,12 +374,10 @@ app.post('/api/sub-done', async (req, res) => {
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ success: false, message: 'User not found' });
     
-    // Check if already subscribed to this user
     if (user.subscribedTo.includes(subscribedToId)) {
       return res.status(400).json({ success: false, message: 'Already subscribed to this user' });
     }
     
-    // Verify target user exists and is active
     const targetUser = await User.findById(subscribedToId);
     if (!targetUser || !targetUser.isActive) {
       return res.status(400).json({ success: false, message: 'Target channel not active' });
@@ -355,7 +403,6 @@ app.post('/api/sub-done', async (req, res) => {
   }
 });
 
-// Can Activate (Queue System)
 app.get('/api/can-activate/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
@@ -369,7 +416,6 @@ app.get('/api/can-activate/:userId', async (req, res) => {
     const activeCount = await User.countDocuments({ isActive: true });
     const plan = PLANS[user.plan] || PLANS.free;
     
-    // Only activate if queue is empty and user meets requirements
     if (activeCount === 0 && user.adsWatched >= plan.ads && user.youtubeLink) {
       user.isActive = true;
       user.startTime = new Date();
@@ -384,7 +430,6 @@ app.get('/api/can-activate/:userId', async (req, res) => {
   }
 });
 
-// Update YouTube Link
 app.post('/api/update-youtube', async (req, res) => {
   try {
     const { userId, youtubeLink } = req.body;
@@ -409,7 +454,6 @@ app.post('/api/update-youtube', async (req, res) => {
   }
 });
 
-// Status Check
 app.get('/api/status/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
@@ -463,7 +507,6 @@ app.get('/api/status/:userId', async (req, res) => {
   }
 });
 
-// Stats
 app.get('/api/stats', async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
@@ -476,7 +519,7 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
-// Payment Create
+// Payment Routes
 app.post('/api/payment/create', async (req, res) => {
   try {
     const { userId, plan, amount } = req.body;
@@ -513,7 +556,6 @@ app.post('/api/payment/create', async (req, res) => {
   }
 });
 
-// Payment Verify (Secure)
 app.post('/api/payment/verify', async (req, res) => {
   try {
     const { paymentId, transactionId } = req.body;
@@ -529,11 +571,8 @@ app.post('/api/payment/verify', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Payment already verified' });
     }
     
-    // In production, verify with payment gateway (UPI/Bank) here
-    // For now, manual admin verification required
-    
     payment.transactionId = transactionId;
-    payment.status = 'pending'; // Will be approved by admin
+    payment.status = 'pending';
     await payment.save();
     
     res.json({ 
@@ -546,7 +585,7 @@ app.post('/api/payment/verify', async (req, res) => {
   }
 });
 
-// Admin Approve Payment (Admin Only)
+// Admin Routes
 app.post('/admin/payment/approve', isAdmin, async (req, res) => {
   try {
     const { paymentId } = req.body;
@@ -577,31 +616,7 @@ app.post('/admin/payment/approve', isAdmin, async (req, res) => {
   }
 });
 
-// Admin Activate User (Admin Only)
 app.post('/admin/activate', isAdmin, async (req, res) => {
   try {
     const { email } = req.body;
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return res.status(400).json({ success: false, message: 'Valid email required' });
-    }
-    
-    const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user) return res.status(404).json({ success: false, message: 'User nahi mila!' });
-    
-    user.isActive = true;
-    user.startTime = new Date();
-    await user.save();
-    
-    res.json({ success: true, message: 'User activate ho gaya: ' + email });
-  } catch(err) { 
-    console.error('admin-activate error:', err);
-    res.status(500).json({ success: false, message: err.message }); 
-  }
-});
-
-// Admin Stats (Admin Only)
-app.get('/admin/stats', isAdmin, async (req, res) => {
-  try {
-    const totalUsers = await User.countDocuments();
-    const activeUsers = await User.countDocuments({ isActive: true });
-    const premiumUsers = await User.c
+    if (!email
