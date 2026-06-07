@@ -136,33 +136,62 @@ passport.deserializeUser(async (id, done) => {
   } catch(err) { done(err, null); }
 });
 
-app.get('/auth/google', passport.authenticate('google', {
-  scope: ['profile', 'email'],
-  prompt: 'select_account'
-}));
+const axios = require('axios');
 
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/?error=login_failed' }),
-  async (req, res) => {
-    try {
-      const user = req.user;
-      const params = new URLSearchParams({
-        userId: user._id.toString(),
-        email: user.email,
-        name: user.name || '',
-        photo: user.photo || '',
-        ytLink: user.youtubeLink || '',
-        isActive: user.isActive.toString(),
-        adsWatched: user.adsWatched.toString(),
-        plan: user.plan || 'free'
-      });
-      res.redirect('/?' + params.toString());
-    } catch(err) {
-      console.log('Callback error:', err);
-      res.redirect('/?error=callback_failed');
+app.get('/auth/google/callback', async (req, res) => {
+  try {
+    const { code } = req.query;
+    if (!code) return res.redirect('/?error=no_code');
+    
+    const tokenRes = await axios.post('https://oauth2.googleapis.com/token', {
+      code,
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      redirect_uri: 'https://ytsubexchange.online/auth/google/callback',
+      grant_type: 'authorization_code'
+    });
+    
+    const { access_token } = tokenRes.data;
+    const profileRes = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
+      headers: { Authorization: `Bearer ${access_token}` }
+    });
+    
+    const profile = profileRes.data;
+    let user = await User.findOne({ googleId: profile.id });
+    if (!user) {
+      user = await User.findOne({ email: profile.email });
+      if (user) {
+        user.googleId = profile.id;
+        user.name = profile.name || '';
+        user.photo = profile.picture || '';
+        await user.save();
+      } else {
+        user = new User({
+          email: profile.email,
+          googleId: profile.id,
+          name: profile.name || '',
+          photo: profile.picture || ''
+        });
+        await user.save();
+      }
     }
+    
+    const params = new URLSearchParams({
+      userId: user._id.toString(),
+      email: user.email,
+      name: user.name || '',
+      photo: user.photo || '',
+      ytLink: user.youtubeLink || '',
+      isActive: user.isActive.toString(),
+      adsWatched: user.adsWatched.toString(),
+      plan: user.plan || 'free'
+    });
+    res.redirect('/?' + params.toString());
+  } catch(err) {
+    console.log('OAuth error:', err.message);
+    res.redirect('/?error=oauth_failed');
   }
-);
+});
 
 app.post('/api/ad-watched', async (req, res) => {
   try {
