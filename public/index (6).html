@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YT Sub Exchange — Free YouTube Channel Growth</title>
+<meta name="google-site-verification" content="b8kieK7bqO3FXHLFNRnrYV0z-_APB6S3NhpNFA2Z9lM" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8771359433113858" crossorigin="anonymous"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;min-height:100vh}
+.header{background:#ff0000;color:white;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(255,0,0,0.3)}
+.header-logo{font-size:18px;font-weight:bold}
+.header-right{display:flex;align-items:center;gap:8px}
+.user-avatar{width:32px;height:32px;border-radius:50%;border:2px solid white;object-fit:cover}
+.logout-btn{background:rgba(255,255,255,0.2);border:1px solid white;color:white;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:12px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #eee;display:none;justify-content:space-around;padding:8px 0;z-index:100;box-shadow:0 -2px 10px rgba(0,0,0,0.1)}
+.bottom-nav.show{display:flex}
+.nav-item{display:flex;flex-direction:column;align-items:center;cursor:pointer;padding:4px 8px;color:#999;min-width:50px}
+.nav-item.active{color:#ff0000}
+.nav-item svg{width:22px;height:22px}
+.nav-item span{font-size:10px;margin-top:2px}
+.container{max-width:500px;margin:0 auto;padding:15px;padding-bottom:80px}
+.page{display:none}
+.page.active{display:block}
+.card{background:white;border-radius:15px;padding:15px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.card-title{font-size:15px;font-weight:bold;color:#333;margin-bottom:10px}
+.btn{width:100%;padding:14px;background:#ff0000;color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;margin-top:8px}
+.btn:disabled{background:#ccc}
+.btn-green{background:#28a745}
+.btn-grey{background:#555}
+.btn-blue{background:#0088cc}
+input{width:100%;padding:12px;margin:6px 0;border:2px solid #ddd;border-radius:10px;font-size:15px}
+.divider{height:1px;background:#eee;margin:12px 0}
+.login-box{background:white;border-radius:20px;padding:35px 25px;box-shadow:0 5px 30px rgba(0,0,0,0.1);text-align:center;margin-top:20px}
+.login-logo{font-size:60px;margin-bottom:10px}
+.login-title{font-size:24px;font-weight:bold;color:#333;margin-bottom:5px}
+.login-subtitle{font-size:14px;color:#999;margin-bottom:25px}
+.btn-google{background:white;color:#333;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;gap:10px;font-weight:bold;text-decoration:none;padding:14px;border-radius:12px;font-size:15px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+.stat-card{background:#f9f9f9;border-radius:10px;padding:12px;text-align:center}
+.stat-num{font-size:20px;font-weight:bold;color:#ff0000}
+.stat-label{font-size:11px;color:#999;margin-top:2px}
+.hero{background:linear-gradient(135deg,#ff0000,#cc0000);color:white;border-radius:15px;padding:20px;margin-bottom:15px}
+.hero h1{font-size:20px;font-weight:bold;margin-bottom:5px}
+.hero p{font-size:13px;opacity:0.9;margin-bottom:15px}
+.hero-btn{background:white;color:#ff0000;border:none;padding:12px 20px;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px}
+.ad-box{background:white;border:2px dashed #ff0000;border-radius:12px;padding:15px;text-align:center;margin:12px 0}
+.timer{font-size:32px;font-weight:bold;color:#ff0000;margin:8px 0}
+.ads-progress{background:#eee;border-radius:20px;height:22px;margin:10px 0;overflow:hidden}
+.ads-bar{background:#ff0000;height:100%;border-radius:20px;transition:width 0.5s;display:flex;align-items:center;justify-content:center;color:white;font-size:11px}
+.channel-card{background:white;border:1px solid #eee;border-radius:10px;padding:12px;margin:8px 0;display:flex;align-items:center;justify-content:space-between}
+.channel-card a{color:#ff0000;font-size:12px;flex:1;margin-right:8px;word-break:break-all}
+.sub-btn{padding:8px 14px;background:#ff0000;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;white-space:nowrap;font-weight:bold}
+.sub-btn:disabled{background:#28a745}
+.status-active{background:#f0fff4;border:2px solid #28a745;border-radius:12px;padding:15px;margin-bottom:12px;text-align:center}
+.status-queue{background:#fff3cd;border:2px solid #ffc107;border-radius:12px;padding:15px;margin-bottom:12px;text-align:center}
+.status-expire{background:#fff3f3;border:2px solid #ff0000;border-radius:12px;padding:15px;margin-bottom:12px;text-align:center}
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.analytics-card{background:white;border-radius:12px;padding:15px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.analytics-num{font-size:24px;font-weight:bold;color:#ff0000}
+.analytics-label{font-size:11px;color:#999;margin-top:3px}
+.yt-link-box{background:white;border:2px solid #ff0000;border-radius:12px;padding:12px;margin:10px 0;text-align:center;cursor:pointer;text-decoration:none;display:block}
+.yt-link-url{color:#ff0000;font-weight:bold;font-size:12px;word-break:break-all;margin-top:4px}
+.plan-card{background:white;border-radius:15px;padding:15px;margin-bottom:12px;border:2px solid #eee;cursor:pointer;transition:all 0.2s}
+.plan-card:hover{border-color:#ff0000}
+.plan-card.selected{border-color:#ff0000;background:#fff5f5}
+.plan-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.plan-name{font-size:16px;font-weight:bold;color:#333}
+.plan-price{font-size:18px;font-weight:bold;color:#ff0000}
+.plan-free{font-size:14px;color:#28a745;font-weight:bold}
+.plan-features{font-size:13px;color:#666;line-height:1.8}
+.plan-badge{background:#ff0000;color:white;padding:2px 8px;border-radius:20px;font-size:11px}
+.profile-card{background:white;border-radius:15px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);text-align:center;margin-bottom:12px}
+.profile-photo{width:80px;height:80px;border-radius:50%;border:3px solid #ff0000;margin:0 auto 10px;display:block}
+.profile-photo-placeholder{width:80px;height:80px;border-radius:50%;border:3px solid #ff0000;margin:0 auto 10px;background:#ff0000;display:flex;align-items:center;justify-content:center;color:white;font-size:30px;font-weight:bold}
+.profile-name-big{font-size:20px;font-weight:bold;color:#333}
+.profile-email-text{font-size:13px;color:#999;margin-top:3px}
+.plan-badge-big{display:inline-block;background:#ff0000;color:white;padding:4px 12px;border-radius:20px;font-size:12px;margin-top:8px}
+.leader-card{background:white;border-radius:12px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.leader-rank{width:35px;height:35px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:14px;flex-shrink:0}
+.rank-1{background:#FFD700;color:#333}
+.rank-2{background:#C0C0C0;color:#333}
+.rank-3{background:#CD7F32;color:white}
+.rank-other{background:#f0f0f0;color:#666}
+.leader-info{flex:1}
+.leader-name{font-size:14px;font-weight:bold;color:#333}
+.leader-stats{font-size:12px;color:#999;margin-top:2px}
+.leader-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#fff3f3;color:#ff0000}
+.payment-box{background:#f0fff4;border:2px solid #28a745;border-radius:12px;padding:15px;margin:10px 0;text-align:center}
+.qr-img{width:200px;height:200px;margin:10px auto;display:block;border:3px solid #6a0dad;border-radius:10px}
+.phonepe-badge{background:#6a0dad;color:white;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:bold;display:inline-block;margin-bottom:8px}
+.amount-big{font-size:32px;font-weight:bold;color:#ff0000;margin:8px 0}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-logo">▶️ YT Sub Exchange</div>
+  <div class="header-right">
+    <img src="" class="user-avatar" id="userAvatar" style="display:none">
+    <span style="font-size:13px;color:white" id="userName"></span>
+    <button class="logout-btn" id="logoutBtn" onclick="logout()" style="display:none">Logout</button>
+  </div>
+</div>
+<div class="bottom-nav" id="bottomNav">
+  <div class="nav-item active" id="nav-home" onclick="showPage('home')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    <span>Home</span>
+  </div>
+  <div class="nav-item" id="nav-plans" onclick="showPage('plans')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+    <span>Plans</span>
+  </div>
+  <div class="nav-item" id="nav-dashboard" onclick="showPage('dashboard')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+    <span>Dashboard</span>
+  </div>
+  <div class="nav-item" id="nav-leaderboard" onclick="showPage('leaderboard')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18z"/></svg>
+    <span>Top</span>
+  </div>
+  <div class="nav-item" id="nav-profile" onclick="showPage('profile')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    <span>Profile</span>
+  </div>
+</div>
+
+<div class="container">
+<!-- LOGIN -->
+<div id="page-login" class="page active">
+  <div class="login-box">
+    <div class="login-logo">▶️</div>
+    <div class="login-title">YT Sub Exchange</div>
+    <div class="login-subtitle">Free mein apna YouTube channel grow karo!</div>
+    <a href="/auth/google" class="btn-google">
+      <svg width="20" height="20" viewBox="0 0 48 48">
+        <path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/>
+        <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.1 18.9 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+        <path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.4-5l-6.2-5.2C29.4 35.6 26.8 36 24 36c-5.2 0-9.6-3-11.3-7.3l-6.5 5C9.6 39.6 16.3 44 24 44z"/>
+        <path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.4-2.5 4.4-4.7 5.8l6.2 5.2C40.7 35.5 44 30.1 44 24c0-1.3-.1-2.7-.4-4z"/>
+      </svg>
+      Google se Login karo
+    </a>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="statUsers">0</div><div class="stat-label">Total Users</div></div>
+      <div class="stat-card"><div class="stat-num" id="statActive">0</div><div class="stat-label">Active Now</div></div>
+      <div class="stat-card"><div class="stat-num" id="statPremium">0</div><div class="stat-label">Premium</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- YT LINK -->
+<div id="page-ytlink" class="page">
+  <div class="card">
+    <div class="card-title">🔗 YouTube Link Daalo</div>
+    <p style="font-size:13px;color:#666;margin-bottom:10px">Apna YouTube channel link daalo</p>
+    <input type="url" id="ytLinkInput" placeholder="https://www.youtube.com/@yourchannel">
+    <button class="btn" onclick="saveYoutubeLink()">Aage Badho →</button>
+  </div>
+</div>
+
+<!-- ADS -->
+<div id="page-ads" class="page">
+  <div class="card">
+    <div class="card-title">📺 Ads Dekho</div>
+    <div class="ads-progress">
+      <div class="ads-bar" id="adBar" style="width:0%">0%</div>
+    </div>
+    <p id="adTxt" style="text-align:center;font-size:14px;color:#666;margin:5px 0">0 / 3 ads dekhe</p>
+    <div class="ad-box">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8771359433113858"
+           data-ad-slot="1900287488"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      <div class="timer" id="timerNum">15</div>
+      <p style="font-size:12px;color:#999">seconds remaining</p>
+    </div>
+    <button class="btn" id="adBtn" onclick="adWatched()" disabled>⏳ Ad chal rahi hai...</button>
+  </div>
+</div>
+
+<!-- SUBSCRIBE -->
+<div id="page-subscribe" class="page">
+  <div class="card">
+    <div class="card-title">✅ Channels Visit Karo</div>
+    <p id="subTxt" style="text-align:center;font-weight:bold;color:#ff0000;font-size:14px;margin:8px 0">0 visit kiye</p>
+    <div id="channelsList"></div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="page-home" class="page">
+  <div class="hero">
+    <h1>🚀 Apna Channel Grow Karo!</h1>
+    <p>Real channel promotion — bilkul free!</p>
+    <button class="hero-btn" onclick="showPage('plans')">Plans Dekho →</button>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 Live Statistics</div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="homeStatUsers">0</div><div class="stat-label">Users</div></div>
+      <div class="stat-card"><div class="stat-num" id="homeStatActive">0</div><div class="stat-label">Active</div></div>
+      <div class="stat-card"><div class="stat-num" id="homeStatPremium">0</div><div class="stat-label">Premium</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🎯 Kaise Kaam Karta Hai</div>
+    <div style="font-size:14px;color:#555;line-height:2.2">
+      <div>1️⃣ Google se login karo</div>
+      <div>2️⃣ YouTube channel link daalo</div>
+      <div>3️⃣ Ads dekho</div>
+      <div>4️⃣ Doosre channels visit karo</div>
+      <div>5️⃣ Channel active ho jaayega! ✅</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🏆 Top Channels</div>
+    <div id="homeLeaderboard"></div>
+    <button class="btn btn-grey" style="margin-top:8px" onclick="showPage('leaderboard')">Poora Leaderboard Dekho →</button>
+  </div>
+  <button class="btn btn-green" onclick="shareWebsite()">📤 Website Share Karo</button>
+</div>
+
+<!-- PLANS -->
+<div id="page-plans" class="page">
+  <div class="card">
+    <div class="card-title">🎯 Plan Choose Karo</div>
+    <p style="font-size:13px;color:#666">Ek hi free plan hai. Paid plans mein kam ads aur kam subscriptions chahiye!</p>
+  </div>
+
+  <div class="plan-card" onclick="selectPlan('basic')">
+    <div class="plan-header"><div class="plan-name">🥉 Basic Plan <span class="plan-badge">PAID</span></div><div class="plan-price">₹10</div></div>
+    <div class="plan-features">
+      ✅ Sirf 2 Ads<br>
+      ✅ Sirf 5 Channels visit<br>
+      ✅ Better queue<br>
+      ✅ PhonePe QR se pay karo
+    </div>
+  </div>
+
+  <div class="plan-card" onclick="selectPlan('silver')">
+    <div class="plan-header"><div class="plan-name">🥈 Silver Plan <span class="plan-badge">PAID</span></div><div class="plan-price">₹20</div></div>
+    <div class="plan-features">
+      ✅ Sirf 2 Ads<br>
+      ✅ Sirf 7 Channels visit<br>
+      ✅ Priority queue<br>
+      ✅ PhonePe QR se pay karo
+    </div>
+  </div>
+
+  <div class="plan-card" onclick="selectPlan('gold')">
+    <div class="plan-header"><div class="plan-name">🥇 Gold Plan <span class="plan-badge">PAID</span></div><div class="plan-price">₹30</div></div>
+    <div class="plan-features">
+      ✅ Sirf 2 Ads<br>
+      ✅ Sirf 9 Channels visit<br>
+      ✅ High priority queue<br>
+      ✅ Featured badge<br>
+      ✅ PhonePe QR se pay karo
+    </div>
+  </div>
+
+  <div class="plan-card" onclick="selectPlan('platinum')">
+    <div class="plan-header"><div class="plan-name">💎 Platinum Plan <span class="plan-badge">PAID</span></div><div class="plan-price">₹50</div></div>
+    <div class="plan-features">
+      ✅ Sirf 2 Ads<br>
+      ✅ Sirf 11 Channels visit<br>
+      ✅ Highest priority<br>
+      ✅ Top featured listing<br>
+      ✅ PhonePe QR se pay karo
+    </div>
+  </div>
+
+  <!-- PAYMENT BOX -->
+  <div id="paymentBox" style="display:none">
+    <div class="payment-box">
+      <div class="phonepe-badge">📱 PhonePe se Pay Karo</div>
+      <p style="font-size:13px;color:#333;margin-bottom:8px">QR scan karo ya button dabao — amount automatic set hoga!</p>
+      
+      <div style="background:white;border-radius:16px;padding:12px;display:inline-block;border:3px solid #6a0dad;box-shadow:0 4px 15px rgba(106,13,173,0.2);margin:8px 0">
+        <img class="qr-img" src="/phonepe-qr.png" alt="PhonePe QR Code" style="width:220px;height:220px;display:block;border-radius:8px">
+        <div style="text-align:center;margin-top:8px">
+          <div style="font-size:13px;font-weight:bold;color:#6a0dad">YT Sub Exchange</div>
+          <div style="font-size:11px;color:#888">UPI: amanalam917696@okicici</div>
+        </div>
+      </div>
+
+      <div class="amount-big" style="margin:10px 0">₹<span id="payAmount">0</span></div>
+      
+      <a id="phonepayBtn" href="#" onclick="openPhonePe()" style="display:block;background:linear-gradient(135deg,#6a0dad,#9b30ff);color:white;padding:14px 20px;border-radius:12px;text-decoration:none;font-weight:bold;font-size:16px;margin:8px 0;text-align:center;box-shadow:0 4px 12px rgba(106,13,173,0.3)">
+        📱 PhonePe se Pay Karo — ₹<span id="phonepayAmt">0</span>
+      </a>
+      <p style="font-size:12px;color:#666;margin:8px 0">Payment ke baad Transaction ID daalo:</p>
+      <input type="text" id="txnId" placeholder="UTR/Transaction ID">
+      <button class="btn btn-green" onclick="verifyPayment()">Verify Karo ✅</button>
+      <button class="btn btn-grey" style="margin-top:5px" onclick="document.getElementById('paymentBox').style.display='none'">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page">
+  <div class="analytics-grid">
+    <div class="analytics-card"><div class="analytics-num" id="dashViews">0</div><div class="analytics-label">Total Views</div></div>
+    <div class="analytics-card"><div class="analytics-num" id="dashClicks">0</div><div class="analytics-label">Link Clicks</div></div>
+    <div class="analytics-card"><div class="analytics-num" id="dashPlan">Free</div><div class="analytics-label">Current Plan</div></div>
+    <div class="analytics-card"><div class="analytics-num" id="dashStatus">—</div><div class="analytics-label">Status</div></div>
+  </div>
+  <div id="dashStatusCard"></div>
+  <a class="yt-link-box" id="dashLinkBox" href="#" target="_blank">
+    <p style="font-size:12px;color:#999">🔗 Aapka YouTube Channel</p>
+    <div class="yt-link-url" id="dashLinkUrl">Loading...</div>
+    <p style="font-size:11px;color:#28a745;margin-top:4px">▶️ YouTube khulega!</p>
+  </a>
+  <button class="btn btn-green" onclick="shareWebsite()">📤 Share Karo</button>
+</div>
+
+<!-- LEADERBOARD -->
+<div id="page-leaderboard" class="page">
+  <div class="card">
+    <div class="card-title">🏆 Top Channels Leaderboard</div>
+    <p style="font-size:13px;color:#666;margin-bottom:10px">Sabse zyada active channels!</p>
+  </div>
+  <div id="leaderboardList">
+    <p style="text-align:center;color:#999;padding:20px">Loading...</p>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div id="page-profile" class="page">
+  <div class="profile-card">
+    <div id="profilePhotoDiv"></div>
+    <div class="profile-name-big" id="profileNameBig">Loading...</div>
+    <div class="profile-email-text" id="profileEmailText"></div>
+    <div class="plan-badge-big" id="profilePlanBadge">Free Plan</div>
+  </div>
+  <div class="card">
+    <div class="card-title">📺 YouTube Channel</div>
+    <a class="yt-link-box" id="profileLinkBox" href="#" target="_blank">
+      <div class="yt-link-url" id="profileLinkUrl">Loading...</div>
+    </a>
+    <input type="url" id="newYtLink" placeholder="Naya YouTube link daalo">
+    <button class="btn btn-blue" onclick="updateYtLink()">Link Update Karo</button>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 Statistics</div>
+    <div style="font-size:14px;color:#555;line-height:2.5">
+      <div style="display:flex;justify-content:space-between"><span>Total Views:</span><span style="font-weight:bold;color:#ff0000" id="profileViews">0</span></div>
+      <div style="display:flex;justify-content:space-between"><span>Link Clicks:</span><span style="font-weight:bold;color:#ff0000" id="profileClicks">0</span></div>
+      <div style="display:flex;justify-content:space-between"><span>Current Plan:</span><span style="font-weight:bold;color:#ff0000" id="profilePlan">Free</span></div>
+    </div>
+  </div>
+  <button class="btn btn-grey" onclick="logout()">🚪 Logout</button>
+</div>
+</div>
+
+<script>
+// Plan configuration - ek jagah sabkuch define karo
+const PLAN_CONFIG = {
+  free:     { ads: 3, subs: 10, price: 0,  label: 'Free' },
+  basic:    { ads: 2, subs: 5,  price: 10, label: 'Basic' },
+  silver:   { ads: 2, subs: 7,  price: 20, label: 'Silver' },
+  gold:     { ads: 2, subs: 9,  price: 30, label: 'Gold' },
+  platinum: { ads: 2, subs: 11, price: 50, label: 'Platinum' }
+};
+
+let userId=null,ytLink='',userEmail='',userName='',userPhoto='',userPlan='free',adsWatched=0,subsGiven=0,adInt=null,requiredAds=3,requiredSubs=10,selectedPlan=null,currentPaymentId=null;
+
+window.onload=async function(){
+  loadStats();
+  const urlParams=new URLSearchParams(window.location.search);
+  const gUserId=urlParams.get('userId');
+  const error=urlParams.get('error');
+  if(error){alert('Login mein problem aayi!');window.history.replaceState({},'','/');return;}
+  if(gUserId){
+    userId=gUserId;
+    userEmail=decodeURIComponent(urlParams.get('email')||'');
+    userName=decodeURIComponent(urlParams.get('name')||'');
+    userPhoto=decodeURIComponent(urlParams.get('photo')||'');
+    ytLink=decodeURIComponent(urlParams.get('ytLink')||'');
+    userPlan=urlParams.get('plan')||'free';
+    adsWatched=parseInt(urlParams.get('adsWatched'))||0;
+    const isActive=urlParams.get('isActive')==='true';
+    const cfg=PLAN_CONFIG[userPlan]||PLAN_CONFIG.free;
+    requiredAds=cfg.ads;
+    requiredSubs=cfg.subs;
+    localStorage.setItem('yt_user',JSON.stringify({userId,ytLink,email:userEmail,name:userName,photo:userPhoto,plan:userPlan}));
+    window.history.replaceState({},'','/');
+    setupLoggedIn();
+    if(!ytLink){showAppPage('ytlink');}
+    else if(!isActive&&adsWatched<requiredAds){startAds();}
+    else{showAppPage('home');loadDashboard();loadLeaderboard();}
+    return;
+  }
+  const saved=localStorage.getItem('yt_user');
+  if(saved){
+    const data=JSON.parse(saved);
+    userId=data.userId;ytLink=data.ytLink;userEmail=data.email;
+    userName=data.name||'';userPhoto=data.photo||'';userPlan=data.plan||'free';
+    const cfg=PLAN_CONFIG[userPlan]||PLAN_CONFIG.free;
+    requiredAds=cfg.ads;
+    requiredSubs=cfg.subs;
+    setupLoggedIn();
+    showAppPage('home');
+    loadDashboard();
+    loadLeaderboard();
+  }
+}
+
+async function loadStats(){
+  try{
+    const r=await fetch('/api/stats');
+    const d=await r.json();
+    ['statUsers','homeStatUsers'].forEach(id=>document.getElementById(id).textContent=d.totalUsers||0);
+    ['statActive','homeStatActive'].forEach(id=>document.getElementById(id).textContent=d.activePromos||0);
+    ['statPremium','homeStatPremium'].forEach(id=>document.getElementById(id).textContent=d.premiumUsers||0);
+  }catch(e){}
+}
+
+async function loadLeaderboard(){
+  try{
+    const r=await fetch('/api/leaderboard');
+    const d=await r.json();
+    if(!d.users||d.users.length===0){
+      document.getElementById('leaderboardList').innerHTML='<p style="text-align:center;color:#999;padding:20px">Abhi koi data nahi!</p>';
+      document.getElementById('homeLeaderboard').innerHTML='<p style="text-align:center;color:#999;font-size:13px">Abhi koi data nahi!</p>';
+      return;
+    }
+    // Leaderboard mein sirf naam dikhao (plan/stats nahi)
+    const html=d.users.map((u,i)=>{
+      const rankClass=i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other';
+      const rankText=i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
+      const displayName=u.name||u.email.split('@')[0];
+      return '<div class="leader-card"><div class="leader-rank '+rankClass+'">'+rankText+'</div><div class="leader-info"><div class="leader-name">'+displayName+'</div></div></div>';
+    }).join('');
+    document.getElementById('leaderboardList').innerHTML=html;
+    // Home top 3 mein bhi sirf naam
+    document.getElementById('homeLeaderboard').innerHTML=d.users.slice(0,3).map((u,i)=>{
+      const rankText=i===0?'🥇':i===1?'🥈':'🥉';
+      const displayName=u.name||u.email.split('@')[0];
+      return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px"><span>'+rankText+' '+displayName+'</span></div>';
+    }).join('');
+  }catch(e){
+    document.getElementById('leaderboardList').innerHTML='<p style="text-align:center;color:#999;padding:20px">Loading...</p>';
+  }
+}
+
+function setupLoggedIn(){
+  document.getElementById('logoutBtn').style.display='block';
+  document.getElementById('bottomNav').classList.add('show');
+  if(userPhoto){document.getElementById('userAvatar').src=userPhoto;document.getElementById('userAvatar').style.display='block';}
+  document.getElementById('userName').textContent=userName.split(' ')[0]||userEmail.split('@')[0];
+}
+
+function showAppPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pageMap={home:'page-home',plans:'page-plans',dashboard:'page-dashboard',profile:'page-profile',ytlink:'page-ytlink',ads:'page-ads',subscribe:'page-subscribe',leaderboard:'page-leaderboard'};
+  document.getElementById(pageMap[page]||'page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const navMap={home:'nav-home',plans:'nav-plans',dashboard:'nav-dashboard',leaderboard:'nav-leaderboard',profile:'nav-profile'};
+  if(navMap[page])document.getElementById(navMap[page]).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showPage(page){
+  if(!userId){showAppPage('login');return;}
+  showAppPage(page);
+  if(page==='dashboard')loadDashboard();
+  if(page==='profile')loadProfile();
+  if(page==='leaderboard')loadLeaderboard();
+}
+
+async function saveYoutubeLink(){
+  const yt=document.getElementById('ytLinkInput').value.trim();
+  if(!yt||(!yt.includes('youtube.com')&&!yt.includes('youtu.be'))){alert('Valid YouTube link daalo!');return;}
+  ytLink=yt;
+  await fetch('/api/update-youtube',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,youtubeLink:yt})});
+  const saved=JSON.parse(localStorage.getItem('yt_user')||'{}');
+  localStorage.setItem('yt_user',JSON.stringify({...saved,ytLink:yt}));
+  startAds();
+}
+
+function startAds(){
+  adsWatched=0;
+  const cfg=PLAN_CONFIG[userPlan]||PLAN_CONFIG.free;
+  requiredAds=cfg.ads;
+  document.getElementById('adBar').style.width='0%';
+  document.getElementById('adBar').textContent='0%';
+  document.getElementById('adTxt').textContent='0 / '+requiredAds+' ads dekhe';
+  showAppPage('ads');startTimer();
+}
+
+function startTimer(){
+  let s=15;
+  const btn=document.getElementById('adBtn');
+  const num=document.getElementById('timerNum');
+  btn.disabled=true;btn.textContent='⏳ Ad chal rahi hai...';
+  clearInterval(adInt);
+  adInt=setInterval(()=>{s--;num.textContent=s;if(s<=0){clearInterval(adInt);btn.disabled=false;btn.textContent='✅ Ad Dekh Li! Next →'}},1000);
+}
+
+async function adWatched(){
+  const r=await fetch('/api/ad-watched',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId})});
+  const d=await r.json();
+  adsWatched=d.adsWatched;
+  const cfg=PLAN_CONFIG[userPlan]||PLAN_CONFIG.free;
+  requiredAds=d.required||cfg.ads;
+  const p=Math.round((adsWatched/requiredAds)*100);
+  document.getElementById('adBar').style.width=p+'%';
+  document.getElementById('adBar').textContent=p+'%';
+  document.getElementById('adTxt').textContent=adsWatched+' / '+requiredAds+' ads dekhe';
+  if(adsWatched>=requiredAds){
+    const cr=await fetch('/api/can-activate/'+userId);
+    const cd=await cr.json();
+    if(cd.isActive){showAppPage('home');loadDashboard();}
+    else{await loadChannels();showAppPage('subscribe');}
+  } else {
+    startTimer();
+    document.getElementById('adBtn').disabled=true;
+    document.getElementById('adBtn').textContent='⏳ Ad chal rahi hai...';
+  }
+}
+
+async function loadChannels(){
+  const r=await fetch('/api/get-channels/'+userId);
+  const d=await r.json();
+  const list=document.getElementById('channelsList');
+  const cfg=PLAN_CONFIG[userPlan]||PLAN_CONFIG.free;
+  requiredSubs=d.required||cfg.subs;
+  if(!d.channels||d.channels.length===0){
+    list.innerHTML='<p style="text-align:center;padding:15px;background:#f0fff4;border-radius:10px">🎉 Aap pehle user hain!</p>';
+    setTimeout(()=>{showAppPage('home');loadDashboard();},2000);return;
+  }
+  document.getElementById('subTxt').textContent='0 / '+d.channels.length+' visit kiye';
+  list.innerHTML=d.channels.map((c,i)=>'<div class="channel-card"><div style="flex:1;margin-right:8px"><b style="font-size:13px">Channel '+(i+1)+'</b><br><a href="'+c.youtubeLink+'" target="_blank">🔗 '+c.youtubeLink.substring(0,28)+'...</a></div><button class="sub-btn" onclick="openSub(\''+c.youtubeLink+'\',\''+c._id+'\',this)">Visit</button></div>').join('');
+}
+
+function openSub(link,id,btn){
+  window.open(link,'_blank');
+  setTimeout(()=>{btn.disabled=true;btn.textContent='✅ Done';markSub(id);},3000);
+}
+
+async function markSub(id){
+  const r=await fetch('/api/sub-done',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,subscribedToId:id})});
+  const d=await r.json();
+  subsGiven=d.subsGiven;
+  const cfg=PLAN_CONFIG[userPlan]||PLAN_CONFIG.free;
+  document.getElementById('subTxt').textContent=subsGiven+' / '+(d.requiredSubs||cfg.subs)+' visit kiye';
+  if(d.isActive){showAppPage('home');loadDashboard();}
+}
+
+async function loadDashboard(){
+  if(!userId)return;
+  try{
+    const r=await fetch('/api/status/'+userId);
+    const d=await r.json();
+    if(!d.found)return;
+    if(d.youtubeLink)ytLink=d.youtubeLink;
+    document.getElementById('dashViews').textContent=d.totalViews||0;
+    document.getElementById('dashClicks').textContent=d.totalClicks||0;
+    const planLabel=(PLAN_CONFIG[d.plan]||PLAN_CONFIG.free).label;
+    document.getElementById('dashPlan').textContent=planLabel;
+    document.getElementById('dashStatus').textContent=d.isActive?'✅':'⏳';
+    document.getElementById('dashLinkBox').href=ytLink;
+    document.getElementById('dashLinkUrl').textContent=ytLink;
+    let statusHtml='';
+    if(d.isActive){statusHtml='<div class="status-active"><p style="font-size:18px">✅</p><p style="font-weight:bold;color:#28a745">'+d.message+'</p><p style="font-size:12px;color:#888;margin-top:4px">⚠️ 24 ghante baad link hatega!</p></div>';}
+    else if(d.adsWatched>=1){statusHtml='<div class="status-queue"><p style="font-size:18px">⏳</p><p style="font-weight:bold;color:#856404">'+d.message+'</p></div>';}
+    else{statusHtml='<div class="status-expire"><p style="font-size:18px">⚠️</p><p style="font-weight:bold;color:#cc0000">Link Expire Ho Gaya!</p><p style="font-size:12px;margin:6px 0">Ads dekho — link dobara active karo</p><button class="btn" onclick="startAds()">Ads Dekho →</button></div>';}
+    document.getElementById('dashStatusCard').innerHTML=statusHtml;
+  }catch(e){}
+}
+
+async function loadProfile(){
+  if(!userId)return;
+  try{
+    const r=await fetch('/api/status/'+userId);
+    const d=await r.json();
+    if(!d.found)return;
+    const photoDiv=document.getElementById('profilePhotoDiv');
+    if(userPhoto){photoDiv.innerHTML='<img src="'+userPhoto+'" class="profile-photo">';}
+    else{photoDiv.innerHTML='<div class="profile-photo-placeholder">'+(userName||userEmail||'U').charAt(0).toUpperCase()+'</div>';}
+    document.getElementById('profileNameBig').textContent=userName||userEmail.split('@')[0];
+    document.getElementById('profileEmailText').textContent=userEmail;
+    const planLabel=(PLAN_CONFIG[d.plan]||PLAN_CONFIG.free).label;
+    document.getElementById('profilePlanBadge').textContent=planLabel+' Plan';
+    document.getElementById('profileLinkBox').href=ytLink;
+    document.getElementById('profileLinkUrl').textContent=ytLink;
+    document.getElementById('profileViews').textContent=d.totalViews||0;
+    document.getElementById('profileClicks').textContent=d.totalClicks||0;
+    document.getElementById('profilePlan').textContent=planLabel;
+  }catch(e){}
+}
+
+function selectPlan(plan){
+  selectedPlan=plan;
+  // Highlight selected plan
+  document.querySelectorAll('.plan-card').forEach(c=>c.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  const cfg=PLAN_CONFIG[plan]||PLAN_CONFIG.free;
+  if(cfg.price>0){
+    document.getElementById('paymentBox').style.display='block';
+    document.getElementById('payAmount').textContent=cfg.price; if(document.getElementById('phonepayAmt')) document.getElementById('phonepayAmt').textContent=cfg.price;
+    document.getElementById('paymentBox').scrollIntoView({behavior:'smooth'});
+    createPayment(plan,cfg.price);
+  } else {
+    updatePlan(plan);
+  }
+}
+
+function openPhonePe(){
+  const amount = document.getElementById('payAmount').textContent;
+  const upiId = 'amanalam917696@okicici';
+  const name = 'YT Sub Exchange';
+  const note = 'YT Sub Exchange Plan';
+  
+  // UPI deep link - works with PhonePe, GPay, Paytm etc
+  const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
+  
+  // PhonePe specific
+  const phonePeLink = `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
+  
+  // Try PhonePe first, fallback to UPI
+  window.location.href = phonePeLink;
+  setTimeout(() => {
+    window.location.href = upiLink;
+  }, 1000);
+}
+
+async function createPayment(plan,amount){
+  try{
+    const r=await fetch('/api/payment/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,plan,amount})});
+    const d=await r.json();
+    if(d.success)currentPaymentId=d.paymentId;
+  }catch(e){}
+}
+
+async function verifyPayment(){
+  const txnId=document.getElementById('txnId').value.trim();
+  if(!txnId){alert('Transaction ID daalo!');return;}
+  try{
+    const r=await fetch('/api/payment/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({paymentId:currentPaymentId,transactionId:txnId})});
+    const d=await r.json();
+    if(d.success){
+      alert('✅ '+selectedPlan.toUpperCase()+' Plan active ho gaya!');
+      userPlan=selectedPlan;
+      const cfg=PLAN_CONFIG[userPlan]||PLAN_CONFIG.free;
+      requiredAds=cfg.ads;
+      requiredSubs=cfg.subs;
+      document.getElementById('paymentBox').style.display='none';
+      const saved=JSON.parse(localStorage.getItem('yt_user')||'{}');
+      localStorage.setItem('yt_user',JSON.stringify({...saved,plan:userPlan}));
+      showAppPage('dashboard');loadDashboard();
+    } else {alert('❌ Verification failed! Admin se contact karo.');}
+  }catch(e){alert('❌ Error! Dobara try karo.');}
+}
+
+async function updatePlan(plan){
+  userPlan=plan;
+  const cfg=PLAN_CONFIG[plan]||PLAN_CONFIG.free;
+  requiredAds=cfg.ads;
+  requiredSubs=cfg.subs;
+  const saved=JSON.parse(localStorage.getItem('yt_user')||'{}');
+  localStorage.setItem('yt_user',JSON.stringify({...saved,plan}));
+  alert('✅ '+cfg.label+' Plan selected!');
+  startAds();
+}
+
+async function updateYtLink(){
+  const yt=document.getElementById('newYtLink').value.trim();
+  if(!yt||(!yt.includes('youtube.com')&&!yt.includes('youtu.be'))){alert('Valid YouTube link daalo!');return;}
+  ytLink=yt;
+  await fetch('/api/update-youtube',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,youtubeLink:yt})});
+  const saved=JSON.parse(localStorage.getItem('yt_user')||'{}');
+  localStorage.setItem('yt_user',JSON.stringify({...saved,ytLink:yt}));
+  alert('✅ Link update ho gaya!');loadProfile();
+}
+
+function shareWebsite(){
+  const msg='🎯 YouTube Channel Promotion!\n\nFree mein apna YouTube channel grow karo!\n\n👉 https://ytsubexchange.online\n\nJoin karo! 🚀';
+  if(navigator.share){navigator.share({title:'YT Sub Exchange',text:msg,url:'https://ytsubexchange.online'});}
+  else{navigator.clipboard.writeText('https://ytsubexchange.online').then(()=>alert('✅ Link copy ho gaya!'));}
+}
+
+function logout(){
+  localStorage.removeItem('yt_user');
+  userId=null;ytLink='';userEmail='';userName='';userPhoto='';
+  document.getElementById('logoutBtn').style.display='none';
+  document.getElementById('bottomNav').classList.remove('show');
+  document.getElementById('userAvatar').style.display='none';
+  document.getElementById('userName').textContent='';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-login').classList.add('active');
+}
+</script>
+</body>
+</html>
