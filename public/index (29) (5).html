@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YT Sub Exchange — Aman & Aiman | Real YouTube Subscribers Paao!</title>
+<meta name="google-site-verification" content="b8kieK7bqO3FXHLFNRnrYV0z-_APB6S3NhpNFA2Z9lM" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8771359433113858" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1B1813;
+  --paper:#FBF6EC;
+  --signal:#E1431C;
+  --signal-deep:#B7300F;
+  --amber:#F2A93B;
+  --sage:#3E7A5C;
+  --line:#E8DFCB;
+  --display:'Fraunces',Georgia,serif;
+  --body:'Inter','Segoe UI',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--body);background:var(--paper);min-height:100vh;color:var(--ink)}
+.header{background:var(--ink);color:var(--paper);padding:13px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+.header-logo{font-family:var(--display);font-size:18px;font-weight:700;letter-spacing:0.2px}
+.header-right{display:flex;align-items:center;gap:8px}
+.user-avatar{width:32px;height:32px;border-radius:50%;border:2px solid var(--amber);object-fit:cover}
+.logout-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);color:var(--paper);padding:5px 10px;border-radius:8px;cursor:pointer;font-size:12px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--paper);border-top:1px solid var(--line);display:none;justify-content:space-around;padding:8px 0;z-index:100;box-shadow:0 -2px 16px rgba(27,24,19,0.06)}
+.bottom-nav.show{display:flex}
+.nav-item{display:flex;flex-direction:column;align-items:center;cursor:pointer;padding:4px 8px;color:#A89E89;min-width:50px}
+.nav-item.active{color:var(--signal)}
+.nav-item svg{width:22px;height:22px}
+.nav-item span{font-size:10px;margin-top:2px;font-weight:600}
+.container{max-width:500px;margin:0 auto;padding:15px;padding-bottom:80px}
+.page{display:none}
+.page.active{display:block}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(27,24,19,0.04)}
+.card-title{font-family:var(--display);font-size:16px;font-weight:600;color:var(--ink);margin-bottom:10px}
+.btn{width:100%;padding:14px;background:var(--signal);color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;font-family:var(--body)}
+.btn:disabled{background:#D9D0BC}
+.btn-green{background:var(--sage)}
+.btn-grey{background:#4A4538}
+.btn-blue{background:#2F6690}
+input{width:100%;padding:12px;margin:6px 0;border:1.5px solid var(--line);border-radius:10px;font-size:15px;font-family:var(--body)}
+.divider{height:1px;background:var(--line);margin:12px 0}
+.login-box{background:#fff;border-radius:20px;padding:35px 25px;box-shadow:0 8px 30px rgba(27,24,19,0.08);text-align:center;margin-top:20px}
+.login-logo{font-size:60px;margin-bottom:10px}
+.login-title{font-family:var(--display);font-size:25px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.login-subtitle{font-size:14px;color:#8A8270;margin-bottom:25px}
+.btn-google{background:white;color:var(--ink);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;gap:10px;font-weight:700;text-decoration:none;padding:14px;border-radius:12px;font-size:15px}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+.stat-card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center}
+.stat-num{font-family:var(--display);font-size:21px;font-weight:700;color:var(--signal)}
+.stat-label{font-size:11px;color:#8A8270;margin-top:2px;font-weight:600}
+.hero{background:var(--ink);color:var(--paper);border-radius:16px;padding:22px;margin-bottom:15px;position:relative;overflow:hidden}
+.hero h1{font-family:var(--display);font-size:21px;font-weight:700;margin-bottom:5px}
+.hero p{font-size:13px;opacity:0.75;margin-bottom:15px}
+.hero-btn{background:var(--signal);color:white;border:none;padding:12px 20px;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px}
+.ad-box{background:white;border:2px dashed var(--signal);border-radius:12px;padding:15px;text-align:center;margin:12px 0}
+.timer{font-family:var(--display);font-size:32px;font-weight:700;color:var(--signal);margin:8px 0}
+.ads-progress{background:var(--line);border-radius:20px;height:22px;margin:10px 0;overflow:hidden}
+
+.ads-bar{background:#ff0000;height:100%;border-radius:20px;transition:width 0.5s;display:flex;align-items:center;justify-content:center;color:white;font-size:11px}
+.channel-card{background:white;border:1px solid #eee;border-radius:10px;padding:12px;margin:8px 0;display:flex;align-items:center;justify-content:space-between}
+.channel-card a{color:#ff0000;font-size:12px;flex:1;margin-right:8px;word-break:break-all}
+.sub-btn{padding:8px 14px;background:#ff0000;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;white-space:nowrap;font-weight:bold}
+.sub-btn:disabled{background:#28a745}
+.status-active{background:#f0fff4;border:2px solid #28a745;border-radius:12px;padding:15px;margin-bottom:12px;text-align:center}
+.status-queue{background:#fff3cd;border:2px solid #ffc107;border-radius:12px;padding:15px;margin-bottom:12px;text-align:center}
+.status-expire{background:#fff3f3;border:2px solid #ff0000;border-radius:12px;padding:15px;margin-bottom:12px;text-align:center}
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.analytics-card{background:white;border-radius:12px;padding:15px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.analytics-num{font-size:24px;font-weight:bold;color:#ff0000}
+.analytics-label{font-size:11px;color:#999;margin-top:3px}
+.yt-link-box{background:white;border:2px solid #ff0000;border-radius:12px;padding:12px;margin:10px 0;text-align:center;cursor:pointer;text-decoration:none;display:block}
+.yt-link-url{color:#ff0000;font-weight:bold;font-size:12px;word-break:break-all;margin-top:4px}
+.plan-card{background:white;border-radius:15px;padding:15px;margin-bottom:12px;border:2px solid #eee;cursor:pointer;transition:all 0.2s}
+.plan-card:hover{border-color:#ff0000}
+.plan-card.selected{border-color:#ff0000;background:#fff5f5}
+.plan-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.plan-name{font-size:16px;font-weight:bold;color:#333}
+.plan-price{font-size:18px;font-weight:bold;color:#ff0000}
+.plan-free{font-size:14px;color:#28a745;font-weight:bold}
+.plan-features{font-size:13px;color:#666;line-height:1.8}
+.plan-badge{background:#ff0000;color:white;padding:2px 8px;border-radius:20px;font-size:11px}
+.profile-card{background:white;border-radius:15px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);text-align:center;margin-bottom:12px}
+.profile-photo{width:80px;height:80px;border-radius:50%;border:3px solid #ff0000;margin:0 auto 10px;display:block}
+.profile-photo-placeholder{width:80px;height:80px;border-radius:50%;border:3px solid #ff0000;margin:0 auto 10px;background:#ff0000;display:flex;align-items:center;justify-content:center;color:white;font-size:30px;font-weight:bold}
+.profile-name-big{font-size:20px;font-weight:bold;color:#333}
+.profile-email-text{font-size:13px;color:#999;margin-top:3px}
+.plan-badge-big{display:inline-block;background:#ff0000;color:white;padding:4px 12px;border-radius:20px;font-size:12px;margin-top:8px}
+.leader-card{background:white;border-radius:12px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.leader-rank{width:35px;height:35px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:14px;flex-shrink:0}
+.rank-1{background:#FFD700;color:#333}
+.rank-2{background:#C0C0C0;color:#333}
+.rank-3{background:#CD7F32;color:white}
+.rank-other{background:#f0f0f0;color:#666}
+.leader-info{flex:1}
+.leader-name{font-size:14px;font-weight:bold;color:#333}
+.leader-stats{font-size:12px;color:#999;margin-top:2px}
+.leader-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#fff3f3;color:#ff0000}
+.payment-box{background:#f0fff4;border:2px solid #28a745;border-radius:12px;padding:15px;margin:10px 0;text-align:center}
+.qr-img{width:200px;height:200px;margin:10px auto;display:block;border:3px solid #6a0dad;border-radius:10px}
+.phonepe-badge{background:#6a0dad;color:white;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:bold;display:inline-block;margin-bottom:8px}
+.amount-big{font-size:32px;font-weight:bold;color:#ff0000;margin:8px 0}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-logo">▶️ YT Sub Exchange</div>
+  <div class="header-right">
+    <img src="" class="user-avatar" id="userAvatar" style="display:none">
+    <span style="font-size:13px;color:white" id="userName"></span>
+    <button class="logout-btn" id="logoutBtn" onclick="logout()" style="display:none">Logout</button>
+  </div>
+</div>
+<div class="bottom-nav" id="bottomNav">
+  <div class="nav-item active" id="nav-home" onclick="showPage('home')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    <span>Home</span>
+  </div>
+  <div class="nav-item" id="nav-plans" onclick="showPage('plans')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+    <span>Plans</span>
+  </div>
+  <div class="nav-item" id="nav-dashboard" onclick="showPage('dashboard')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+    <span>Dashboard</span>
+  </div>
+  <div class="nav-item" id="nav-leaderboard" onclick="showPage('leaderboard')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18z"/></svg>
+    <span>Top</span>
+  </div>
+  <div class="nav-item" id="nav-profile" onclick="showPage('profile')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    <span>Profile</span>
+  </div>
+  <div class="nav-item" id="nav-blog" onclick="showPage('blog')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+    <span>Blog</span>
+  </div>
+</div>
+
+<div class="container">
+<!-- LOGIN -->
+<div id="page-login" class="page active">
+  <div style="min-height:100vh;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden">
+
+    <!-- ambient texture -->
+    <div style="position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(225,67,28,0.25),transparent 70%)"></div>
+    <div style="position:absolute;bottom:-80px;left:-60px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(242,169,59,0.15),transparent 70%)"></div>
+
+    <!-- Logo / mark -->
+    <div style="text-align:center;margin-bottom:18px;position:relative;z-index:1">
+      <div style="width:54px;height:54px;background:var(--signal);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;transform:rotate(-4deg)">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <div style="font-family:var(--display);font-size:27px;font-weight:700;color:var(--paper);letter-spacing:-0.3px">YT Sub Exchange</div>
+      <div style="font-size:12.5px;color:rgba(251,246,236,0.6);margin-top:4px">Real subscribers, real growth, koi shortcut nahi</div>
+    </div>
+
+    <!-- Founders strip -->
+    <div style="border:1px solid rgba(251,246,236,0.12);border-radius:14px;padding:11px 22px;margin-bottom:16px;text-align:center;width:100%;max-width:300px;position:relative;z-index:1">
+      <div style="font-size:9.5px;color:rgba(251,246,236,0.45);letter-spacing:2.5px;margin-bottom:9px;font-weight:600">FOUNDERS</div>
+      <div style="display:flex;justify-content:center;gap:18px;align-items:center">
+        <div style="text-align:center">
+          <div style="width:34px;height:34px;background:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--ink);margin:0 auto 4px;font-size:14px;font-family:var(--display)">A</div>
+          <div style="color:var(--paper);font-size:12px;font-weight:600">Aman</div>
+        </div>
+        <div style="color:rgba(251,246,236,0.3);font-size:16px;font-family:var(--display)">&</div>
+        <div style="text-align:center">
+          <div style="width:34px;height:34px;background:var(--sage);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--paper);margin:0 auto 4px;font-size:14px;font-family:var(--display)">A</div>
+          <div style="color:var(--paper);font-size:12px;font-weight:600">Aiman</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature dial strip -->
+    <div style="display:flex;width:100%;max-width:300px;margin-bottom:18px;border:1px solid rgba(251,246,236,0.12);border-radius:14px;overflow:hidden;position:relative;z-index:1">
+      <div style="flex:1;padding:12px 6px;text-align:center;border-right:1px solid rgba(251,246,236,0.1)">
+        <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--amber)">500–3K</div>
+        <div style="color:rgba(251,246,236,0.55);font-size:9.5px;margin-top:2px;font-weight:600">REAL SUBS</div>
+      </div>
+      <div style="flex:1;padding:12px 6px;text-align:center;border-right:1px solid rgba(251,246,236,0.1)">
+        <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--amber)">₹10</div>
+        <div style="color:rgba(251,246,236,0.55);font-size:9.5px;margin-top:2px;font-weight:600">SE SHURU</div>
+      </div>
+      <div style="flex:1;padding:12px 6px;text-align:center">
+        <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--amber)">~12h</div>
+        <div style="color:rgba(251,246,236,0.55);font-size:9.5px;margin-top:2px;font-weight:600">ACTIVATION</div>
+      </div>
+    </div>
+
+    <!-- Google Login -->
+    <a href="/auth/google" id="googleLoginBtn" style="display:flex;align-items:center;justify-content:center;gap:10px;background:var(--paper);color:var(--ink);text-decoration:none;padding:14px 24px;border-radius:12px;font-size:15px;font-weight:700;width:100%;max-width:300px;position:relative;z-index:1">
+      <svg width="20" height="20" viewBox="0 0 48 48">
+        <path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/>
+        <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.1 18.9 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+        <path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.4-5l-6.2-5.2C29.4 35.6 26.8 36 24 36c-5.2 0-9.6-3-11.3-7.3l-6.5 5C9.6 39.6 16.3 44 24 44z"/>
+        <path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.4-2.5 4.4-4.7 5.8l6.2 5.2C40.7 35.5 44 30.1 44 24c0-1.3-.1-2.7-.4-4z"/>
+      </svg>
+      Google se Login Karo
+    </a>
+
+    <!-- Stats -->
+    <div style="display:flex;gap:22px;margin-top:20px;position:relative;z-index:1">
+      <div style="text-align:center">
+        <div style="font-family:var(--display);font-size:19px;font-weight:700;color:var(--paper)" id="statUsers">0</div>
+        <div style="font-size:9.5px;color:rgba(251,246,236,0.5);font-weight:600;letter-spacing:0.5px">USERS</div>
+      </div>
+      <div style="color:rgba(251,246,236,0.2);align-self:center">•</div>
+      <div style="text-align:center">
+        <div style="font-family:var(--display);font-size:19px;font-weight:700;color:var(--sage)" id="statActive">0</div>
+        <div style="font-size:9.5px;color:rgba(251,246,236,0.5);font-weight:600;letter-spacing:0.5px">ACTIVE</div>
+      </div>
+      <div style="color:rgba(251,246,236,0.2);align-self:center">•</div>
+      <div style="text-align:center">
+        <div style="font-family:var(--display);font-size:19px;font-weight:700;color:var(--amber)" id="statPremium">0</div>
+        <div style="font-size:9.5px;color:rgba(251,246,236,0.5);font-weight:600;letter-spacing:0.5px">PREMIUM</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- YT LINK -->
+<div id="page-ytlink" class="page">
+  <div class="card">
+    <div class="card-title">🔗 YouTube Link Daalo</div>
+    <p style="font-size:13px;color:#666;margin-bottom:10px">Apna YouTube channel link daalo</p>
+    <input type="url" id="ytLinkInput" placeholder="https://www.youtube.com/@yourchannel">
+    <button class="btn" onclick="saveYoutubeLink()">Aage Badho →</button>
+  </div>
+</div>
+
+<!-- ADS -->
+<div id="page-ads" class="page">
+  <div class="card">
+    <div class="card-title">📺 Ads Dekho</div>
+    <div class="ads-progress">
+      <div class="ads-bar" id="adBar" style="width:0%">0%</div>
+    </div>
+    <p id="adTxt" style="text-align:center;font-size:14px;color:#666;margin:5px 0">0 / 3 ads dekhe</p>
+    <div class="ad-box">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8771359433113858"
+           data-ad-slot="1900287488"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      <div class="timer" id="timerNum">15</div>
+      <p style="font-size:12px;color:#999">seconds remaining</p>
+    </div>
+    <button class="btn" id="adBtn" onclick="adWatched()" disabled>⏳ Ad chal rahi hai...</button>
+  </div>
+</div>
+
+<!-- SUBSCRIBE -->
+<div id="page-subscribe" class="page">
+  <div class="card">
+    <div class="card-title">✅ Channels Visit Karo</div>
+    <p id="subTxt" style="text-align:center;font-weight:bold;color:#ff0000;font-size:14px;margin:8px 0">0 visit kiye</p>
+    <div id="channelsList"></div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="page-home" class="page">
+  <!-- HERO -->
+  <div style="background:var(--ink);color:var(--paper);padding:28px 20px 22px;text-align:center;margin:-16px -16px 16px;border-radius:0 0 24px 24px;position:relative;overflow:hidden">
+    <div style="position:absolute;top:-40px;right:-30px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(225,67,28,0.3),transparent 70%)"></div>
+    <div style="font-size:11px;opacity:0.55;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:8px;position:relative;z-index:1">Aman & Aiman Present</div>
+    <div style="font-family:var(--display);font-size:27px;font-weight:700;margin-bottom:6px;position:relative;z-index:1">YT Sub Exchange</div>
+    <div style="font-size:13.5px;opacity:0.75;margin-bottom:6px;position:relative;z-index:1">Channel grow karo, real subscribers ke saath</div>
+    <div style="font-size:11.5px;opacity:0.5;margin-bottom:18px;position:relative;z-index:1">India ka subscriber-exchange platform</div>
+    <button onclick="showPage('plans')" style="background:var(--signal);color:white;border:none;padding:13px 28px;border-radius:25px;font-size:14.5px;font-weight:700;cursor:pointer;position:relative;z-index:1">Premium Plans Dekho →</button>
+  </div>
+
+  <!-- STATS -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">
+    <div style="background:white;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center">
+      <div style="font-family:var(--display);font-size:21px;font-weight:700;color:var(--signal)" id="homeStatUsers">0</div>
+      <div style="font-size:10.5px;color:#8A8270;margin-top:2px;font-weight:600">USERS</div>
+    </div>
+    <div style="background:white;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center">
+      <div style="font-family:var(--display);font-size:21px;font-weight:700;color:var(--sage)" id="homeStatActive">0</div>
+      <div style="font-size:10.5px;color:#8A8270;margin-top:2px;font-weight:600">ACTIVE</div>
+    </div>
+    <div style="background:white;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center">
+      <div style="font-family:var(--display);font-size:21px;font-weight:700;color:var(--amber)" id="homeStatPremium">0</div>
+      <div style="font-size:10.5px;color:#8A8270;margin-top:2px;font-weight:600">PREMIUM</div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="card">
+    <div class="card-title">Kaise Kaam Karta Hai</div>
+    <div style="display:flex;flex-direction:column;gap:13px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:26px;height:26px;border:1.5px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--signal);flex-shrink:0;font-family:var(--display)">1</div>
+        <div style="font-size:13.5px;color:#4A4538">Google se login karo</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:26px;height:26px;border:1.5px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--signal);flex-shrink:0;font-family:var(--display)">2</div>
+        <div style="font-size:13.5px;color:#4A4538">YouTube channel link daalo</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:26px;height:26px;border:1.5px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--signal);flex-shrink:0;font-family:var(--display)">3</div>
+        <div style="font-size:13.5px;color:#4A4538">Plan kharido (₹10 se shuru)</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:26px;height:26px;border:1.5px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--signal);flex-shrink:0;font-family:var(--display)">4</div>
+        <div style="font-size:13.5px;color:#4A4538">10 channels subscribe karo</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:26px;height:26px;background:var(--sage);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div style="font-size:13.5px;color:var(--sage);font-weight:700">Dashboard mein status check karo!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFER & EARN -->
+  <div style="background:var(--ink);border-radius:16px;padding:18px;margin-bottom:16px;color:var(--paper)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div style="font-family:var(--display);font-size:16px;font-weight:700">Refer & Earn</div>
+      <div style="font-size:11px;background:rgba(251,246,236,0.1);padding:4px 10px;border-radius:20px;font-weight:600">Wallet: ₹<span id="homeWalletBal">0</span></div>
+    </div>
+    <div style="font-size:12.5px;opacity:0.65;margin-bottom:12px">Dosto ko refer karo — wo plan le to tumhe commission milega!</div>
+    <button onclick="showPage('refer')" style="width:100%;padding:11px;background:var(--signal);color:white;border:none;border-radius:10px;font-size:13.5px;font-weight:700;cursor:pointer">Refer Link Dekho →</button>
+  </div>
+
+  <!-- TOP CHANNELS -->
+  <div class="card">
+    <div class="card-title">Top Channels</div>
+    <div id="homeLeaderboard"></div>
+    <button onclick="showPage('leaderboard')" style="width:100%;margin-top:10px;padding:10px;background:var(--paper);color:#4A4538;border:1px solid var(--line);border-radius:10px;font-size:13px;cursor:pointer;font-weight:600">Poora Leaderboard Dekho →</button>
+  </div>
+
+  <button onclick="shareWebsite()" style="width:100%;padding:13px;background:var(--sage);color:white;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer">Dosto Ko Share Karo</button>
+</div>
+
+<!-- REFER & EARN PAGE -->
+<div id="page-refer" class="page">
+  <div style="text-align:center;padding:16px 0 8px">
+    <div style="font-family:var(--display);font-size:23px;font-weight:700;color:var(--ink)">Refer & Earn</div>
+    <div style="font-size:13px;color:#8A8270;margin-top:4px">Dosto ko bhejo — jab wo plan le, paisa kamao!</div>
+  </div>
+
+  <!-- WALLET CARD -->
+  <div style="background:var(--ink);border-radius:18px;padding:22px;margin-bottom:16px;color:var(--paper);text-align:center">
+    <div style="font-size:11px;opacity:0.55;letter-spacing:1.5px;text-transform:uppercase;font-weight:600">Wallet Balance</div>
+    <div style="font-family:var(--display);font-size:38px;font-weight:700;margin:8px 0">₹<span id="referWalletBal">0</span></div>
+    <div style="display:flex;justify-content:center;gap:18px;margin-top:10px;font-size:12px;opacity:0.7">
+      <div>Total Earned: ₹<span id="referTotalEarned">0</span></div>
+      <div>Referrals: <span id="referTotalCount">0</span></div>
+    </div>
+  </div>
+
+  <!-- REFERRAL LINK -->
+  <div class="card">
+    <div class="card-title">Apna Referral Link</div>
+    <div style="background:var(--paper);border:1.5px dashed var(--line);border-radius:10px;padding:12px;font-size:12.5px;color:#4A4538;word-break:break-all;font-family:monospace" id="referLinkText">Loading...</div>
+    <button onclick="copyReferLink()" style="width:100%;margin-top:10px;padding:12px;background:var(--signal);color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer">Link Copy Karo</button>
+    <button onclick="shareReferLink()" style="width:100%;margin-top:8px;padding:12px;background:var(--sage);color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer">WhatsApp Pe Share Karo</button>
+  </div>
+
+  <!-- COMMISSION TABLE -->
+  <div class="card">
+    <div class="card-title">Commission Rates</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;padding:10px 12px;background:var(--paper);border-radius:10px"><span style="font-size:13px;color:#4A4538">Basic Plan (₹10)</span><span style="font-weight:700;color:var(--signal)">₹5</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 12px;background:var(--paper);border-radius:10px"><span style="font-size:13px;color:#4A4538">Silver Plan (₹20)</span><span style="font-weight:700;color:var(--signal)">₹10</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 12px;background:var(--paper);border-radius:10px"><span style="font-size:13px;color:#4A4538">Gold Plan (₹30)</span><span style="font-weight:700;color:var(--signal)">₹20</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 12px;background:var(--paper);border-radius:10px"><span style="font-size:13px;color:#4A4538">Platinum Plan (₹50)</span><span style="font-weight:700;color:var(--signal)">₹30</span></div>
+    </div>
+    <div style="font-size:11.5px;color:#8A8270;margin-top:10px;text-align:center">Jab bhi tumhara referred dost koi plan le — har baar commission milega!</div>
+  </div>
+
+  <!-- WITHDRAW -->
+  <div class="card">
+    <div class="card-title">Withdraw Karo</div>
+    <div style="font-size:11.5px;color:#8A8270;margin-bottom:12px">Minimum ₹200 — Koi maximum limit nahi!</div>
+    <label style="font-size:11px;font-weight:700;color:#8A8270;text-transform:uppercase;letter-spacing:0.5px">Amount (₹)</label>
+    <input type="number" id="withdrawAmount" placeholder="50" style="width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;margin:6px 0 12px;outline:none">
+    <label style="font-size:11px;font-weight:700;color:#8A8270;text-transform:uppercase;letter-spacing:0.5px">UPI ID</label>
+    <input type="text" id="withdrawUpi" placeholder="yourname@upi" style="width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;margin:6px 0 12px;outline:none">
+    <button onclick="requestWithdrawal()" style="width:100%;padding:13px;background:var(--sage);color:white;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer">Withdraw Request Bhejo</button>
+    <div id="withdrawMsg" style="font-size:12.5px;text-align:center;margin-top:10px;display:none"></div>
+  </div>
+
+  <!-- WITHDRAWAL HISTORY -->
+  <div class="card">
+    <div class="card-title">Withdrawal History</div>
+    <div id="withdrawHistoryList"><p style="font-size:12px;color:#8A8270;text-align:center;padding:10px">Koi history nahi</p></div>
+  </div>
+</div>
+
+<!-- PLANS -->
+<div id="page-plans" class="page">
+
+  <div style="text-align:center;padding:16px 0 8px">
+    <div style="font-size:11px;color:#999;letter-spacing:2px;text-transform:uppercase">Aman & Aiman</div>
+    <div style="font-size:22px;font-weight:900;color:#ff0000">💎 Premium Plans</div>
+    <div style="font-size:13px;color:#666;margin-top:4px">Plan lein — Subscribers paayein — Channel grow karo!</div>
+  </div>
+
+  <!-- BASIC -->
+  <div style="background:linear-gradient(135deg,#fff,#fff8f8);border:2px solid #ffcccc;border-radius:16px;padding:18px;margin-bottom:12px;box-shadow:0 2px 10px rgba(255,0,0,0.08)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div>
+        <div style="font-size:16px;font-weight:800;color:#333">🥉 Basic Plan</div>
+        <div style="font-size:12px;color:#888">12 ghante active • 10 subscribe karo</div>
+      </div>
+      <div style="font-size:28px;font-weight:900;color:#ff0000">₹10</div>
+    </div>
+    <div style="background:#fff5f5;border-radius:10px;padding:10px;margin-bottom:12px">
+      <div style="font-size:15px;font-weight:700;color:#ff0000">🚀 500 Subscribers milenge</div>
+    </div>
+    <button onclick="selectAndPay('basic',10)" style="width:100%;padding:12px;background:#ff0000;color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer">💳 ₹10 Pay Karo → Abhi Lein</button>
+  </div>
+
+  <!-- SILVER -->
+  <div style="background:linear-gradient(135deg,#f8f8ff,#f0f0ff);border:2px solid #c0c0ff;border-radius:16px;padding:18px;margin-bottom:12px;box-shadow:0 2px 10px rgba(100,100,255,0.08)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div>
+        <div style="font-size:16px;font-weight:800;color:#333">🥈 Silver Plan</div>
+        <div style="font-size:12px;color:#888">15 ghante active • 10 subscribe karo</div>
+      </div>
+      <div style="font-size:28px;font-weight:900;color:#6666ff">₹20</div>
+    </div>
+    <div style="background:#f0f0ff;border-radius:10px;padding:10px;margin-bottom:12px">
+      <div style="font-size:15px;font-weight:700;color:#6666ff">🚀 1000 Subscribers milenge</div>
+    </div>
+    <button onclick="selectAndPay('silver',20)" style="width:100%;padding:12px;background:#6666ff;color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer">💳 ₹20 Pay Karo → Abhi Lein</button>
+  </div>
+
+  <!-- GOLD -->
+  <div style="background:linear-gradient(135deg,#fffdf0,#fff8e0);border:2px solid #ffd700;border-radius:16px;padding:18px;margin-bottom:12px;box-shadow:0 2px 10px rgba(255,200,0,0.15);position:relative">
+    <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#ffd700;color:#333;font-size:11px;font-weight:bold;padding:3px 14px;border-radius:20px">⭐ BEST VALUE</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;margin-top:8px">
+      <div>
+        <div style="font-size:16px;font-weight:800;color:#333">🥇 Gold Plan</div>
+        <div style="font-size:12px;color:#888">20 ghante active • 10 subscribe karo</div>
+      </div>
+      <div style="font-size:28px;font-weight:900;color:#cc8800">₹30</div>
+    </div>
+    <div style="background:#fff8e0;border-radius:10px;padding:10px;margin-bottom:12px">
+      <div style="font-size:15px;font-weight:700;color:#cc8800">🚀 1500 Subscribers milenge</div>
+    </div>
+    <button onclick="selectAndPay('gold',30)" style="width:100%;padding:12px;background:linear-gradient(135deg,#cc8800,#ffaa00);color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer">💳 ₹30 Pay Karo → Abhi Lein</button>
+  </div>
+
+  <!-- PLATINUM -->
+  <div style="background:linear-gradient(135deg,#f5f0ff,#ede0ff);border:2px solid #9b30ff;border-radius:16px;padding:18px;margin-bottom:12px;box-shadow:0 4px 15px rgba(155,48,255,0.15)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div>
+        <div style="font-size:16px;font-weight:800;color:#333">💎 Platinum Plan</div>
+        <div style="font-size:12px;color:#888">25 ghante active • 10 subscribe karo</div>
+      </div>
+      <div style="font-size:28px;font-weight:900;color:#9b30ff">₹50</div>
+    </div>
+    <div style="background:#ede0ff;border-radius:10px;padding:10px;margin-bottom:12px">
+      <div style="font-size:15px;font-weight:700;color:#9b30ff">🚀 3000 Subscribers milenge</div>
+    </div>
+    <button onclick="selectAndPay('platinum',50)" style="width:100%;padding:12px;background:linear-gradient(135deg,#6a0dad,#9b30ff);color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer">💳 ₹50 Pay Karo → Abhi Lein</button>
+  </div>
+
+  <!-- PAYMENT BOX -->
+  <div id="paymentBox" style="display:none;background:linear-gradient(135deg,#f0fff4,#e8f5e9);border:2px solid #4caf50;border-radius:16px;padding:20px;margin-bottom:12px;text-align:center">
+    <div style="font-size:16px;font-weight:bold;color:#333;margin-bottom:8px">💳 Payment Karo</div>
+    <div id="planInfoBox" style="background:#ff0000;color:white;border-radius:10px;padding:8px;margin-bottom:12px;font-size:13px;font-weight:bold"></div>
+    <div style="font-size:32px;font-weight:900;color:#ff0000;margin:8px 0">₹<span id="payAmount">0</span></div>
+    <div style="background:white;border-radius:12px;padding:14px;margin-bottom:14px;font-size:13px;color:#555;text-align:left">
+      ✅ UPI, PhonePe, GPay, Debit/Credit Card<br>
+      ✅ Payment hote hi automatically active<br>
+      ✅ 100% secure payment
+    </div>
+    <button onclick="startCashfreePayment()" id="payBtn" style="width:100%;padding:15px;background:linear-gradient(135deg,#6c3fe8,#4a2db5);color:white;border:none;border-radius:12px;font-size:17px;font-weight:bold;cursor:pointer;margin-bottom:10px">
+      💳 Pay ₹<span id="cashfreePayAmt">0</span> — Abhi Karo
+    </button>
+    <div id="verifyBtnBox" style="display:none;margin-bottom:10px">
+      <div style="background:#fff3e0;border-radius:10px;padding:10px;font-size:13px;color:#e65100;margin-bottom:8px">💡 Payment kar diya? Verify karo!</div>
+      <button onclick="manualVerifyPayment()" style="width:100%;padding:13px;background:#28a745;color:white;border:none;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer">✅ Payment Verify Karo</button>
+    </div>
+    <button onclick="document.getElementById('paymentBox').style.display='none'" style="width:100%;padding:12px;background:#888;color:white;border:none;border-radius:12px;font-size:14px;cursor:pointer">Cancel</button>
+  </div>
+
+  <!-- PENDING BOX -->
+  <div id="pendingBox" style="display:none;background:linear-gradient(135deg,#fff8e1,#fff3cd);border:2px solid #ffc107;border-radius:16px;padding:20px;margin-bottom:12px;text-align:center">
+    <div style="font-size:36px">⏳</div>
+    <div style="font-size:16px;font-weight:bold;color:#333;margin:8px 0">Payment Verify Ho Raha Hai</div>
+    <div style="font-size:13px;color:#666">Thodi der mein subscribe page aayega!</div>
+    <button onclick="checkActivation()" style="width:100%;margin-top:12px;padding:12px;background:#ff0000;color:white;border:none;border-radius:10px;font-size:14px;font-weight:bold;cursor:pointer">🔄 Status Check Karo</button>
+  </div>
+
+</div>
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page">
+  <div style="font-size:18px;font-weight:800;color:#333;margin-bottom:14px">📊 My Dashboard</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+    <div style="background:linear-gradient(135deg,#fff0f0,#ffe0e0);border-radius:14px;padding:14px;text-align:center">
+      <div style="font-size:22px;font-weight:800;color:#ff0000" id="dashViews">0</div>
+      <div style="font-size:11px;color:#888;margin-top:2px">👁️ Total Views</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#f0fff4,#e0ffe8);border-radius:14px;padding:14px;text-align:center">
+      <div style="font-size:22px;font-weight:800;color:#28a745" id="dashClicks">0</div>
+      <div style="font-size:11px;color:#888;margin-top:2px">🔗 Link Clicks</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#f5f0ff,#ede0ff);border-radius:14px;padding:14px;text-align:center">
+      <div style="font-size:16px;font-weight:800;color:#9b30ff" id="dashPlan">Free</div>
+      <div style="font-size:11px;color:#888;margin-top:2px">💎 Current Plan</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#fffdf0,#fff8e0);border-radius:14px;padding:14px;text-align:center">
+      <div style="font-size:16px;font-weight:800;color:#cc8800" id="dashStatus">—</div>
+      <div style="font-size:11px;color:#888;margin-top:2px">📡 Status</div>
+    </div>
+  </div>
+
+  <div id="dashStatusCard"></div>
+
+  <div style="background:white;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,0.06)">
+    <div style="font-size:13px;color:#999;margin-bottom:6px">🔗 Aapka YouTube Channel</div>
+    <a id="dashLinkBox" href="#" target="_blank" style="display:block;text-decoration:none">
+      <div style="background:#f9f9f9;border-radius:10px;padding:12px;border:1px solid #eee">
+        <div style="font-size:13px;color:#ff0000;font-weight:600;word-break:break-all" id="dashLinkUrl">Loading...</div>
+        <div style="font-size:11px;color:#28a745;margin-top:4px">▶️ Tap karo — YouTube khulega!</div>
+      </div>
+    </a>
+  </div>
+
+  <button onclick="shareWebsite()" style="width:100%;padding:13px;background:linear-gradient(135deg,#25d366,#128c7e);color:white;border:none;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer;margin-bottom:10px">📤 Share Karo</button>
+  <button onclick="showPage('plans')" style="width:100%;padding:13px;background:linear-gradient(135deg,#ff0000,#cc0000);color:white;border:none;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer">💎 Plan Upgrade Karo</button>
+</div>
+
+<!-- LEADERBOARD -->
+<div id="page-leaderboard" class="page">
+  <div class="card">
+    <div class="card-title">🏆 Top Channels Leaderboard</div>
+    <p style="font-size:13px;color:#666;margin-bottom:10px">Sabse zyada active channels!</p>
+  </div>
+  <div id="leaderboardList">
+    <p style="text-align:center;color:#999;padding:20px">Loading...</p>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div id="page-profile" class="page">
+  <!-- Profile Header -->
+  <div style="background:linear-gradient(135deg,#ff0000,#cc0000);border-radius:20px;padding:24px;text-align:center;margin-bottom:14px">
+    <div id="profilePhotoDiv" style="margin-bottom:10px"></div>
+    <div style="font-size:20px;font-weight:800;color:white" id="profileNameBig">Loading...</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.8);margin-top:3px" id="profileEmailText"></div>
+    <div style="display:inline-block;background:rgba(255,255,255,0.2);color:white;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;margin-top:8px" id="profilePlanBadge">Free Plan</div>
+  </div>
+
+  <!-- YouTube Link -->
+  <div style="background:white;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06)">
+    <div style="font-size:14px;font-weight:700;color:#333;margin-bottom:10px">📺 YouTube Channel</div>
+    <a id="profileLinkBox" href="#" target="_blank" style="display:block;text-decoration:none;margin-bottom:10px">
+      <div style="background:#f9f9f9;border-radius:10px;padding:10px;border:1px solid #eee">
+        <div style="font-size:12px;color:#ff0000;word-break:break-all" id="profileLinkUrl">Loading...</div>
+      </div>
+    </a>
+    <input type="url" id="newYtLink" placeholder="Naya YouTube link daalo" style="width:100%;padding:11px;border:2px solid #eee;border-radius:10px;font-size:14px;box-sizing:border-box;margin-bottom:8px">
+    <button onclick="updateYtLink()" style="width:100%;padding:11px;background:#0088cc;color:white;border:none;border-radius:10px;font-size:14px;font-weight:bold;cursor:pointer">🔗 Link Update Karo</button>
+  </div>
+
+  <!-- Stats -->
+  <div style="background:white;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06)">
+    <div style="font-size:14px;font-weight:700;color:#333;margin-bottom:12px">📊 My Statistics</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:#f9f9f9;border-radius:10px">
+        <span style="font-size:13px;color:#555">👁️ Total Views</span>
+        <span style="font-size:15px;font-weight:800;color:#ff0000" id="profileViews">0</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:#f9f9f9;border-radius:10px">
+        <span style="font-size:13px;color:#555">🔗 Link Clicks</span>
+        <span style="font-size:15px;font-weight:800;color:#ff0000" id="profileClicks">0</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:#f9f9f9;border-radius:10px">
+        <span style="font-size:13px;color:#555">💎 Current Plan</span>
+        <span style="font-size:15px;font-weight:800;color:#9b30ff" id="profilePlan">Free</span>
+      </div>
+    </div>
+  </div>
+
+  <button onclick="showPage('plans')" style="width:100%;padding:13px;background:linear-gradient(135deg,#ff0000,#cc0000);color:white;border:none;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer;margin-bottom:10px">💎 Plan Upgrade Karo</button>
+  <button onclick="logout()" style="width:100%;padding:13px;background:#888;color:white;border:none;border-radius:12px;font-size:14px;cursor:pointer">🚪 Logout</button>
+</div>
+
+<!-- BLOG / FAQ -->
+<div id="page-blog" class="page">
+  <div style="background:var(--ink);color:var(--paper);padding:22px 16px;margin:-16px -16px 16px;border-radius:0 0 20px 20px">
+    <div style="font-family:var(--display);font-size:22px;font-weight:700">Blog & Guide</div>
+    <div style="font-size:12.5px;opacity:0.6;margin-top:4px">YouTube growth ke tips aur tricks</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">YouTube Subscribers Kaise Badhaye? (2024 Guide)</div>
+    <div style="font-size:13px;color:#4A4538;line-height:1.7">
+      YouTube pe success pane ke liye subscribers bahut zaroori hain. Jab aapke subscribers badhte hain, to aapki videos zyada logon tak pahunhti hain aur YouTube algorithm bhi aapki videos zyada promote karta hai.<br><br>
+      <b>1. Regular Content Upload Karo</b><br>
+      Consistency sabse important hai. Hafte mein kam se kam 2-3 videos upload karo. YouTube algorithm un channels ko prefer karta hai jo regularly content dete hain.<br><br>
+      <b>2. Thumbnail Aur Title Pe Dhyan Do</b><br>
+      Aapki video ka thumbnail aur title hi pehli cheez hai jo log dekhte hain. Attractive thumbnail aur curiosity-provoking title click-through rate badhata hai.<br><br>
+      <b>3. SEO Ka Dhyan Rakho</b><br>
+      Video description mein keywords use karo. Tags properly bharo. Yahi cheeze YouTube ko batati hain ki aapki video kis topic ke baare mein hai.<br><br>
+      <b>4. Community Engage Karo</b><br>
+      Comments ka reply do, community posts likho, aur viewers ke saath connect karo. Jab audience feel kare ki creator unse baat karta hai, to wo subscribe karte hain.<br><br>
+      <b>5. YT Sub Exchange Use Karo</b><br>
+      YT Sub Exchange ek platform hai jahan real YouTube creators ek dusre ke channels subscribe karte hain. Aap bhi join karke real subscribers pa sakte ho sirf ₹10 se!
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">YT Sub Exchange Kaise Kaam Karta Hai?</div>
+    <div style="font-size:13px;color:#4A4538;line-height:1.7">
+      YT Sub Exchange ek subscriber exchange platform hai jahan Indian YouTube creators ek dusre ke channels subscribe karte hain aur apne channels ko grow karte hain.<br><br>
+      <b>Step 1: Google Login</b><br>
+      Apne Google account se login karo — bilkul safe aur secure hai.<br><br>
+      <b>Step 2: YouTube Link Daalo</b><br>
+      Apna YouTube channel link daalo jisse doosre creators aapka channel subscribe kar sakein.<br><br>
+      <b>Step 3: Plan Kharido</b><br>
+      Basic ₹10 se lekar Platinum ₹50 tak — apne budget ke hisab se plan lo.<br><br>
+      <b>Step 4: 10 Channels Subscribe Karo</b><br>
+      Doosre creators ke channels subscribe karo — jab aap 10 channels subscribe karo, to aapka channel bhi platform pe active ho jaata hai.<br><br>
+      <b>Step 5: Subscribers Pao!</b><br>
+      Aapka channel ab platform pe dikhega aur doosre creators aapko subscribe karenge. Basic mein 500, Silver mein 1000, Gold mein 1500, aur Platinum mein 3000 subscribers milte hain!
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Refer & Earn — Paisa Kamao!</div>
+    <div style="font-size:13px;color:#4A4538;line-height:1.7">
+      YT Sub Exchange ka Refer & Earn program aapko apne dosto ko refer karke paisa kamane ka mauka deta hai.<br><br>
+      <b>Commission Rates:</b><br>
+      • Basic Plan (₹10) → <b style="color:var(--signal)">₹5 commission</b><br>
+      • Silver Plan (₹20) → <b style="color:var(--signal)">₹10 commission</b><br>
+      • Gold Plan (₹30) → <b style="color:var(--signal)">₹20 commission</b><br>
+      • Platinum Plan (₹50) → <b style="color:var(--signal)">₹30 commission</b><br><br>
+      Jab bhi aapka referred dost koi plan kharide, aapko turant wallet mein commission milega. Minimum ₹200 se withdraw kar sakte ho — koi maximum limit nahi!
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Aksar Puche Jane Wale Sawal (FAQ)</div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="border-left:3px solid var(--signal);padding-left:12px">
+        <div style="font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:4px">Q: Kya subscribers real hote hain?</div>
+        <div style="font-size:13px;color:#4A4538">Haan! Ye sab real Indian YouTube creators hain jo platform pe registered hain aur genuinely ek dusre ke channels subscribe karte hain.</div>
+      </div>
+      <div style="border-left:3px solid var(--signal);padding-left:12px">
+        <div style="font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:4px">Q: Payment kaise karu?</div>
+        <div style="font-size:13px;color:#4A4538">UPI, PhonePe, GPay, ya credit/debit card se payment kar sakte ho. Cashfree secure payment gateway use hota hai.</div>
+      </div>
+      <div style="border-left:3px solid var(--signal);padding-left:12px">
+        <div style="font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:4px">Q: Kitne time mein active hoga?</div>
+        <div style="font-size:13px;color:#4A4538">10 channels subscribe karne ke baad aapka channel platform pe active ho jaata hai. Basic plan 12 ghante, Silver 15 ghante, Gold 20 ghante, Platinum 25 ghante active rehta hai.</div>
+      </div>
+      <div style="border-left:3px solid var(--signal);padding-left:12px">
+        <div style="font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:4px">Q: Referral earnings kab milenge?</div>
+        <div style="font-size:13px;color:#4A4538">Jab aapka referred dost payment complete kare, turant aapke wallet mein commission credit ho jaata hai.</div>
+      </div>
+      <div style="border-left:3px solid var(--signal);padding-left:12px">
+        <div style="font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:4px">Q: Withdrawal kaise karu?</div>
+        <div style="font-size:13px;color:#4A4538">Minimum ₹200 hone pe Refer & Earn section mein jaao, apna UPI ID daalo aur request bhejo. Admin 24-48 ghante mein process karega.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">YouTube Channel Grow Karne Ki Tips</div>
+    <div style="font-size:13px;color:#4A4538;line-height:1.7">
+      <b>1. Niche Select Karo</b> — Ek specific topic pe focus karo jaise gaming, cooking, education, comedy, etc. Niche channel zyada fast grow karta hai.<br><br>
+      <b>2. Quality > Quantity</b> — Acchi quality ki kam videos, kharab quality ki zyada videos se behtar hain.<br><br>
+      <b>3. Shorts Banao</b> — YouTube Shorts abhi bahut trend mein hain. Shorts se naye subscribers aate hain jo phir main channel pe aate hain.<br><br>
+      <b>4. Collaboration Karo</b> — Doosre YouTubers ke saath collaborate karo — dono channels ke viewers expose hote hain.<br><br>
+      <b>5. Analytics Dekho</b> — YouTube Studio mein regularly analytics check karo — kaunsi videos zyada dekhi jaati hain, kahan se viewers aate hain, ye samjho aur usi hisab se content banao.
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// Plan configuration - ek jagah sabkuch define karo
+const PLAN_CONFIG = {
+  free:     { ads: 0, subs: 0, price: 0,  label: 'Free' },
+  basic:    { ads: 2, subs: 5,  price: 10, label: 'Basic' },
+  silver:   { ads: 2, subs: 7,  price: 20, label: 'Silver' },
+  gold:     { ads: 2, subs: 9,  price: 30, label: 'Gold' },
+  platinum: { ads: 2, subs: 11, price: 50, label: 'Platinum' }
+};
+
+let userId=null,ytLink='',userEmail='',userName='',userPhoto='',userPlan='free',adsWatched=0,subsGiven=0,adInt=null,requiredAds=3,requiredSubs=10,selectedPlan=null,currentPaymentId=null;
+
+window.onload=async function(){
+  loadStats();
+  loadAdminSettings();
+  const urlParams=new URLSearchParams(window.location.search);
+
+  // ✅ Referral code capture — pehli baar landing pe save karo
+  const refCode=urlParams.get('ref');
+  if(refCode && !localStorage.getItem('yt_user')){
+    localStorage.setItem('pending_ref', refCode.toUpperCase());
+  }
+  const savedRef = localStorage.getItem('pending_ref');
+  const loginBtn = document.getElementById('googleLoginBtn');
+  if(loginBtn){
+    loginBtn.href = savedRef ? ('/auth/google?ref=' + encodeURIComponent(savedRef)) : '/auth/google';
+  }
+
+  const gUserId=urlParams.get('userId');
+  const error=urlParams.get('error');
+  if(error){alert('Login mein problem aayi!');window.history.replaceState({},'','/');return;}
+  if(gUserId){
+    userId=gUserId;
+    userEmail=decodeURIComponent(urlParams.get('email')||'');
+    userName=decodeURIComponent(urlParams.get('name')||'');
+    userPhoto=decodeURIComponent(urlParams.get('photo')||'');
+    ytLink=decodeURIComponent(urlParams.get('ytLink')||'');
+    userPlan=urlParams.get('plan')||'free';
+    adsWatched=parseInt(urlParams.get('adsWatched'))||0;
+    const myReferralCode=urlParams.get('referralCode')||'';
+    const isActive=urlParams.get('isActive')==='true';
+    const cfg=PLAN_CONFIG[userPlan]||PLAN_CONFIG.free;
+    requiredAds=cfg.ads;
+    requiredSubs=cfg.subs;
+    localStorage.setItem('yt_user',JSON.stringify({userId,ytLink,email:userEmail,name:userName,photo:userPhoto,plan:userPlan,referralCode:myReferralCode}));
+    localStorage.removeItem('pending_ref');
+    window.history.replaceState({},'','/');
+    setupLoggedIn();
+    if(!ytLink){showAppPage('ytlink');}
+    else{showAppPage('home');loadDashboard();loadLeaderboard();}
+    return;
+  }
+  const saved=localStorage.getItem('yt_user');
+  if(saved){
+    try{
+      const data=JSON.parse(saved);
+      userId=data.userId;ytLink=data.ytLink;userEmail=data.email;
+      userName=data.name||'';userPhoto=data.photo||'';userPlan=data.plan||'free';
+      const cfg=PLAN_CONFIG[userPlan]||PLAN_CONFIG.free;
+      requiredAds=0;
+      requiredSubs=10;
+      setupLoggedIn();
+      if(!ytLink){showAppPage('ytlink');}
+      else{showAppPage('home');loadDashboard();loadLeaderboard();}
+    }catch(e){localStorage.removeItem('yt_user');}
+  }
+}
+
+
+async function loadAdminSettings() {
+  try {
+    const r = await fetch('https://yt-sub-exchange.onrender.com/admin/get-settings');
+    const d = await r.json();
+    if(!d.success) return;
+
+    // Update content
+    if(d.content) {
+      if(d.content.siteName) {
+        document.querySelectorAll('.site-name').forEach(el => el.textContent = d.content.siteName);
+        document.title = d.content.siteName;
+      }
+      if(d.content.heroTitle) {
+        const h = document.querySelector('#page-home h1, #page-home .hero-title');
+        if(h) h.textContent = d.content.heroTitle;
+      }
+      if(d.content.heroSub) {
+        const p = document.querySelector('#page-home .hero-sub, #page-home p');
+        if(p) p.textContent = d.content.heroSub;
+      }
+    }
+
+    // Update QR
+    if(d.qrImage) {
+      const qrImg = document.querySelector('.qr-img, #qrImage');
+      if(qrImg) qrImg.src = d.qrImage;
+    }
+
+    // Update logo
+    if(d.logo) {
+      const logoEls = document.querySelectorAll('.logo-img');
+      logoEls.forEach(el => el.src = d.logo);
+    }
+
+    // Update plans
+    if(d.plans) {
+      if(d.plans.basic) PLAN_CONFIG.basic.price = d.plans.basic.price || 10;
+      if(d.plans.silver) PLAN_CONFIG.silver.price = d.plans.silver.price || 20;
+      if(d.plans.gold) PLAN_CONFIG.gold.price = d.plans.gold.price || 30;
+      if(d.plans.platinum) PLAN_CONFIG.platinum.price = d.plans.platinum.price || 50;
+    }
+
+    // Update UPI
+    if(d.contact && d.contact.upiId) {
+      window.ADMIN_UPI_ID = d.contact.upiId;
+    }
+  } catch(e) {}
+}
+
+async function loadStats(){
+  try{
+    const r=await fetch('https://yt-sub-exchange.onrender.com/api/stats');
+    const d=await r.json();
+    ['statUsers','homeStatUsers'].forEach(id=>document.getElementById(id).textContent=d.totalUsers||0);
+    ['statActive','homeStatActive'].forEach(id=>document.getElementById(id).textContent=d.activePromos||0);
+    ['statPremium','homeStatPremium'].forEach(id=>document.getElementById(id).textContent=d.premiumUsers||0);
+  }catch(e){}
+}
+
+async function loadLeaderboard(){
+  try{
+    const r=await fetch('https://yt-sub-exchange.onrender.com/api/leaderboard');
+    const d=await r.json();
+    if(!d.users||d.users.length===0){
+      document.getElementById('leaderboardList').innerHTML='<p style="text-align:center;color:#999;padding:20px">Abhi koi data nahi!</p>';
+      document.getElementById('homeLeaderboard').innerHTML='<p style="text-align:center;color:#999;font-size:13px">Abhi koi data nahi!</p>';
+      return;
+    }
+    // Leaderboard mein sirf naam dikhao (plan/stats nahi)
+    const html=d.users.map((u,i)=>{
+      const rankClass=i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other';
+      const rankText=i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
+      const displayName=u.name||u.email.split('@')[0];
+      return '<div class="leader-card"><div class="leader-rank '+rankClass+'">'+rankText+'</div><div class="leader-info"><div class="leader-name">'+displayName+'</div></div></div>';
+    }).join('');
+    document.getElementById('leaderboardList').innerHTML=html;
+    // Home top 3 mein bhi sirf naam
+    document.getElementById('homeLeaderboard').innerHTML=d.users.slice(0,3).map((u,i)=>{
+      const rankText=i===0?'🥇':i===1?'🥈':'🥉';
+      const displayName=u.name||u.email.split('@')[0];
+      return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px"><span>'+rankText+' '+displayName+'</span></div>';
+    }).join('');
+  }catch(e){
+    document.getElementById('leaderboardList').innerHTML='<p style="text-align:center;color:#999;padding:20px">Loading...</p>';
+  }
+}
+
+function setupLoggedIn(){
+  document.getElementById('logoutBtn').style.display='block';
+  document.getElementById('bottomNav').classList.add('show');
+  if(userPhoto){document.getElementById('userAvatar').src=userPhoto;document.getElementById('userAvatar').style.display='block';}
+  document.getElementById('userName').textContent=userName.split(' ')[0]||userEmail.split('@')[0];
+}
+
+function showAppPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pageMap={home:'page-home',plans:'page-plans',dashboard:'page-dashboard',profile:'page-profile',ytlink:'page-ytlink',ads:'page-ads',subscribe:'page-subscribe',leaderboard:'page-leaderboard'};
+  document.getElementById(pageMap[page]||'page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const navMap={home:'nav-home',plans:'nav-plans',dashboard:'nav-dashboard',leaderboard:'nav-leaderboard',profile:'nav-profile'};
+  if(navMap[page])document.getElementById(navMap[page]).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showPage(page){
+  if(!userId && page !== 'blog'){showAppPage('login');return;}
+  showAppPage(page);
+  if(page==='dashboard')loadDashboard();
+  if(page==='profile')loadProfile();
+  if(page==='leaderboard')loadLeaderboard();
+  if(page==='refer')loadReferPage();
+}
+
+async function saveYoutubeLink(){
+  const yt=document.getElementById('ytLinkInput').value.trim();
+  if(!yt||(!yt.includes('youtube.com')&&!yt.includes('youtu.be'))){alert('Valid YouTube link daalo!');return;}
+  ytLink=yt;
+  await fetch('https://yt-sub-exchange.onrender.com/api/update-youtube',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,youtubeLink:yt})});
+  const saved=JSON.parse(localStorage.getItem('yt_user')||'{}');
+  localStorage.setItem('yt_user',JSON.stringify({...saved,ytLink:yt}));
+  showAppPage('home');loadDashboard();
+}
+
+function startAds(){
+  adsWatched=0;
+  const cfg=PLAN_CONFIG[userPlan]||PLAN_CONFIG.free;
+  requiredAds=cfg.ads;
+  document.getElementById('adBar').style.width='0%';
+  document.getElementById('adBar').textContent='0%';
+  document.getElementById('adTxt').textContent='0 / '+requiredAds+' ads dekhe';
+  showAppPage('subscribe');startTimer();
+}
+
+function startTimer(){
+  let s=15;
+  const btn=document.getElementById('adBtn');
+  const num=document.getElementById('timerNum');
+  btn.disabled=true;btn.textContent='⏳ Ad chal rahi hai...';
+  clearInterval(adInt);
+  adInt=setInterval(()=>{s--;num.textContent=s;if(s<=0){clearInterval(adInt);btn.disabled=false;btn.textContent='✅ Ad Dekh Li! Next →'}},1000);
+}
+
+async function adWatched(){
+  const r=await fetch('https://yt-sub-exchange.onrender.com/api/ad-watched',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId})});
+  const d=await r.json();
+  adsWatched=d.adsWatched;
+  const cfg=PLAN_CONFIG[userPlan]||PLAN_CONFIG.free;
+  requiredAds=d.required||cfg.ads;
+  const p=Math.round((adsWatched/requiredAds)*100);
+  document.getElementById('adBar').style.width=p+'%';
+  document.getElementById('adBar').textContent=p+'%';
+  document.getElementById('adTxt').textContent=adsWatched+' / '+requiredAds+' ads dekhe';
+  if(adsWatched>=requiredAds){
+    const cr=await fetch('https://yt-sub-exchange.onrender.com/api/can-activate/'+userId);
+    const cd=await cr.json();
+    if(cd.isActive){showAppPage('home');loadDashboard();}
+    else{await loadChannels();showAppPage('subscribe');}
+  } else {
+    startTimer();
+    document.getElementById('adBtn').disabled=true;
+    document.getElementById('adBtn').textContent='⏳ Ad chal rahi hai...';
+  }
+}
+
+async function loadSubscribeChannels(){ return loadChannels(); }
+
+async function loadChannels(){
+  try{
+    const r=await fetch('https://yt-sub-exchange.onrender.com/api/get-channels/'+userId);
+    const d=await r.json();
+    const list=document.getElementById('channelsList');
+    if(!list) return;
+
+    // ✅ Server ne already auto-activate kar diya (koi channel nahi tha)
+    if(d.autoActivated){
+      list.innerHTML='<div style="text-align:center;padding:20px;background:#f0fff4;border:2px solid #28a745;border-radius:12px"><div style="font-size:40px">🎉</div><div style="font-weight:bold;color:#28a745;font-size:16px;margin:8px 0">Mubarak!</div><div style="font-size:13px;color:#555">Koi channel nahi tha — aapka link <b>auto-active</b> ho gaya!</div></div>';
+      const saved = JSON.parse(localStorage.getItem('yt_user')||'{}');
+      saved.isActive = true;
+      saved.expiresAt = d.expiresAt;
+      localStorage.setItem('yt_user', JSON.stringify(saved));
+      setTimeout(async()=>{
+        showAppPage('home');
+        await loadDashboard();
+      }, 2000);
+      return;
+    }
+
+    // ❌ Payment nahi hui — plans pe bhejo
+    if(d.needsPayment){
+      list.innerHTML='<div style="text-align:center;padding:20px;background:#fff3f3;border:2px solid #ff0000;border-radius:12px"><div style="font-size:32px">💳</div><div style="font-weight:bold;color:#ff0000;font-size:15px;margin:8px 0">Pehle Payment Karo!</div><button onclick="showPage(\'plans\')" style="background:#ff0000;color:white;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:bold;cursor:pointer;margin-top:8px">Plans Dekho →</button></div>';
+      return;
+    }
+
+    // Koi channel nahi — but server ne auto-activate nahi kiya (edge case)
+    if(!d.channels||d.channels.length===0){
+      list.innerHTML='<div style="text-align:center;padding:20px;background:#f0fff4;border-radius:12px"><div style="font-size:40px">🎉</div><div style="font-weight:bold;color:#28a745;font-size:16px;margin:8px 0">Mubarak!</div><div style="font-size:13px;color:#555">Koi channel nahi — aapka link active ho raha hai...</div></div>';
+      setTimeout(async()=>{ showAppPage('home'); await loadDashboard(); }, 2000);
+      return;
+    }
+
+    // ✅ Channels list dikhao
+    const channels = d.channels.slice(0,10);
+    const required = Math.min(channels.length, 10);
+    requiredSubs = required;
+    subsGiven = 0;
+
+    document.getElementById('subTxt').textContent='0 / '+required+' subscribe karo';
+
+    list.innerHTML = channels.map((c,i)=>{
+      const name = c.name || c.email?.split('@')[0] || 'Channel '+(i+1);
+      const link = c.youtubeLink || '#';
+      return '<div style="background:white;border-radius:12px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 6px rgba(0,0,0,0.06)">'
+        +'<div style="width:40px;height:40px;background:#ff0000;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:16px;flex-shrink:0">'+(i+1)+'</div>'
+        +'<div style="flex:1;min-width:0">'
+        +'<div style="font-size:14px;font-weight:600;color:#333;margin-bottom:3px">'+name+'</div>'
+        +'<div style="font-size:11px;color:#888;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+link.substring(0,40)+'...</div>'
+        +'</div>'
+        +'<button onclick="openSubBtn(this)" data-link="'+link+'" data-id="'+c._id+'" style="background:#ff0000;color:white;border:none;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:bold;cursor:pointer;flex-shrink:0">Subscribe</button>'
+        +'</div>';
+    }).join('');
+  }catch(e){
+    console.log('loadChannels error:',e);
+  }
+}
+
+function goSubscribe(){showAppPage("subscribe");loadChannels();}
+
+async function selectAndPay(plan, amount) {
+  selectedPlan = plan;
+  userPlan = plan;
+  
+  const cfg = PLAN_CONFIG[plan] || PLAN_CONFIG.basic;
+  cfg.price = amount;
+  
+  // Show loading on button
+  const btn = event.currentTarget;
+  const origText = btn.textContent;
+  btn.textContent = '⏳ Loading...';
+  btn.disabled = true;
+  
+  try {
+    // Direct Cashfree payment - no intermediate screen
+    const r = await fetch('https://yt-sub-exchange.onrender.com/api/cashfree/create-order', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ userId, plan, amount: parseInt(amount) })
+    });
+    const d = await r.json();
+    
+    btn.textContent = origText;
+    btn.disabled = false;
+    
+    if(!d.success) {
+      alert('❌ ' + (d.message || 'Payment start nahi hua'));
+      return;
+    }
+    
+    window.currentOrderId = d.orderId;
+    window.currentPlan = plan;
+    
+    // Load Cashfree and open payment
+    await loadCashfreeSDK(d.paymentSessionId);
+    
+  } catch(e) {
+    btn.textContent = origText;
+    btn.disabled = false;
+    alert('❌ Error: ' + e.message);
+  }
+}
+
+function showSubscribeComplete(){
+  const list = document.getElementById('channelsList');
+  if(!list) return;
+  
+  // Send notification to admin
+  sendAdminNotification();
+  
+  list.innerHTML = '<div style="text-align:center;padding:20px">'
+    + '<div style="font-size:50px">🎉</div>'
+    + '<div style="font-size:18px;font-weight:bold;color:#28a745;margin:10px 0">Sabhi Subscribe Ho Gaye!</div>'
+    + '<div style="font-size:13px;color:#555;margin-bottom:20px">Ab Next dabao — Admin aapka link activate karega!</div>'
+    + '<button onclick="showPendingApproval()" style="width:100%;padding:14px;background:linear-gradient(135deg,#ff0000,#cc0000);color:white;border:none;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer">➡️ Next — Admin Ko Bhejo</button>'
+    + '</div>';
+    
+  document.getElementById('subTxt').textContent = '✅ Sab subscribe complete!';
+}
+
+async function sendAdminNotification(){
+  try {
+    const saved = JSON.parse(localStorage.getItem('yt_user') || '{}');
+    const pending = window.pendingPaymentData || {};
+    await fetch('https://yt-sub-exchange.onrender.com/api/payment/subscribe-done', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        userId,
+        paymentId: pending.paymentId || saved.paymentId,
+        plan: userPlan || pending.plan,
+        amount: pending.amount,
+        txnId: pending.txnId,
+        userName: userName,
+        userEmail: userEmail,
+        ytLink: ytLink
+      })
+    });
+  } catch(e) {}
+}
+
+function showPendingApproval(){
+  showAppPage('plans');
+  document.getElementById('paymentBox').style.display = 'none';
+  document.getElementById('pendingBox').style.display = 'block';
+  document.getElementById('pendingBox').scrollIntoView({behavior:'smooth'});
+}
+
+function openSubBtn(btn){
+  const link=btn.getAttribute('data-link');
+  const id=btn.getAttribute('data-id');
+  openSub(link,id,btn);
+}
+
+function openSub(link,id,btn){
+  window.open(link,'_blank');
+  btn.disabled=true;
+  btn.textContent='⏳ Wait...';
+  setTimeout(()=>{btn.textContent='✅ Done';markSub(id);},3000);
+}
+
+async function markSub(id){
+  try{
+    const r=await fetch('https://yt-sub-exchange.onrender.com/api/sub-done',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,subscribedToId:id})});
+    const d=await r.json();
+    subsGiven=d.subsGiven||subsGiven+1;
+    const required=d.requiredSubs||requiredSubs||10;
+    const txt=document.getElementById('subTxt');
+    if(txt) txt.textContent=subsGiven+' / '+required+' subscribe kiye ✅';
+
+    // ✅ Agar activate ho gaya — seedha dashboard pe jao
+    if(d.isActive){
+      const saved = JSON.parse(localStorage.getItem('yt_user')||'{}');
+      saved.isActive = true;
+      saved.expiresAt = d.expiresAt;
+      localStorage.setItem('yt_user', JSON.stringify(saved));
+      showSuccessMsg(userPlan);
+      setTimeout(async()=>{ showAppPage('home'); await loadDashboard(); }, 2500);
+    } else if(subsGiven >= required){
+      showSubscribeComplete();
+    }
+  }catch(e){
+    subsGiven++;
+    const txt=document.getElementById('subTxt');
+    if(txt) txt.textContent=subsGiven+' / '+requiredSubs+' subscribe kiye';
+  }
+}
+
+async function loadDashboard(){
+  if(!userId)return;
+  loadReferralWallet();
+  try{
+    const r=await fetch('https://yt-sub-exchange.onrender.com/api/status/'+userId);
+    const d=await r.json();
+    if(!d.found)return;
+    if(d.youtubeLink)ytLink=d.youtubeLink;
+    document.getElementById('dashViews').textContent=d.totalViews||0;
+    document.getElementById('dashClicks').textContent=d.totalClicks||0;
+    const planLabel=(PLAN_CONFIG[d.plan]||{label:d.plan||'Free'}).label;
+    document.getElementById('dashPlan').textContent=planLabel||d.plan||'Free';
+    document.getElementById('dashStatus').textContent=d.isActive?'✅':'⏳';
+    const linkBox=document.getElementById('dashLinkBox');
+    const linkUrl=document.getElementById('dashLinkUrl');
+    if(linkBox) linkBox.href=ytLink||'#';
+    if(linkUrl) linkUrl.textContent=ytLink||'—';
+    
+    let statusHtml='';
+    if(d.isActive){
+      statusHtml='<div class="status-active" style="background:#f0fff4;border:2px solid #28a745;border-radius:14px;padding:16px;text-align:center">'
+        +'<p style="font-size:28px">✅</p>'
+        +'<p style="font-weight:bold;color:#28a745;font-size:15px">'+d.message+'</p>'
+        +'</div>';
+    } else if(d.paymentVerified) {
+      // Payment ho gayi — subscribe karna baaki hai
+      statusHtml='<div style="background:#fff8e1;border:2px solid #ffc107;border-radius:14px;padding:16px;text-align:center">'
+        +'<p style="font-size:28px">📋</p>'
+        +'<p style="font-weight:bold;color:#e65100;font-size:15px">10 Channels Subscribe Karo!</p>'
+        +'<p style="font-size:13px;color:#666;margin:6px 0">'+d.message+'</p>'
+        +'<button class="btn" onclick="goSubscribe()" style="margin-top:10px">▶️ Subscribe Karo →</button>'
+        +'</div>';
+    } else if(d.pendingPayment) {
+      statusHtml='<div style="background:#fff3cd;border:2px solid #ffc107;border-radius:14px;padding:16px;text-align:center">'
+        +'<p style="font-size:28px">⏳</p>'
+        +'<p style="font-weight:bold;color:#856404;font-size:15px">Payment Verify Ho Rahi Hai</p>'
+        +'<p style="font-size:13px;color:#666">Admin verify karega — thodi der mein subscribe option milega</p>'
+        +'</div>';
+    } else {
+      statusHtml='<div class="status-expire"><p style="font-size:24px">⏰</p>'
+        +'<p style="font-weight:bold;color:#cc0000">'+d.message+'</p>'
+        +'<button class="btn" onclick="showPage(\'plans\')" style="margin-top:10px">💎 Plan Lein</button></div>';
+    }
+    const dashStatusCard=document.getElementById('dashStatusCard');
+    if(dashStatusCard) dashStatusCard.innerHTML=statusHtml;
+    
+    // Update profile page too
+    if(document.getElementById('profilePlan')) document.getElementById('profilePlan').textContent=planLabel||d.plan||'Free';
+    if(document.getElementById('profileViews')) document.getElementById('profileViews').textContent=d.totalViews||0;
+    if(document.getElementById('profileClicks')) document.getElementById('profileClicks').textContent=d.totalClicks||0;
+    
+    // Update userPlan
+    userPlan = d.plan || userPlan;
+  }catch(e){ console.log('Dashboard error:',e); }
+}
+
+async function loadProfile(){
+  if(!userId)return;
+  try{
+    const r=await fetch('https://yt-sub-exchange.onrender.com/api/status/'+userId);
+    const d=await r.json();
+    if(!d.found)return;
+    const photoDiv=document.getElementById('profilePhotoDiv');
+    if(userPhoto){photoDiv.innerHTML='<img src="'+userPhoto+'" class="profile-photo">';}
+    else{photoDiv.innerHTML='<div class="profile-photo-placeholder">'+(userName||userEmail||'U').charAt(0).toUpperCase()+'</div>';}
+    document.getElementById('profileNameBig').textContent=userName||userEmail.split('@')[0];
+    document.getElementById('profileEmailText').textContent=userEmail;
+    const planLabel=(PLAN_CONFIG[d.plan]||PLAN_CONFIG.free).label;
+    document.getElementById('profilePlanBadge').textContent=planLabel+' Plan';
+    document.getElementById('profileLinkBox').href=ytLink;
+    document.getElementById('profileLinkUrl').textContent=ytLink;
+    document.getElementById('profileViews').textContent=d.totalViews||0;
+    document.getElementById('profileClicks').textContent=d.totalClicks||0;
+    document.getElementById('profilePlan').textContent=planLabel;
+  }catch(e){}
+}
+
+function selectPlan(plan){
+  selectedPlan=plan;
+  // Highlight selected plan
+  document.querySelectorAll('.plan-card').forEach(c=>c.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  const cfg=PLAN_CONFIG[plan]||PLAN_CONFIG.free;
+  if(cfg.price>0){
+    document.getElementById('paymentBox').style.display='block';
+    document.getElementById('payAmount').textContent=cfg.price; if(document.getElementById('phonepayAmt')) document.getElementById('phonepayAmt').textContent=cfg.price;
+    const hours = {basic:12,silver:15,gold:20,platinum:25};
+    const cfAmt = document.getElementById('cashfreePayAmt'); if(cfAmt) cfAmt.textContent = cfg.price;
+    const planInfoBox = document.getElementById('planInfoBox');
+    if(planInfoBox) planInfoBox.textContent = '💎 ' + plan.charAt(0).toUpperCase()+plan.slice(1) + ' Plan — ₹' + cfg.price + ' — ' + (hours[plan]||12) + ' ghante active rahega';
+    screenshotData = null;
+    document.getElementById('screenshotPlaceholder').style.display = 'block';
+    document.getElementById('screenshotPreview').style.display = 'none';
+    document.getElementById('paymentBox').scrollIntoView({behavior:'smooth'});
+    createPayment(plan,cfg.price);
+  } else {
+    updatePlan(plan);
+  }
+}
+
+let screenshotData = null;
+
+function handleScreenshot(input) {
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    screenshotData = e.target.result;
+    document.getElementById('screenshotImg').src = screenshotData;
+    document.getElementById('screenshotPlaceholder').style.display = 'none';
+    document.getElementById('screenshotPreview').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function checkActivation() {
+  if(!userId) return;
+  try {
+    const r = await fetch('https://yt-sub-exchange.onrender.com/api/check-active/' + userId);
+    const d = await r.json();
+    if(d.isActive) {
+      document.getElementById('pendingBox').style.display = 'none';
+      showSuccessMsg(userPlan);
+      loadDashboard();
+    } else if(d.pendingPayment) {
+      alert('⏳ Admin abhi verify kar raha hai. Thodi der baad try karo!');
+    } else {
+      alert('❌ Payment verify nahi hua. Admin se contact karo.');
+    }
+  } catch(e) {}
+}
+
+function openPhonePe(){
+  const amount = document.getElementById('payAmount').textContent;
+  const upiId = window.ADMIN_UPI_ID || 'amanalam917696@okicici';
+  const upiLink = 'upi://pay?pa=' + upiId + '&pn=YTSubExchange&am=' + amount + '&cu=INR';
+  
+  // Try to open PhonePe app directly
+  const phonePeLink = 'phonepe://pay?pa=' + upiId + '&pn=YTSubExchange&am=' + amount + '&cu=INR';
+  
+  // Create hidden link and click
+  const a = document.createElement('a');
+  a.href = phonePeLink;
+  a.click();
+  
+  // Fallback to generic UPI after 1.5 sec
+  setTimeout(function(){
+    window.location.href = upiLink;
+  }, 1500);
+}
+
+async function createPayment(plan,amount){
+  try{
+    if(!userId){alert('Pehle login karo!');return;}
+    const r=await fetch('https://yt-sub-exchange.onrender.com/api/payment/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,plan,amount})});
+    const d=await r.json();
+    if(d.success){
+      currentPaymentId=d.paymentId;
+      console.log('Payment created:',currentPaymentId);
+    }
+  }catch(e){
+    console.log('Payment create error:',e);
+    // Fallback - store plan locally for manual verification
+    currentPaymentId='MANUAL_'+plan+'_'+Date.now();
+  }
+}
+
+
+// ============================================================
+// CASHFREE PAYMENT
+// ============================================================
+async function startCashfreePayment() {
+  const amount = document.getElementById('payAmount').textContent;
+  if(!amount || amount === '0') { alert('Plan select karo!'); return; }
+  if(!userId) { alert('Pehle login karo!'); return; }
+
+  try {
+    // Show loading
+    const btn = document.querySelector('[onclick="startCashfreePayment()"]');
+    if(btn) { btn.textContent = '⏳ Loading...'; btn.disabled = true; }
+    // Show verify button after 30 seconds
+    setTimeout(() => {
+      document.getElementById('verifyBtnBox').style.display = 'block';
+      if(btn) { btn.textContent = '💳 Pay ₹' + document.getElementById('payAmount').textContent + ' — Dobara Try Karo'; btn.disabled = false; }
+    }, 30000);
+
+    const r = await fetch('https://yt-sub-exchange.onrender.com/api/cashfree/create-order', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ userId, plan: selectedPlan, amount: parseInt(amount) })
+    });
+    const d = await r.json();
+    
+    if(!d.success) {
+      alert('❌ Payment start nahi hua: ' + d.message);
+      if(btn) { btn.textContent = '💳 Pay ₹' + amount + ' — Abhi Karo'; btn.disabled = false; }
+      return;
+    }
+
+    // Store order info
+    window.currentOrderId = d.orderId;
+    window.currentPlan = selectedPlan;
+
+    // Load Cashfree SDK and open payment
+    const cashfree = await loadCashfreeSDK(d.paymentSessionId);
+    
+  } catch(e) {
+    console.error('Payment error:', e);
+    alert('❌ Error: ' + e.message);
+  }
+}
+
+async function loadCashfreeSDK(sessionId) {
+  return new Promise((resolve) => {
+    // Load Cashfree JS SDK
+    if(!window.Cashfree) {
+      const script = document.createElement('script');
+      script.src = 'https://sdk.cashfree.com/js/v3/cashfree.js';
+      script.onload = () => {
+        initCashfree(sessionId);
+        resolve();
+      };
+      document.head.appendChild(script);
+    } else {
+      initCashfree(sessionId);
+      resolve();
+    }
+  });
+}
+
+function initCashfree(sessionId) {
+  const cashfree = Cashfree({ mode: 'production' });
+  
+  cashfree.checkout({
+    paymentSessionId: sessionId,
+    redirectTarget: '_modal',
+  }).then(async (result) => {
+    if(result.error) {
+      // Payment failed or cancelled
+      const btn = document.getElementById('payBtn');
+      if(btn){ btn.textContent = '💳 Pay ₹' + document.getElementById('payAmount').textContent + ' — Dobara Try Karo'; btn.disabled = false; }
+    } else {
+      // Payment done - verify seedha
+      await verifyAfterPayment();
+    }
+  }).catch(async (err) => {
+    // Modal closed - still try to verify
+    await verifyAfterPayment();
+  });
+}
+
+async function manualVerifyPayment() {
+  if(!window.currentOrderId) {
+    alert('Pehle payment karo!');
+    return;
+  }
+  await verifyAfterPayment();
+}
+
+async function verifyAfterPayment() {
+  try {
+    const r = await fetch('https://yt-sub-exchange.onrender.com/api/cashfree/verify', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        orderId: window.currentOrderId,
+        userId,
+        plan: window.currentPlan
+      })
+    });
+    const d = await r.json();
+    console.log('Verify result:', d);
+
+    if(d.success && d.paymentVerified) {
+      userPlan = window.currentPlan || userPlan;
+      const saved = JSON.parse(localStorage.getItem('yt_user')||'{}');
+      localStorage.setItem('yt_user', JSON.stringify({...saved, plan: userPlan, paymentVerified: true}));
+      // ✅ Subscribe page pe bhejo
+      document.getElementById('paymentBox').style.display = 'none';
+      showAppPage('subscribe');
+      await loadChannels();
+    } else {
+      // Payment nahi hui — verify button dikhao
+      const btn = document.getElementById('payBtn');
+      if(btn){ btn.textContent = '💳 Dobara Try Karo'; btn.disabled = false; }
+      document.getElementById('verifyBtnBox').style.display = 'block';
+      alert('❌ Payment verify nahi hua. Status: ' + (d.message || 'Unknown'));
+    }
+  } catch(e) {
+    console.log('Verify error:', e);
+    // Still go to subscribe page — webhook se ho jayega
+    document.getElementById('paymentBox').style.display = 'none';
+    showAppPage('subscribe');
+    await loadChannels();
+  }
+}
+
+async function verifyPayment(){
+  const utrEl = document.getElementById('utrInput') || document.getElementById('txnId');
+  const txnId = utrEl ? utrEl.value.trim() : '';
+  if(!txnId){alert('Transaction ID / UTR Number daalo!');return;}
+  if(!currentPaymentId){alert('Pehle koi plan select karo!');return;}
+  try{
+    const r=await fetch('https://yt-sub-exchange.onrender.com/api/payment/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({paymentId:currentPaymentId,transactionId:txnId,userId,plan:selectedPlan,screenshot:screenshotData})});
+    const d=await r.json();
+    if(d.success){
+      userPlan=selectedPlan;
+      const cfg=PLAN_CONFIG[userPlan]||PLAN_CONFIG.free;
+      requiredAds=0;
+      requiredSubs=10;
+      document.getElementById('paymentBox').style.display='none';
+      const saved=JSON.parse(localStorage.getItem('yt_user')||'{}');
+      localStorage.setItem('yt_user',JSON.stringify({...saved,plan:userPlan,pendingPayment:true,paymentId:currentPaymentId}));
+      // Store payment details for later notification
+      window.pendingPaymentData = {
+        plan: selectedPlan,
+        amount: document.getElementById('payAmount').textContent,
+        txnId: txnId,
+        paymentId: currentPaymentId
+      };
+      // Show subscribe page first!
+      showToast('✅ Details submit! Ab 10 channels subscribe karo.');
+      showAppPage('subscribe');
+      loadChannels();
+    } else {alert('❌ UTR verify nahi hua! Sahi UTR/Transaction ID daalo.');}
+  }catch(e){alert('❌ Server se connect nahi hua. Dobara try karo.');}
+}
+
+function showSuccessMsg(plan){
+  const planMap={basic:'₹10 - 500 Subscribers',silver:'₹20 - 1000 Subscribers',gold:'₹30 - 1500 Subscribers',platinum:'₹50 - 3000 Subscribers'};
+  const msg = document.createElement('div');
+  msg.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  msg.innerHTML='<div style="background:white;border-radius:20px;padding:30px;text-align:center;margin:20px"><div style="font-size:50px">🎉</div><div style="font-size:20px;font-weight:bold;color:#28a745;margin:10px 0">Payment Successful!</div><div style="font-size:14px;color:#555;margin-bottom:15px">'+planMap[plan]+'<br>Ab 10 channels subscribe karo — aapka link active ho jayega!</div><button onclick="this.parentElement.parentElement.remove()" style="background:#ff0000;color:white;border:none;padding:12px 24px;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer">Channels Subscribe Karo →</button></div>';
+  document.body.appendChild(msg);
+}
+
+async function updatePlan(plan){
+  userPlan=plan;
+  const cfg=PLAN_CONFIG[plan]||PLAN_CONFIG.free;
+  requiredAds=cfg.ads;
+  requiredSubs=cfg.subs;
+  const saved=JSON.parse(localStorage.getItem('yt_user')||'{}');
+  localStorage.setItem('yt_user',JSON.stringify({...saved,plan}));
+  alert('✅ '+cfg.label+' Plan selected!');
+  loadSubscribeChannels();showAppPage('subscribe');
+}
+
+async function updateYtLink(){
+  const yt=document.getElementById('newYtLink').value.trim();
+  if(!yt||(!yt.includes('youtube.com')&&!yt.includes('youtu.be'))){alert('Valid YouTube link daalo!');return;}
+  ytLink=yt;
+  await fetch('https://yt-sub-exchange.onrender.com/api/update-youtube',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,youtubeLink:yt})});
+  const saved=JSON.parse(localStorage.getItem('yt_user')||'{}');
+  localStorage.setItem('yt_user',JSON.stringify({...saved,ytLink:yt}));
+  alert('✅ Link update ho gaya!');loadProfile();
+}
+
+function shareWebsite(){
+  const msg='🎯 YouTube Channel Promotion!\n\nFree mein apna YouTube channel grow karo!\n\n👉 https://ytsubexchange.online\n\nJoin karo! 🚀';
+  if(navigator.share){navigator.share({title:'YT Sub Exchange',text:msg,url:'https://ytsubexchange.online'});}
+  else{navigator.clipboard.writeText('https://ytsubexchange.online').then(()=>alert('✅ Link copy ho gaya!'));}
+}
+
+function logout(){
+  localStorage.removeItem('yt_user');
+  userId=null;ytLink='';userEmail='';userName='';userPhoto='';
+  document.getElementById('logoutBtn').style.display='none';
+  document.getElementById('bottomNav').classList.remove('show');
+  document.getElementById('userAvatar').style.display='none';
+  document.getElementById('userName').textContent='';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-login').classList.add('active');
+}
+
+// ===================== REFERRAL & WALLET =====================
+let referralData = null;
+
+async function loadReferralWallet(){
+  if(!userId) return;
+  try{
+    const r = await fetch('https://yt-sub-exchange.onrender.com/api/referral/'+userId);
+    const d = await r.json();
+    if(!d.success) return;
+    referralData = d;
+    const homeBal = document.getElementById('homeWalletBal');
+    if(homeBal) homeBal.textContent = d.walletBalance;
+  }catch(e){ console.log('Referral load error:', e); }
+}
+
+async function loadReferPage(){
+  if(!userId) return;
+  try{
+    const r = await fetch('https://yt-sub-exchange.onrender.com/api/referral/'+userId);
+    const d = await r.json();
+    if(!d.success) return;
+    referralData = d;
+    document.getElementById('referWalletBal').textContent = d.walletBalance;
+    document.getElementById('referTotalEarned').textContent = d.totalEarned;
+    document.getElementById('referTotalCount').textContent = d.totalReferrals;
+    document.getElementById('referLinkText').textContent = d.referralLink;
+    loadWithdrawHistory();
+  }catch(e){ console.log('Refer page error:', e); }
+}
+
+function copyReferLink(){
+  if(!referralData) return;
+  navigator.clipboard.writeText(referralData.referralLink).then(()=>alert('✅ Referral link copy ho gaya!'));
+}
+
+function shareReferLink(){
+  if(!referralData) return;
+  const msg = `🎯 YT Sub Exchange Join Karo!\n\nFree mein YouTube channel grow karo — real subscribers paao!\n\n👉 ${referralData.referralLink}\n\nJoin karo abhi! 🚀`;
+  if(navigator.share){ navigator.share({title:'YT Sub Exchange', text: msg, url: referralData.referralLink}); }
+  else{ window.open('https://wa.me/?text='+encodeURIComponent(msg), '_blank'); }
+}
+
+async function requestWithdrawal(){
+  const amount = parseFloat(document.getElementById('withdrawAmount').value);
+  const upi = document.getElementById('withdrawUpi').value.trim();
+  const msgBox = document.getElementById('withdrawMsg');
+
+  if(!amount || amount < 200){
+    msgBox.style.display='block'; msgBox.style.color='#cc0000';
+    msgBox.textContent='❌ Minimum ₹200 withdraw kar sakte ho!';
+    return;
+  }
+  if(!upi || upi.length < 3){
+    msgBox.style.display='block'; msgBox.style.color='#cc0000';
+    msgBox.textContent='❌ Valid UPI ID daalo!';
+    return;
+  }
+
+  try{
+    const r = await fetch('https://yt-sub-exchange.onrender.com/api/withdrawal/request',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ userId, amount, upiId: upi })
+    });
+    const d = await r.json();
+    msgBox.style.display='block';
+    if(d.success){
+      msgBox.style.color='#28a745';
+      msgBox.textContent='✅ '+d.message;
+      document.getElementById('withdrawAmount').value='';
+      document.getElementById('withdrawUpi').value='';
+      loadReferPage();
+    } else {
+      msgBox.style.color='#cc0000';
+      msgBox.textContent='❌ '+(d.message||'Error aaya!');
+    }
+  }catch(e){
+    msgBox.style.display='block'; msgBox.style.color='#cc0000';
+    msgBox.textContent='❌ Server error!';
+  }
+}
+
+async function loadWithdrawHistory(){
+  if(!userId) return;
+  try{
+    const r = await fetch('https://yt-sub-exchange.onrender.com/api/withdrawal/history/'+userId);
+    const d = await r.json();
+    const list = document.getElementById('withdrawHistoryList');
+    if(!d.success || !d.withdrawals.length){
+      list.innerHTML = '<p style="font-size:12px;color:#999;text-align:center;padding:10px">Koi history nahi</p>';
+      return;
+    }
+    const statusMap = { pending: ['⏳ Pending', '#f5a623'], paid: ['✅ Paid', '#28a745'], rejected: ['❌ Rejected', '#cc0000'] };
+    list.innerHTML = d.withdrawals.map(w => {
+      const [label, color] = statusMap[w.status] || ['—', '#999'];
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f0f0f0">
+        <div>
+          <div style="font-size:13.5px;font-weight:700;color:#333">₹${w.amount}</div>
+          <div style="font-size:11px;color:#999">${new Date(w.requestedAt).toLocaleDateString('hi-IN')}</div>
+        </div>
+        <div style="font-size:12px;font-weight:700;color:${color}">${label}</div>
+      </div>`;
+    }).join('');
+  }catch(e){}
+}
+</script>
+</body>
+</html>
