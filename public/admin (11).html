@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — YT Sub Exchange</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --ink: #15161a;
+  --panel: #1d1f26;
+  --panel-2: #242630;
+  --line: #31333d;
+  --red: #ff3b3b;
+  --red-deep: #d62828;
+  --green: #2ecc71;
+  --amber: #f5a623;
+  --grey: #8b8d98;
+  --bg: #0e0f13;
+  --text: #eceef2;
+  --mono: 'SF Mono', 'Consolas', 'Roboto Mono', monospace;
+}
+body {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: var(--bg); color: var(--text); min-height: 100vh;
+}
+
+/* ---------- LOGIN ---------- */
+#loginScreen {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; background: radial-gradient(circle at 30% 20%, #2a0d0d 0%, #0e0f13 60%);
+  padding: 20px;
+}
+.login-box {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 18px;
+  padding: 36px 28px; width: 100%; max-width: 340px; text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.login-mark {
+  width: 52px; height: 52px; border-radius: 14px; margin: 0 auto 16px;
+  background: linear-gradient(135deg, var(--red), var(--red-deep));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; font-weight: 900; color: white;
+}
+.login-box h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.2px; }
+.login-box p { font-size: 12.5px; color: var(--grey); margin: 4px 0 22px; }
+.login-box input {
+  width: 100%; padding: 13px 16px; background: var(--ink); border: 1.5px solid var(--line);
+  border-radius: 10px; font-size: 15px; margin-bottom: 12px; outline: none; color: var(--text);
+}
+.login-box input:focus { border-color: var(--red); }
+.login-btn {
+  width: 100%; padding: 13px; background: var(--red); color: white;
+  border: none; border-radius: 10px; font-size: 14.5px; font-weight: 700; cursor: pointer;
+  letter-spacing: 0.2px;
+}
+.login-btn:active { transform: scale(0.98); }
+.error-msg { color: var(--red); font-size: 12.5px; margin-top: 10px; display: none; }
+
+/* ---------- SHELL ---------- */
+#adminPanel { display: none; }
+.topbar {
+  background: var(--panel); border-bottom: 1px solid var(--line);
+  padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+.topbar-left { display: flex; align-items: center; gap: 10px; }
+.topbar-mark {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--red), var(--red-deep));
+  display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900;
+}
+.topbar h1 { font-size: 15px; font-weight: 700; }
+.topbar .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); display: inline-block; margin-right: 5px; box-shadow: 0 0 0 0 rgba(46,204,113,0.6); animation: pulse 2s infinite; }
+@keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(46,204,113,0.5)} 70%{box-shadow:0 0 0 6px rgba(46,204,113,0)} 100%{box-shadow:0 0 0 0 rgba(46,204,113,0)} }
+.logout-btn {
+  background: var(--ink); border: 1px solid var(--line);
+  color: var(--text); padding: 7px 14px; border-radius: 8px; cursor: pointer; font-size: 12.5px;
+}
+
+.tabs {
+  display: flex; background: var(--panel); border-bottom: 1px solid var(--line);
+  overflow-x: auto; padding: 0 12px; -ms-overflow-style: none; scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+  padding: 13px 14px; border: none; background: none;
+  font-size: 12.5px; color: var(--grey); cursor: pointer; font-weight: 600;
+  white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  display: flex; align-items: center; gap: 5px;
+}
+.tab-btn.active { color: var(--text); border-bottom-color: var(--red); }
+
+.content { max-width: 640px; margin: 0 auto; padding: 16px 14px 90px; }
+.tab-page { display: none; }
+.tab-page.active { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:translateY(0)} }
+
+.card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+  padding: 18px; margin-bottom: 14px;
+}
+.card-title { font-size: 14px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.card-sub { font-size: 12px; color: var(--grey); margin-top: -10px; margin-bottom: 14px; }
+
+label {
+  display: block; font-size: 11px; font-weight: 600;
+  color: var(--grey); text-transform: uppercase; letter-spacing: 0.6px;
+  margin-bottom: 6px; margin-top: 14px;
+}
+input[type=text], input[type=url], input[type=tel],
+input[type=email], input[type=number], input[type=password],
+textarea, select {
+  width: 100%; padding: 11px 14px; background: var(--ink); border: 1.5px solid var(--line);
+  border-radius: 10px; font-size: 14px; outline: none; font-family: inherit; color: var(--text);
+  transition: border-color 0.15s;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--red); }
+textarea { resize: vertical; min-height: 80px; }
+
+.btn {
+  width: 100%; padding: 13px; background: var(--red); color: white;
+  border: none; border-radius: 10px; font-size: 14.5px; font-weight: 700;
+  cursor: pointer; margin-top: 16px; letter-spacing: 0.2px;
+}
+.btn:active { transform: scale(0.99); }
+.btn-green { background: var(--green); color: #06210f; }
+.btn-blue { background: #2e8de9; }
+.btn-grey { background: var(--panel-2); border: 1px solid var(--line); color: var(--text); }
+.btn-small {
+  padding: 9px 16px; font-size: 12.5px; border-radius: 8px;
+  border: none; cursor: pointer; font-weight: 700; color: white; background: var(--red);
+}
+
+.upload-zone {
+  border: 1.5px dashed var(--line); border-radius: 12px;
+  padding: 28px; text-align: center; cursor: pointer;
+  position: relative; transition: all 0.15s; margin-top: 10px; background: var(--ink);
+}
+.upload-zone:hover { border-color: var(--red); }
+.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+
+.preview-box {
+  display: none; align-items: center; gap: 12px;
+  background: var(--ink); border-radius: 10px; padding: 10px; margin-top: 10px;
+}
+.preview-box img { width: 56px; height: 56px; object-fit: contain; border-radius: 8px; background: white; }
+.remove-btn { margin-left: auto; background: rgba(255,59,59,0.12); color: var(--red); border: none; padding: 6px 10px; border-radius: 7px; cursor: pointer; font-size: 12px; font-weight: 600; }
+
+/* ---------- DASHBOARD STATS ---------- */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.stat-box {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  padding: 16px; position: relative; overflow: hidden;
+}
+.stat-box::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background: var(--red); }
+.stat-num { font-size: 26px; font-weight: 800; font-family: var(--mono); letter-spacing: -1px; }
+.stat-lbl { font-size: 11.5px; color: var(--grey); margin-top: 4px; }
+
+.plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.plan-stat {
+  border: 1px solid var(--line); border-radius: 12px; padding: 13px; text-align: center; background: var(--ink);
+}
+.plan-stat-emoji { font-size: 13px; color: var(--grey); margin-bottom: 5px; }
+.plan-stat-num { font-size: 20px; font-weight: 800; font-family: var(--mono); }
+.plan-stat-rev { font-size: 11px; color: var(--grey); margin-top: 2px; }
+
+/* ---------- PAYMENTS ---------- */
+.pay-filters { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+.pay-filter {
+  padding: 7px 13px; border-radius: 20px; border: 1px solid var(--line); background: var(--ink);
+  color: var(--grey); font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.pay-filter.active { background: var(--red); border-color: var(--red); color: white; }
+
+.pay-card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  padding: 15px; margin-bottom: 12px;
+}
+.pay-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.pay-name { font-size: 14.5px; font-weight: 700; }
+.pay-email { font-size: 12px; color: var(--grey); margin-top: 2px; font-family: var(--mono); }
+.pay-amount { font-size: 19px; font-weight: 800; font-family: var(--mono); white-space: nowrap; }
+
+.status-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.3px; margin-top: 8px;
+}
+.status-pill.success { background: rgba(46,204,113,0.14); color: var(--green); }
+.status-pill.pending { background: rgba(245,166,35,0.14); color: var(--amber); }
+.status-pill.failed { background: rgba(255,59,59,0.14); color: var(--red); }
+.status-pill.waiting { background: rgba(139,141,152,0.14); color: var(--grey); }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+.pay-meta {
+  background: var(--ink); border-radius: 10px; padding: 10px 12px; margin-top: 12px;
+  font-size: 12.5px; color: var(--grey); display: grid; gap: 5px; font-family: var(--mono);
+}
+.pay-meta b { color: var(--text); font-weight: 600; }
+
+.pay-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.pay-actions button {
+  padding: 11px; border: none; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; color: white;
+}
+.btn-activate { background: var(--green); color: #06210f; }
+.btn-reject { background: rgba(255,59,59,0.85); }
+
+/* ---------- USERS ---------- */
+.user-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 0; border-bottom: 1px solid var(--line);
+}
+.user-row:last-child { border-bottom: none; }
+.user-info { flex: 1; min-width: 0; }
+.user-info p { font-size: 13.5px; font-weight: 700; }
+.user-info span { font-size: 11px; color: var(--grey); display: block; margin-top: 2px; font-family: var(--mono); }
+.badge { padding: 4px 9px; border-radius: 20px; font-size: 10.5px; font-weight: 700; white-space: nowrap; }
+.badge-active { background: rgba(46,204,113,0.14); color: var(--green); }
+.badge-inactive { background: rgba(139,141,152,0.14); color: var(--grey); }
+.badge-plan { background: rgba(46,141,233,0.14); color: #58a6f0; text-transform: uppercase; }
+.badge-waiting { background: rgba(245,166,35,0.14); color: var(--amber); }
+
+.toggle-btn {
+  border: none; padding: 7px 12px; border-radius: 8px; cursor: pointer; font-size: 11.5px; font-weight: 700; color: white; white-space: nowrap;
+}
+
+.toast {
+  position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(80px);
+  padding: 13px 20px; border-radius: 12px; font-size: 13.5px;
+  z-index: 999; opacity: 0; transition: all 0.3s; color: white; font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4); max-width: 90vw;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.toast.success { background: var(--green); color: #06210f; }
+.toast.error { background: var(--red); }
+.toast.info { background: var(--panel-2); border: 1px solid var(--line); }
+
+.qr-wrap { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+.qr-form { flex: 1; min-width: 200px; }
+.qr-preview-box { background: var(--ink); border: 1px solid var(--line); border-radius: 12px; padding: 16px; text-align: center; }
+
+.empty-state { text-align: center; padding: 36px 16px; color: var(--grey); }
+.empty-state .emoji { font-size: 36px; margin-bottom: 10px; }
+
+@media (max-width: 480px) {
+  .qr-wrap { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-mark">YT</div>
+    <h2>Admin Console</h2>
+    <p>YT Sub Exchange — sirf admin ke liye</p>
+    <input type="password" id="passInput" placeholder="Password daalo...">
+    <button class="login-btn" onclick="doLogin()">Login Karo</button>
+    <div class="error-msg" id="errMsg">❌ Galat password!</div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-mark">YT</div>
+      <div>
+        <h1>Admin Console</h1>
+        <div style="font-size:10.5px;color:var(--grey)"><span class="live-dot"></span>Live</div>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('dashboard',this)">📊 Dashboard</button>
+    <button class="tab-btn" onclick="showTab('content',this)">✏️ Content</button>
+    <button class="tab-btn" onclick="showTab('qr',this)">🏷️ Logo/QR</button>
+    <button class="tab-btn" onclick="showTab('plans',this)">💎 Plans</button>
+    <button class="tab-btn" onclick="showTab('contact',this)">💳 Contact</button>
+    <button class="tab-btn" onclick="showTab('payments',this)">💰 Payments <span id="pendingBadge" style="background:var(--red);color:white;border-radius:50%;padding:2px 6px;font-size:10px;display:none;margin-left:3px">0</span></button>
+    <button class="tab-btn" onclick="showTab('users',this)">👥 Users</button>
+    <button class="tab-btn" onclick="showTab('referrals',this)">💸 Referrals <span id="withdrawBadge" style="background:var(--red);color:white;border-radius:50%;padding:2px 6px;font-size:10px;display:none;margin-left:3px">0</span></button>
+    <button class="tab-btn" onclick="showTab('earnchannels',this)">📲 Earn Channels</button>
+    <button class="tab-btn" onclick="showTab('settings',this)">⚙️ Settings</button>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="tab-page active" id="tab-dashboard">
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-num" id="statTotal">—</div><div class="stat-lbl">Total Users</div></div>
+        <div class="stat-box"><div class="stat-num" id="statActive">—</div><div class="stat-lbl">Active Now</div></div>
+        <div class="stat-box"><div class="stat-num" id="statPremium">—</div><div class="stat-lbl">Premium Users</div></div>
+        <div class="stat-box"><div class="stat-num" id="statRevenue">—</div><div class="stat-lbl">Total Revenue</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">💎 Plan Wise Stats</div>
+        <div class="plan-grid">
+          <div class="plan-stat">
+            <div class="plan-stat-emoji">🥉 Basic · ₹10</div>
+            <div class="plan-stat-num" id="statBasic">—</div>
+            <div class="plan-stat-rev">₹<span id="revBasic">—</span> revenue</div>
+          </div>
+          <div class="plan-stat">
+            <div class="plan-stat-emoji">🥈 Silver · ₹20</div>
+            <div class="plan-stat-num" id="statSilver">—</div>
+            <div class="plan-stat-rev">₹<span id="revSilver">—</span> revenue</div>
+          </div>
+          <div class="plan-stat">
+            <div class="plan-stat-emoji">🥇 Gold · ₹30</div>
+            <div class="plan-stat-num" id="statGold">—</div>
+            <div class="plan-stat-rev">₹<span id="revGold">—</span> revenue</div>
+          </div>
+          <div class="plan-stat">
+            <div class="plan-stat-emoji">💎 Platinum · ₹50</div>
+            <div class="plan-stat-num" id="statPlatinum">—</div>
+            <div class="plan-stat-rev">₹<span id="revPlatinum">—</span> revenue</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🔗 Quick Links</div>
+        <div style="font-size:13.5px;line-height:2.3;color:var(--grey)">
+          <div>Website → <a href="https://ytsubexchange.online" target="_blank" style="color:var(--red);text-decoration:none">ytsubexchange.online</a></div>
+          <div>Admin → <span style="color:var(--text);font-family:var(--mono)">/admin.html</span></div>
+        </div>
+      </div>
+      <button class="btn btn-blue" onclick="loadDashboard()">🔄 Refresh Stats</button>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="tab-page" id="tab-content">
+      <div class="card">
+        <div class="card-title">✏️ Website Text</div>
+        <label>Website Name</label>
+        <input type="text" id="c_siteName" placeholder="YT Sub Exchange">
+        <label>Hero Headline</label>
+        <input type="text" id="c_heroTitle" placeholder="Real YouTube Subscribers Paao!">
+        <label>Hero Sub-text</label>
+        <input type="text" id="c_heroSub" placeholder="Free mein apna YouTube channel grow karo!">
+        <label>Hero Button</label>
+        <input type="text" id="c_heroBtn" placeholder="Plans Dekho →">
+        <button class="btn btn-green" onclick="saveContent()">💾 Content Save Karo</button>
+      </div>
+    </div>
+
+    <!-- QR / LOGO -->
+    <div class="tab-page" id="tab-qr">
+      <div class="card">
+        <div class="card-title">🏷️ Website Logo Update Karo</div>
+        <div class="upload-zone">
+          <input type="file" accept="image/*" onchange="handleLogoUpload(this)">
+          <div style="font-size:30px">🖼️</div>
+          <p style="font-size:13px;color:var(--grey)">Logo upload karo (PNG/SVG)</p>
+        </div>
+        <div class="preview-box" id="logoPreview">
+          <img id="logoPreviewImg" src="" alt="Logo">
+          <div style="flex:1"><p id="logoPreviewName" style="font-size:13px">logo.png</p></div>
+          <button class="remove-btn" onclick="removeLogo()">✕</button>
+        </div>
+        <button class="btn btn-green" id="logoSaveBtn" style="display:none" onclick="saveLogo()">💾 Logo Website Pe Lagao</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📱 QR Code Generator</div>
+        <div class="card-sub">Marketing ke liye — WhatsApp ya website link ka QR banao</div>
+        <div class="qr-wrap">
+          <div class="qr-form">
+            <label>QR Type</label>
+            <select id="qrType" onchange="updateQrPlaceholder()">
+              <option value="url">🔗 Website URL</option>
+              <option value="whatsapp">💬 WhatsApp</option>
+              <option value="text">📝 Custom Text</option>
+            </select>
+            <label id="qrInputLabel">URL</label>
+            <input type="text" id="qrInput" placeholder="https://ytsubexchange.online">
+            <label>Size</label>
+            <select id="qrSize">
+              <option value="160">Chhota</option>
+              <option value="200" selected>Medium</option>
+              <option value="256">Bada</option>
+            </select>
+            <button class="btn" onclick="generateQR()">📱 QR Banao</button>
+          </div>
+          <div>
+            <div class="qr-preview-box">
+              <div id="qrcode" style="min-width:160px;min-height:160px;display:flex;align-items:center;justify-content:center;color:var(--grey);font-size:13px">QR yahan ayega</div>
+            </div>
+            <div id="qrActions" style="display:none;margin-top:10px;display:flex;gap:8px">
+              <button class="btn-small" onclick="downloadQR()">⬇️ Download</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLANS -->
+    <div class="tab-page" id="tab-plans">
+      <div class="card">
+        <div class="card-title">💎 Plans Edit Karo</div>
+
+        <div style="border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px;background:var(--ink)">
+          <div style="font-weight:700;font-size:14px;margin-bottom:8px">🥉 Basic Plan</div>
+          <label>Price (₹)</label><input type="number" id="p_basicPrice" value="10">
+          <label>Subscribers milenge</label><input type="number" id="p_basicSubs" value="500">
+        </div>
+
+        <div style="border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px;background:var(--ink)">
+          <div style="font-weight:700;font-size:14px;margin-bottom:8px">🥈 Silver Plan</div>
+          <label>Price (₹)</label><input type="number" id="p_silverPrice" value="20">
+          <label>Subscribers milenge</label><input type="number" id="p_silverSubs" value="1000">
+        </div>
+
+        <div style="border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px;background:var(--ink)">
+          <div style="font-weight:700;font-size:14px;margin-bottom:8px">🥇 Gold Plan</div>
+          <label>Price (₹)</label><input type="number" id="p_goldPrice" value="30">
+          <label>Subscribers milenge</label><input type="number" id="p_goldSubs" value="1500">
+        </div>
+
+        <div style="border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px;background:var(--ink)">
+          <div style="font-weight:700;font-size:14px;margin-bottom:8px">💎 Platinum Plan</div>
+          <label>Price (₹)</label><input type="number" id="p_platinumPrice" value="50">
+          <label>Subscribers milenge</label><input type="number" id="p_platinumSubs" value="3000">
+        </div>
+
+        <button class="btn btn-green" onclick="savePlans()">💾 Plans Save Karo</button>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="tab-page" id="tab-contact">
+      <div class="card">
+        <div class="card-title">💳 Payment Info</div>
+        <label>UPI ID</label>
+        <input type="text" id="c_upiId" placeholder="amanalam917696@okicici">
+        <label>Account Name</label>
+        <input type="text" id="c_upiName" placeholder="YT Sub Exchange">
+        <label>WhatsApp Number</label>
+        <input type="tel" id="c_whatsapp" placeholder="+91 9876543210">
+        <label>Email</label>
+        <input type="email" id="c_email" placeholder="admin@ytsubexchange.online">
+        <button class="btn btn-green" onclick="saveContact()">💾 Contact Save Karo</button>
+      </div>
+    </div>
+
+    <!-- PAYMENTS -->
+    <div class="tab-page" id="tab-payments">
+      <div class="card">
+        <div class="card-title">💰 Payments</div>
+        <div class="card-sub">Naam, email aur status — sab automatic Cashfree payments bhi yahan dikhenge</div>
+        <div class="pay-filters">
+          <button class="pay-filter active" data-f="all" onclick="setPayFilter('all',this)">Sab</button>
+          <button class="pay-filter" data-f="success" onclick="setPayFilter('success',this)">✅ Success</button>
+          <button class="pay-filter" data-f="pending" onclick="setPayFilter('pending',this)">⏳ Pending</button>
+          <button class="pay-filter" data-f="failed" onclick="setPayFilter('failed',this)">❌ Failed</button>
+        </div>
+        <button class="btn btn-blue" onclick="loadAllPayments()" style="margin-top:0;margin-bottom:14px">🔄 Refresh</button>
+        <div id="paymentsList"><p style="text-align:center;color:var(--grey);padding:20px">Load ho raha hai...</p></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📝 Manual Verify (Screenshot wale)</div>
+        <div class="card-sub">UPI screenshot se manual payment verify karne ke liye</div>
+        <div id="pendingPaymentsList"><p style="text-align:center;color:var(--grey);padding:20px">Load ho raha hai...</p></div>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div class="tab-page" id="tab-users">
+      <div class="card">
+        <div class="card-title">👥 All Users</div>
+        <button class="btn btn-blue" onclick="loadUsers()" style="margin-bottom:6px;margin-top:0">🔄 Users Load Karo</button>
+        <div id="usersList"><p style="text-align:center;color:var(--grey);padding:20px">Load button dabao</p></div>
+      </div>
+    </div>
+
+    <!-- REFERRALS -->
+    <div class="tab-page" id="tab-referrals">
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-num" id="refStatPending">—</div><div class="stat-lbl">Pending Withdrawals</div></div>
+        <div class="stat-box"><div class="stat-num" id="refStatPendingAmt">—</div><div class="stat-lbl">Pending Amount</div></div>
+        <div class="stat-box"><div class="stat-num" id="refStatPaid">—</div><div class="stat-lbl">Total Paid Out</div></div>
+        <div class="stat-box"><div class="stat-num" id="refStatTopCount">—</div><div class="stat-lbl">Active Referrers</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🏦 Withdrawal Requests</div>
+        <div class="card-sub">UPI se manually pay karo, phir "Mark as Paid" dabao</div>
+        <div class="pay-filters">
+          <button class="pay-filter active" data-wf="pending" onclick="setWithdrawFilter('pending',this)">⏳ Pending</button>
+          <button class="pay-filter" data-wf="paid" onclick="setWithdrawFilter('paid',this)">✅ Paid</button>
+          <button class="pay-filter" data-wf="rejected" onclick="setWithdrawFilter('rejected',this)">❌ Rejected</button>
+          <button class="pay-filter" data-wf="all" onclick="setWithdrawFilter('all',this)">Sab</button>
+        </div>
+        <button class="btn btn-blue" onclick="loadWithdrawals()" style="margin-top:0;margin-bottom:14px">🔄 Refresh</button>
+        <div id="withdrawalsList"><p style="text-align:center;color:var(--grey);padding:20px">Load ho raha hai...</p></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🏆 Top Referrers</div>
+        <button class="btn btn-blue" onclick="loadReferralStats()" style="margin-top:0;margin-bottom:14px">🔄 Refresh</button>
+        <div id="topReferrersList"><p style="text-align:center;color:var(--grey);padding:20px">Load ho raha hai...</p></div>
+      </div>
+    </div>
+
+    <!-- EARN CHANNELS -->
+    <div class="tab-page" id="tab-earnchannels">
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-num" id="earnStatTotal">—</div><div class="stat-lbl">Total Channels</div></div>
+        <div class="stat-box"><div class="stat-num" id="earnStatSubs">—</div><div class="stat-lbl">Total Subscribes</div></div>
+        <div class="stat-box"><div class="stat-num" id="earnStatEarned">—</div><div class="stat-lbl">Total Paid Out</div></div>
+        <div class="stat-box"><div class="stat-num" id="earnStatEarners">—</div><div class="stat-lbl">Active Earners</div></div>
+      </div>
+
+      <!-- Add New Channel -->
+      <div class="card">
+        <div class="card-title">➕ Naya Channel Add Karo</div>
+        <div class="card-sub">Ye channel sab users ko subscribe karne ke liye milega (₹0.17 per subscribe)</div>
+        <label>Channel Name</label>
+        <input type="text" id="newEarnChannelName" placeholder="Channel ka naam">
+        <label>YouTube Channel URL</label>
+        <input type="url" id="newEarnChannelUrl" placeholder="https://www.youtube.com/@channelname">
+        <label>Max Subscribers (limit)</label>
+        <input type="number" id="newEarnChannelMax" placeholder="jaise: 350" value="350">
+        <button class="btn btn-green" onclick="addEarnChannel()" style="margin-top:12px">➕ Channel Add Karo</button>
+        <div id="addChannelMsg" style="font-size:12.5px;margin-top:8px;display:none"></div>
+      </div>
+
+      <!-- Active Channels List -->
+      <div class="card">
+        <div class="card-title">📋 Active Channels</div>
+        <button class="btn btn-blue" onclick="loadEarnChannelsAdmin()" style="margin-top:0;margin-bottom:14px">🔄 Refresh</button>
+        <div id="earnChannelsAdminList"><p style="text-align:center;color:var(--grey);padding:20px">Load ho raha hai...</p></div>
+      </div>
+
+      <!-- Top Earners -->
+      <div class="card">
+        <div class="card-title">🏆 Top Earners</div>
+        <div id="earnTopEarnersList"><p style="text-align:center;color:var(--grey);padding:20px">Stats ke saath load hoga</p></div>
+      </div>
+
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="tab-page" id="tab-settings">
+      <div class="card">
+        <div class="card-title">🔒 Password Change Karo</div>
+        <label>Naya Password</label>
+        <input type="password" id="newPass1" placeholder="Naya password...">
+        <label>Confirm Password</label>
+        <input type="password" id="newPass2" placeholder="Dobara likho...">
+        <button class="btn btn-grey" onclick="changePassword()">🔑 Password Change Karo</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SERVER = '';  // Same domain pe hai
+let adminPass = '';
+let allPaymentsCache = [];
+let currentPayFilter = 'all';
+
+// ===================== LOGIN =====================
+async function doLogin() {
+  const pass = document.getElementById('passInput').value;
+  if(!pass) return;
+
+  try {
+    const r = await fetch(SERVER + '/admin/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ password: pass })
+    });
+    const d = await r.json();
+    if(d.success) {
+      adminPass = pass;
+      localStorage.setItem('adminPass', pass);
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
+      loadDashboard();
+      loadSettings();
+      loadAllPayments();
+      loadPendingPayments();
+      loadWithdrawals();
+      loadReferralStats();
+      loadEarnChannelsAdmin();
+      loadEarnStats();
+    } else {
+      document.getElementById('errMsg').style.display = 'block';
+    }
+  } catch(e) {
+    showToast('❌ Server se connect nahi hua!', 'error');
+  }
+}
+
+document.getElementById('passInput').addEventListener('keydown', e => {
+  if(e.key === 'Enter') doLogin();
+});
+
+window.onload = function() {
+  const saved = localStorage.getItem('adminPass');
+  if(saved) {
+    document.getElementById('passInput').value = saved;
+    doLogin();
+  }
+}
+
+function doLogout() {
+  localStorage.removeItem('adminPass');
+  adminPass = '';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('adminPanel').style.display = 'none';
+}
+
+// ===================== TABS =====================
+function showTab(tab, el) {
+  document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  el.classList.add('active');
+}
+
+// ===================== TOAST =====================
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===================== API HELPER =====================
+async function adminAPI(endpoint, data = null) {
+  const opts = {
+    headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPass }
+  };
+  if(data) { opts.method = 'POST'; opts.body = JSON.stringify(data); }
+  else opts.method = 'GET';
+  const r = await fetch(SERVER + endpoint, opts);
+  return r.json();
+}
+
+// ===================== DASHBOARD =====================
+async function loadDashboard() {
+  try {
+    const d = await adminAPI('/admin/full-stats');
+    if(d.success) {
+      document.getElementById('statTotal').textContent = d.totalUsers || 0;
+      document.getElementById('statActive').textContent = d.activeUsers || 0;
+      document.getElementById('statPremium').textContent = d.premiumUsers || 0;
+      document.getElementById('statRevenue').textContent = '₹' + (d.revenue || 0);
+
+      if(d.planBreakdown) {
+        const pb = d.planBreakdown;
+        document.getElementById('statBasic').textContent = pb.basic?.count || 0;
+        document.getElementById('revBasic').textContent = pb.basic?.revenue || 0;
+        document.getElementById('statSilver').textContent = pb.silver?.count || 0;
+        document.getElementById('revSilver').textContent = pb.silver?.revenue || 0;
+        document.getElementById('statGold').textContent = pb.gold?.count || 0;
+        document.getElementById('revGold').textContent = pb.gold?.revenue || 0;
+        document.getElementById('statPlatinum').textContent = pb.platinum?.count || 0;
+        document.getElementById('revPlatinum').textContent = pb.platinum?.revenue || 0;
+      }
+    }
+  } catch(e) { showToast('Stats load nahi hui!', 'error'); }
+}
+
+// ===================== LOAD SETTINGS =====================
+async function loadSettings() {
+  try {
+    const d = await fetch(SERVER + '/admin/get-settings').then(r => r.json());
+    if(!d.success) return;
+
+    if(d.content) {
+      if(d.content.siteName) document.getElementById('c_siteName').value = d.content.siteName;
+      if(d.content.heroTitle) document.getElementById('c_heroTitle').value = d.content.heroTitle;
+      if(d.content.heroSub) document.getElementById('c_heroSub').value = d.content.heroSub;
+      if(d.content.heroBtn) document.getElementById('c_heroBtn').value = d.content.heroBtn;
+    }
+
+    if(d.contact) {
+      if(d.contact.upiId) document.getElementById('c_upiId').value = d.contact.upiId;
+      if(d.contact.upiName) document.getElementById('c_upiName').value = d.contact.upiName;
+      if(d.contact.whatsapp) document.getElementById('c_whatsapp').value = d.contact.whatsapp;
+      if(d.contact.email) document.getElementById('c_email').value = d.contact.email;
+    }
+
+    if(d.plans) {
+      if(d.plans.basic) { document.getElementById('p_basicPrice').value = d.plans.basic.price || 10; document.getElementById('p_basicSubs').value = d.plans.basic.subscribers || 500; }
+      if(d.plans.silver) { document.getElementById('p_silverPrice').value = d.plans.silver.price || 20; document.getElementById('p_silverSubs').value = d.plans.silver.subscribers || 1000; }
+      if(d.plans.gold) { document.getElementById('p_goldPrice').value = d.plans.gold.price || 30; document.getElementById('p_goldSubs').value = d.plans.gold.subscribers || 1500; }
+      if(d.plans.platinum) { document.getElementById('p_platinumPrice').value = d.plans.platinum.price || 50; document.getElementById('p_platinumSubs').value = d.plans.platinum.subscribers || 3000; }
+    }
+
+    if(d.logo) {
+      document.getElementById('logoPreviewImg').src = d.logo;
+      document.getElementById('logoPreview').style.display = 'flex';
+    }
+  } catch(e) {}
+}
+
+// ===================== CONTENT =====================
+async function saveContent() {
+  try {
+    const content = {
+      siteName: document.getElementById('c_siteName').value,
+      heroTitle: document.getElementById('c_heroTitle').value,
+      heroSub: document.getElementById('c_heroSub').value,
+      heroBtn: document.getElementById('c_heroBtn').value,
+    };
+    const d = await adminAPI('/admin/update-content', { content });
+    if(d.success) showToast('✅ Content save ho gaya! Website reload karo.');
+    else showToast('❌ Error!', 'error');
+  } catch(e) { showToast('❌ Server error!', 'error'); }
+}
+
+// ===================== LOGO UPLOAD =====================
+let logoImageData = null;
+
+function handleLogoUpload(input) {
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    logoImageData = e.target.result;
+    document.getElementById('logoPreviewImg').src = logoImageData;
+    document.getElementById('logoPreviewName').textContent = file.name;
+    document.getElementById('logoPreview').style.display = 'flex';
+    document.getElementById('logoSaveBtn').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function saveLogo() {
+  if(!logoImageData) return;
+  try {
+    const d = await adminAPI('/admin/update-logo', { logo: logoImageData });
+    if(d.success) showToast('✅ Logo update ho gaya!');
+    else showToast('❌ Error!', 'error');
+  } catch(e) { showToast('❌ Server error!', 'error'); }
+}
+
+function removeLogo() {
+  logoImageData = null;
+  document.getElementById('logoPreview').style.display = 'none';
+  document.getElementById('logoSaveBtn').style.display = 'none';
+}
+
+// ===================== PLANS =====================
+async function savePlans() {
+  try {
+    const plans = {
+      basic:    { price: +document.getElementById('p_basicPrice').value,    subscribers: +document.getElementById('p_basicSubs').value },
+      silver:   { price: +document.getElementById('p_silverPrice').value,   subscribers: +document.getElementById('p_silverSubs').value },
+      gold:     { price: +document.getElementById('p_goldPrice').value,     subscribers: +document.getElementById('p_goldSubs').value },
+      platinum: { price: +document.getElementById('p_platinumPrice').value, subscribers: +document.getElementById('p_platinumSubs').value },
+    };
+    const d = await adminAPI('/admin/update-plans', { plans });
+    if(d.success) showToast('✅ Plans save ho gaye!');
+    else showToast('❌ Error!', 'error');
+  } catch(e) { showToast('❌ Server error!', 'error'); }
+}
+
+// ===================== CONTACT =====================
+async function saveContact() {
+  try {
+    const contact = {
+      upiId: document.getElementById('c_upiId').value,
+      upiName: document.getElementById('c_upiName').value,
+      whatsapp: document.getElementById('c_whatsapp').value,
+      email: document.getElementById('c_email').value,
+    };
+    const d = await adminAPI('/admin/update-contact', { contact });
+    if(d.success) showToast('✅ Contact info save ho gaya!');
+    else showToast('❌ Error!', 'error');
+  } catch(e) { showToast('❌ Server error!', 'error'); }
+}
+
+// ===================== ALL PAYMENTS (naya — Cashfree + Manual sab) =====================
+function statusInfo(status) {
+  // Cashfree / manual sab statuses ko 4 buckets mein map karo
+  const map = {
+    completed:        { cls: 'success', label: '✅ Payment Success', dot: 'success' },
+    payment_verified:  { cls: 'success', label: '✅ Admin Verified',  dot: 'success' },
+    subscribed_done:   { cls: 'pending', label: '⏳ Subscribe Done — Activate Karo', dot: 'pending' },
+    pending_admin:      { cls: 'pending', label: '⏳ Manual Verify Pending', dot: 'pending' },
+    pending:            { cls: 'waiting', label: '🕓 Payment Processing', dot: 'waiting' },
+    rejected:           { cls: 'failed',  label: '❌ Rejected', dot: 'failed' },
+    failed:              { cls: 'failed',  label: '❌ Failed', dot: 'failed' }
+  };
+  return map[status] || { cls: 'waiting', label: status || 'Unknown', dot: 'waiting' };
+}
+
+function setPayFilter(f, el) {
+  currentPayFilter = f;
+  document.querySelectorAll('.pay-filter').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderPayments();
+}
+
+async function loadAllPayments() {
+  try {
+    const d = await adminAPI('/admin/all-payments');
+    if(!d.success) { showToast('❌ Payments load nahi hue!', 'error'); return; }
+    allPaymentsCache = d.payments || [];
+    renderPayments();
+  } catch(e) { showToast('❌ Error!', 'error'); }
+}
+
+function renderPayments() {
+  const list = document.getElementById('paymentsList');
+  let payments = allPaymentsCache;
+
+  if(currentPayFilter !== 'all') {
+    payments = payments.filter(p => {
+      const info = statusInfo(p.status);
+      if(currentPayFilter === 'success') return info.cls === 'success';
+      if(currentPayFilter === 'pending') return info.cls === 'pending' || info.cls === 'waiting';
+      if(currentPayFilter === 'failed') return info.cls === 'failed';
+      return true;
+    });
+  }
+
+  if(!payments.length) {
+    list.innerHTML = `<div class="empty-state"><div class="emoji">📭</div>Koi payment nahi mila is filter mein</div>`;
+    return;
+  }
+
+  list.innerHTML = payments.map(p => {
+    const info = statusInfo(p.status);
+    return `
+      <div class="pay-card">
+        <div class="pay-top">
+          <div>
+            <div class="pay-name">${p.userName}</div>
+            <div class="pay-email">${p.userEmail}</div>
+          </div>
+          <div class="pay-amount">₹${p.amount}</div>
+        </div>
+        <span class="status-pill ${info.cls}"><span class="status-dot"></span>${info.label}</span>
+        <div class="pay-meta">
+          <div>Plan: <b>${(p.plan||'').toUpperCase()}</b></div>
+          <div>Order/UTR: <b>${p.transactionId || '—'}</b></div>
+          <div>Time: <b>${new Date(p.createdAt).toLocaleString('hi-IN')}</b></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ===================== MANUAL PENDING PAYMENTS (screenshot wale) =====================
+async function loadPendingPayments() {
+  try {
+    const d = await adminAPI('/admin/pending-payments');
+    if(!d.success) { showToast('❌ Load nahi hua!', 'error'); return; }
+
+    const badge = document.getElementById('pendingBadge');
+    if(d.payments.length > 0) {
+      badge.textContent = d.payments.length;
+      badge.style.display = 'inline';
+    } else {
+      badge.style.display = 'none';
+    }
+
+    if(!d.payments.length) {
+      document.getElementById('pendingPaymentsList').innerHTML = `<div class="empty-state"><div class="emoji">✅</div>Koi manual verify pending nahi!</div>`;
+      return;
+    }
+
+    document.getElementById('pendingPaymentsList').innerHTML = d.payments.map(p => `
+      <div class="pay-card">
+        <div class="pay-top">
+          <div>
+            <div class="pay-name">${p.userName || 'User'}</div>
+            <div class="pay-email">${p.userEmail || ''}</div>
+          </div>
+          <div class="pay-amount">₹${p.amount}</div>
+        </div>
+
+        <div class="pay-meta">
+          <div>UTR: <b>${p.transactionId || '—'}</b></div>
+          <div>Time: <b>${new Date(p.createdAt).toLocaleString('hi-IN')}</b></div>
+          <div>Status: <b>${p.status==='subscribed_done' ? '✅ Subscribe Done — Activate Karo!' : '⏳ Subscribe Pending'}</b></div>
+        </div>
+
+        ${p.screenshot ? `
+        <div style="margin-top:10px">
+          <div style="font-size:12px;color:var(--grey);margin-bottom:6px">📸 Payment Screenshot</div>
+          <img src="${p.screenshot}" style="width:100%;max-height:200px;object-fit:contain;border-radius:10px;border:1px solid var(--line);background:white" onclick="this.style.maxHeight=this.style.maxHeight==='none'?'200px':'none'">
+        </div>
+        ` : '<div style="background:rgba(245,166,35,0.1);border-radius:8px;padding:8px;font-size:12px;color:var(--amber);margin-top:10px">⚠️ Screenshot upload nahi kiya</div>'}
+
+        <div class="pay-actions">
+          <button class="btn-activate" onclick="activateUser('${p.userId}','${p._id}','${p.plan}')">✅ Activate Karo</button>
+          <button class="btn-reject" onclick="rejectPayment('${p._id}')">❌ Reject Karo</button>
+        </div>
+
+        <div style="margin-top:10px;font-size:11.5px;color:var(--grey);text-align:center">
+          Activate karne se ${p.plan==='basic'?'12':p.plan==='silver'?'15':p.plan==='gold'?'20':'25'} ghante active rahega
+        </div>
+      </div>
+    `).join('');
+  } catch(e) { showToast('❌ Error!', 'error'); }
+}
+
+async function activateUser(userId, paymentId, plan) {
+  try {
+    const d = await adminAPI('/admin/activate-user', { userId, paymentId, plan });
+    if(d.success) {
+      showToast('✅ User activate ho gaya! ' + (plan==='basic'?'12':plan==='silver'?'15':plan==='gold'?'20':'25') + ' ghante ke liye!');
+      loadPendingPayments();
+      loadAllPayments();
+    } else showToast('❌ Error!', 'error');
+  } catch(e) { showToast('❌ Server error!', 'error'); }
+}
+
+async function rejectPayment(paymentId) {
+  if(!confirm('Pakka reject karna hai?')) return;
+  try {
+    await adminAPI('/admin/reject-payment', { paymentId });
+    showToast('Payment reject ho gaya!', 'info');
+    loadPendingPayments();
+    loadAllPayments();
+  } catch(e) {}
+}
+
+// ===================== USERS =====================
+async function loadUsers() {
+  try {
+    const d = await adminAPI('/admin/users');
+    if(!d.success) { showToast('❌ Users load nahi hue!', 'error'); return; }
+    if(!d.users.length) {
+      document.getElementById('usersList').innerHTML = `<div class="empty-state"><div class="emoji">👥</div>Koi user nahi!</div>`;
+      return;
+    }
+    document.getElementById('usersList').innerHTML = d.users.map(u => {
+      let statusBadge = '';
+      if(u.isActive) statusBadge = `<span class="badge badge-active">✅ Active</span>`;
+      else if(u.paymentVerified) statusBadge = `<span class="badge badge-waiting">📋 Subscribe Pending</span>`;
+      else if(u.pendingPayment) statusBadge = `<span class="badge badge-waiting">💳 Payment Pending</span>`;
+      else statusBadge = `<span class="badge badge-inactive">⏳ Inactive</span>`;
+
+      return `
+      <div class="user-row">
+        <div class="user-info">
+          <p>${u.name || u.email?.split('@')[0] || 'User'}</p>
+          <span>${u.email || ''} · Subs: ${u.subsGiven || 0}</span>
+        </div>
+        <span class="badge badge-plan">${u.plan || 'free'}</span>
+        ${statusBadge}
+        <button class="toggle-btn" style="background:${u.isActive ? 'var(--panel-2)' : 'var(--green)'};color:${u.isActive?'var(--text)':'#06210f'}" onclick="toggleUser('${u._id}',${!u.isActive},'${u.plan||'basic'}')">
+          ${u.isActive ? 'Deactivate' : 'Activate'}
+        </button>
+      </div>
+    `;
+    }).join('');
+  } catch(e) { showToast('❌ Error!', 'error'); }
+}
+
+async function toggleUser(userId, isActive, plan) {
+  try {
+    const d = await adminAPI('/admin/toggle-user', { userId, isActive, plan });
+    if(d.success) {
+      showToast('✅ Status update ho gaya!');
+      loadUsers();
+    }
+  } catch(e) { showToast('❌ Error!', 'error'); }
+}
+
+// ===================== PASSWORD =====================
+async function changePassword() {
+  const p1 = document.getElementById('newPass1').value;
+  const p2 = document.getElementById('newPass2').value;
+  if(!p1) { showToast('❌ Password daalo!', 'error'); return; }
+  if(p1 !== p2) { showToast('❌ Passwords match nahi karte!', 'error'); return; }
+  try {
+    const d = await adminAPI('/admin/change-password', { newPassword: p1, adminPassword: adminPass });
+    if(d.success) {
+      adminPass = p1;
+      localStorage.setItem('adminPass', p1);
+      showToast('✅ Password change ho gaya!');
+      document.getElementById('newPass1').value = '';
+      document.getElementById('newPass2').value = '';
+    }
+  } catch(e) { showToast('❌ Error!', 'error'); }
+}
+
+// ===================== QR GENERATOR =====================
+const qrConfigs = {
+  url: { label: 'Website URL', placeholder: 'https://ytsubexchange.online' },
+  whatsapp: { label: 'WhatsApp Number', placeholder: '+91 9876543210' },
+  upi: { label: 'UPI ID', placeholder: 'yourname@okicici' },
+  text: { label: 'Custom Text', placeholder: 'Koi bhi text...' },
+};
+
+function updateQrPlaceholder() {
+  const type = document.getElementById('qrType').value;
+  const cfg = qrConfigs[type];
+  document.getElementById('qrInputLabel').textContent = cfg.label;
+  document.getElementById('qrInput').placeholder = cfg.placeholder;
+}
+
+function generateQR() {
+  const type = document.getElementById('qrType').value;
+  const input = document.getElementById('qrInput').value.trim();
+  const size = parseInt(document.getElementById('qrSize').value);
+  if(!input) { showToast('❌ Pehle kuch likho!', 'error'); return; }
+  let qrData = input;
+  if(type === 'whatsapp') qrData = 'https://wa.me/' + input.replace(/\D/g, '');
+  else if(type === 'upi') qrData = 'upi://pay?pa=' + input;
+  const container = document.getElementById('qrcode');
+  container.innerHTML = '';
+  new QRCode(container, { text: qrData, width: size, height: size, colorDark: '#000000', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+  document.getElementById('qrActions').style.display = 'flex';
+  showToast('✅ QR ban gaya!');
+}
+
+function downloadQR() {
+  const canvas = document.querySelector('#qrcode canvas');
+  if(!canvas) return;
+  const a = document.createElement('a');
+  a.download = 'yt-sub-exchange-qr.png';
+  a.href = canvas.toDataURL();
+  a.click();
+}
+
+// ===================== WITHDRAWALS =====================
+let allWithdrawalsCache = [];
+let currentWithdrawFilter = 'pending';
+
+function setWithdrawFilter(f, el) {
+  currentWithdrawFilter = f;
+  document.querySelectorAll('[data-wf]').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderWithdrawals();
+}
+
+async function loadWithdrawals() {
+  try {
+    const d = await adminAPI('/admin/withdrawals');
+    if(!d.success) { showToast('❌ Load nahi hua!', 'error'); return; }
+    allWithdrawalsCache = d.withdrawals || [];
+
+    const pendingCount = allWithdrawalsCache.filter(w => w.status === 'pending').length;
+    const badge = document.getElementById('withdrawBadge');
+    if(pendingCount > 0) { badge.textContent = pendingCount; badge.style.display = 'inline'; }
+    else badge.style.display = 'none';
+
+    renderWithdrawals();
+  } catch(e) { showToast('❌ Error!', 'error'); }
+}
+
+function renderWithdrawals() {
+  const list = document.getElementById('withdrawalsList');
+  let items = allWithdrawalsCache;
+  if(currentWithdrawFilter !== 'all') items = items.filter(w => w.status === currentWithdrawFilter);
+
+  if(!items.length) {
+    list.innerHTML = `<div class="empty-state"><div class="emoji">📭</div>Koi withdrawal nahi mila</div>`;
+    return;
+  }
+
+  const statusInfo = {
+    pending: { cls: 'pending', label: '⏳ Pending' },
+    paid: { cls: 'success', label: '✅ Paid' },
+    rejected: { cls: 'failed', label: '❌ Rejected' }
+  };
+
+  list.innerHTML = items.map(w => {
+    const info = statusInfo[w.status] || { cls: 'waiting', label: w.status };
+    const gst = w.gst || Math.round(w.amount * 0.25);
+    const net = w.amtAfterGst || (w.amount - gst);
+    const paymentInfo = w.upiId || '—';
+    const isBank = paymentInfo.startsWith('Bank:');
+    return `
+      <div class="pay-card">
+        <div class="pay-top">
+          <div>
+            <div class="pay-name">${w.userName || 'User'}</div>
+            <div class="pay-email">${w.userEmail || ''}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="pay-amount">₹${w.amount}</div>
+            <div style="font-size:11px;color:var(--green);font-weight:700">Net: ₹${net}</div>
+          </div>
+        </div>
+        <span class="status-pill ${info.cls}"><span class="status-dot"></span>${info.label}</span>
+
+        <!-- GST Breakdown -->
+        <div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.2);border-radius:10px;padding:10px;margin:10px 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center">
+          <div><div style="font-size:10px;color:var(--grey);font-weight:600">REQUESTED</div><div style="font-size:15px;font-weight:800;color:var(--text)">₹${w.amount}</div></div>
+          <div><div style="font-size:10px;color:var(--grey);font-weight:600">GST 25%</div><div style="font-size:15px;font-weight:800;color:var(--red)">-₹${gst}</div></div>
+          <div><div style="font-size:10px;color:var(--grey);font-weight:600">BHEJO</div><div style="font-size:15px;font-weight:800;color:var(--green)">₹${net}</div></div>
+        </div>
+
+        <!-- Payment Details -->
+        <div class="pay-meta">
+          ${isBank ? `
+            <div>🏦 <b style="color:var(--amber)">Bank Transfer</b></div>
+            ${paymentInfo.split('|').map(p => `<div>${p.trim()}</div>`).join('')}
+          ` : `
+            <div>📱 UPI: <b>${paymentInfo}</b></div>
+          `}
+          <div>⏰ Requested: <b>${new Date(w.requestedAt).toLocaleString('hi-IN')}</b></div>
+          ${w.paidAt ? `<div>✅ Paid: <b>${new Date(w.paidAt).toLocaleString('hi-IN')}</b></div>` : ''}
+        </div>
+
+        ${w.status === 'pending' ? `
+        <div class="pay-actions">
+          <button class="btn-activate" onclick="markWithdrawalPaid('${w._id}')">✅ ₹${net} Bhej Diya</button>
+          <button class="btn-reject" onclick="rejectWithdrawal('${w._id}')">❌ Reject</button>
+        </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+async function markWithdrawalPaid(withdrawalId) {
+  if(!confirm('UPI se paisa bhej diya hai? Confirm karo.')) return;
+  try {
+    const d = await adminAPI('/admin/withdrawal-mark-paid', { withdrawalId });
+    if(d.success) { showToast('✅ Marked as paid!'); loadWithdrawals(); }
+    else showToast('❌ ' + (d.message || 'Error!'), 'error');
+  } catch(e) { showToast('❌ Server error!', 'error'); }
+}
+
+async function rejectWithdrawal(withdrawalId) {
+  if(!confirm('Reject karne se user ka balance refund ho jayega. Pakka?')) return;
+  try {
+    const d = await adminAPI('/admin/withdrawal-reject', { withdrawalId });
+    if(d.success) { showToast('Reject ho gaya, balance refund ho gaya!', 'info'); loadWithdrawals(); }
+    else showToast('❌ ' + (d.message || 'Error!'), 'error');
+  } catch(e) { showToast('❌ Server error!', 'error'); }
+}
+
+// ===================== REFERRAL STATS =====================
+async function loadReferralStats() {
+  try {
+    const d = await adminAPI('/admin/referral-stats');
+    if(!d.success) return;
+
+    document.getElementById('refStatPending').textContent = d.pendingWithdrawals || 0;
+    document.getElementById('refStatPendingAmt').textContent = '₹' + (d.pendingAmount || 0);
+    document.getElementById('refStatPaid').textContent = '₹' + (d.totalCommissionPaid || 0);
+    document.getElementById('refStatTopCount').textContent = (d.topReferrers || []).length;
+
+    const list = document.getElementById('topReferrersList');
+    if(!d.topReferrers || !d.topReferrers.length) {
+      list.innerHTML = `<div class="empty-state"><div class="emoji">👤</div>Abhi koi referral nahi hua</div>`;
+      return;
+    }
+
+    list.innerHTML = d.topReferrers.map(u => `
+      <div class="user-row">
+        <div class="user-info">
+          <p>${u.name || u.email?.split('@')[0] || 'User'}</p>
+          <span>${u.email} · Code: ${u.referralCode} · ${u.totalReferrals} referrals</span>
+        </div>
+        <span class="badge badge-active">₹${u.totalEarned} earned</span>
+      </div>
+    `).join('');
+  } catch(e) {}
+}
+
+// ===================== EARN CHANNELS =====================
+async function loadEarnChannelsAdmin() {
+  try {
+    const d = await adminAPI('/admin/earn-channels');
+    if(!d.success) { showToast('❌ Load nahi hua!', 'error'); return; }
+
+    document.getElementById('earnStatTotal').textContent = d.channels.length;
+
+    const list = document.getElementById('earnChannelsAdminList');
+    if(!d.channels.length) {
+      list.innerHTML = `<div class="empty-state"><div class="emoji">📺</div>Koi channel nahi add kiya</div>`;
+      return;
+    }
+
+    list.innerHTML = d.channels.map(ch => {
+      const progress = Math.min(100, Math.round(((ch.totalSubscribes||0) / (ch.maxSubscribes||350)) * 100));
+      const remaining = (ch.maxSubscribes||350) - (ch.totalSubscribes||0);
+      const isComplete = (ch.totalSubscribes||0) >= (ch.maxSubscribes||350);
+
+      return `
+      <div style="background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px">
+        <!-- Header -->
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:3px">${ch.channelName || 'YouTube Channel'}</div>
+            <div style="font-size:11.5px;color:var(--grey);word-break:break-all">${ch.channelUrl}</div>
+          </div>
+          <span class="status-pill ${isComplete ? 'failed' : ch.isActive ? 'success' : 'pending'}">
+            <span class="status-dot"></span>${isComplete ? '✅ Complete' : ch.isActive ? '🟢 Active' : '⏸ Paused'}
+          </span>
+        </div>
+
+        <!-- Progress -->
+        <div style="background:rgba(255,255,255,0.08);border-radius:20px;height:10px;margin-bottom:6px;overflow:hidden">
+          <div style="background:${isComplete ? 'var(--green)' : 'var(--red)'};height:100%;width:${progress}%;border-radius:20px;transition:width 0.5s"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--grey);margin-bottom:12px">
+          <span><b style="color:var(--text)">${ch.totalSubscribes||0}</b> / ${ch.maxSubscribes||350} subscribes</span>
+          <span>${isComplete ? '🎉 Limit poori!' : `${remaining} baaki`}</span>
+        </div>
+
+        <!-- Stats row -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+          <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:10px;text-align:center">
+            <div style="font-size:18px;font-weight:800;color:var(--green)">${ch.totalSubscribes||0}</div>
+            <div style="font-size:10px;color:var(--grey);margin-top:2px">SUBSCRIBED</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:10px;text-align:center">
+            <div style="font-size:18px;font-weight:800;color:var(--amber)">${remaining > 0 ? remaining : 0}</div>
+            <div style="font-size:10px;color:var(--grey);margin-top:2px">BAAKI</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:10px;text-align:center">
+            <div style="font-size:18px;font-weight:800;color:var(--text)">₹${((ch.totalSubscribes||0)*0.17).toFixed(0)}</div>
+            <div style="font-size:10px;color:var(--grey);margin-top:2px">PAID OUT</div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="pay-actions" style="margin-bottom:${ch.totalSubscribes > 0 ? '12px' : '0'}">
+          <button class="${ch.isActive ? 'btn-reject' : 'btn-activate'}" onclick="toggleEarnChannel('${ch._id}',${!ch.isActive})">
+            ${ch.isActive ? '⏸ Pause' : '▶ Activate'}
+          </button>
+          <button class="btn-reject" onclick="deleteEarnChannel('${ch._id}')">🗑 Delete</button>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) { showToast('❌ Error!', 'error'); }
+}
+
+async function addEarnChannel() {
+  const name = document.getElementById('newEarnChannelName').value.trim();
+  const url = document.getElementById('newEarnChannelUrl').value.trim();
+  const maxSubs = parseInt(document.getElementById('newEarnChannelMax').value) || 350;
+  const msg = document.getElementById('addChannelMsg');
+
+  if(!url || !url.includes('youtube')) {
+    msg.style.display='block'; msg.style.color='var(--red)';
+    msg.textContent='❌ Valid YouTube URL daalo!'; return;
+  }
+
+  try {
+    const d = await adminAPI('/admin/earn-channel/add', { channelUrl: url, channelName: name, maxSubscribes: maxSubs });
+    msg.style.display='block';
+    if(d.success) {
+      msg.style.color='var(--green)';
+      msg.textContent=`✅ Channel add ho gaya! Max: ${maxSubs} subscribers`;
+      document.getElementById('newEarnChannelName').value='';
+      document.getElementById('newEarnChannelUrl').value='';
+      document.getElementById('newEarnChannelMax').value='350';
+      loadEarnChannelsAdmin();
+      loadEarnStats();
+    } else {
+      msg.style.color='var(--red)';
+      msg.textContent='❌ '+(d.message||'Error!');
+    }
+  } catch(e) { showToast('❌ Server error!', 'error'); }
+}
+
+async function toggleEarnChannel(channelId, isActive) {
+  try {
+    const d = await adminAPI('/admin/earn-channel/toggle', { channelId, isActive });
+    if(d.success) { showToast('✅ Status update ho gaya!'); loadEarnChannelsAdmin(); }
+  } catch(e) { showToast('❌ Error!', 'error'); }
+}
+
+async function deleteEarnChannel(channelId) {
+  if(!confirm('Channel delete karna hai? Ye action undo nahi hoga.')) return;
+  try {
+    const d = await adminAPI('/admin/earn-channel/delete', { channelId });
+    if(d.success) { showToast('Channel delete ho gaya!', 'info'); loadEarnChannelsAdmin(); }
+  } catch(e) { showToast('❌ Error!', 'error'); }
+}
+
+async function loadEarnStats() {
+  try {
+    const d = await adminAPI('/admin/earn-stats');
+    if(!d.success) return;
+
+    document.getElementById('earnStatSubs').textContent = d.totalSubscribes || 0;
+    document.getElementById('earnStatEarned').textContent = '₹'+(d.totalEarned||0).toFixed(2);
+    document.getElementById('earnStatEarners').textContent = (d.topEarners||[]).length;
+
+    // Top Earners
+    const earnersList = document.getElementById('earnTopEarnersList');
+    if(!d.topEarners || !d.topEarners.length) {
+      earnersList.innerHTML = `<div class="empty-state"><div class="emoji">💰</div>Abhi koi earning nahi</div>`;
+    } else {
+      earnersList.innerHTML = d.topEarners.map((u,i) => `
+        <div class="user-row">
+          <div style="width:28px;height:28px;border-radius:50%;background:${i===0?'#FFD700':i===1?'#C0C0C0':i===2?'#CD7F32':'var(--line)'};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;color:${i<3?'#333':'var(--grey)'}">${i+1}</div>
+          <div class="user-info">
+            <p>${u.name || u.email?.split('@')[0] || 'User'}</p>
+            <span>${u.email} • Wallet: ₹${(u.earnWallet||0).toFixed(2)}</span>
+          </div>
+          <span class="badge badge-active">₹${(u.totalEarnedSubs||0).toFixed(2)}</span>
+        </div>
+      `).join('');
+    }
+
+    // Channel-wise subscriber details
+    if(d.channelDetails && d.channelDetails.length) {
+      const existingSection = document.getElementById('channelSubDetails');
+      if(!existingSection) {
+        const section = document.createElement('div');
+        section.id = 'channelSubDetails';
+        section.className = 'card';
+        section.style.marginTop = '14px';
+        document.getElementById('tab-earnchannels').appendChild(section);
+      }
+      const section = document.getElementById('channelSubDetails');
+      section.innerHTML = `
+        <div class="card-title">👥 Channel-wise Subscriber Details</div>
+        ${d.channelDetails.map(ch => `
+          <div style="border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--text)">${ch.channelName||'Channel'}</div>
+                <div style="font-size:11px;color:var(--grey)">${ch.totalSubscribes||0} / ${ch.maxSubscribes||350} subscribes</div>
+              </div>
+              <span class="status-pill ${(ch.totalSubscribes||0)>=(ch.maxSubscribes||350)?'failed':ch.isActive?'success':'pending'}">
+                <span class="status-dot"></span>${(ch.totalSubscribes||0)>=(ch.maxSubscribes||350)?'Complete':ch.isActive?'Active':'Paused'}
+              </span>
+            </div>
+            ${ch.subscribers && ch.subscribers.length ? `
+              <div style="max-height:200px;overflow-y:auto">
+                ${ch.subscribers.map((s,i) => `
+                  <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+                    <div style="width:22px;height:22px;border-radius:50%;background:${['#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8'][i%7]};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;flex-shrink:0">${(s.name||'U')[0].toUpperCase()}</div>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:12.5px;font-weight:600;color:var(--text)">${s.name||'User'}</div>
+                      <div style="font-size:10.5px;color:var(--grey)">${s.email}</div>
+                    </div>
+                    <div style="font-size:10px;color:var(--grey)">${new Date(s.earnedAt).toLocaleDateString('hi-IN')}</div>
+                  </div>
+                `).join('')}
+              </div>
+            ` : `<div style="font-size:12px;color:var(--grey);text-align:center;padding:10px">Abhi kisi ne subscribe nahi kiya</div>`}
+          </div>
+        `).join('')}
+      `;
+    }
+  } catch(e) {}
+}
+</script>
+</body>
+</html>
