@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>AmPay — Dukandar Panel</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --blue:#1A73E8;
+  --dark:#0A1628;
+  --green:#00C853;
+  --red:#FF3B30;
+  --amber:#FF9500;
+  --paper:#F6F8FF;
+  --card:#FFFFFF;
+  --border:#E8EDF5;
+  --text:#1A1F36;
+  --muted:#6B7280;
+}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--paper);color:var(--text);max-width:480px;margin:0 auto;min-height:100vh}
+.page{display:none;min-height:100vh;padding-bottom:70px}
+.page.active{display:block}
+.header{background:linear-gradient(135deg,#1A73E8,#0A3D8F);padding:20px 16px 30px;color:white;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.07)}
+.header-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.logo-text{font-size:20px;font-weight:800}
+.wallet-card{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:18px;padding:16px;margin-top:16px;position:relative;z-index:1}
+.wallet-label{font-size:11px;opacity:0.7;letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+.wallet-amount{font-size:36px;font-weight:800;letter-spacing:-1px}
+.card{background:white;border-radius:16px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:14px}
+.card-title{font-size:16px;font-weight:800;margin-bottom:14px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;display:block}
+.form-input{width:100%;padding:13px;border:1.5px solid var(--border);border-radius:12px;font-size:15px;outline:none;color:var(--text);background:white}
+.form-input:focus{border-color:var(--blue)}
+.btn-primary{width:100%;padding:15px;background:var(--blue);color:white;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer}
+.btn-green{width:100%;padding:15px;background:#00C853;color:white;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer}
+.btn-red{width:100%;padding:15px;background:#FF3B30;color:white;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;margin-top:10px}
+.msg{padding:12px;border-radius:10px;font-size:13px;font-weight:600;margin-top:10px;display:none}
+.msg.success{background:#E8F5E9;color:#2E7D32}
+.msg.error{background:#FFEBEE;color:#C62828}
+.txn-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.txn-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.txn-info{flex:1}
+.txn-name{font-size:13.5px;font-weight:700;margin-bottom:2px}
+.txn-time{font-size:11px;color:var(--muted)}
+.txn-amount{font-size:14px;font-weight:800;color:#00C853}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:700}
+.badge-success{background:#E8F5E9;color:#00C853}
+.badge-pending{background:#FFF8E1;color:#FF9500}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-card{background:white;border-radius:14px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.stat-num{font-size:22px;font-weight:800;color:var(--blue)}
+.stat-label{font-size:10.5px;color:var(--muted);margin-top:3px;font-weight:600}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:white;border-top:1px solid var(--border);display:flex;padding:8px 0 12px;z-index:100}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;padding:4px}
+.nav-icon{font-size:20px}
+.nav-label{font-size:9.5px;font-weight:700;color:var(--muted)}
+.nav-item.active .nav-label{color:var(--blue)}
+.amount-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pill{padding:7px 14px;border:1.5px solid var(--border);border-radius:20px;font-size:12.5px;font-weight:700;cursor:pointer;background:white}
+.pill.active{border-color:var(--blue);background:#EBF3FF;color:var(--blue)}
+select.form-input{appearance:none}
+</style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="page-login" class="page active">
+  <div style="min-height:100vh;background:linear-gradient(160deg,#0A1628,#1A3A6E);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;color:white">
+    <div style="width:72px;height:72px;background:var(--blue);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 20px;box-shadow:0 8px 30px rgba(26,115,232,0.5)">💳</div>
+    <div style="font-size:28px;font-weight:800;margin-bottom:6px">AmPay</div>
+    <div style="font-size:13px;opacity:0.65;margin-bottom:32px">Dukandar Panel</div>
+
+    <div style="width:100%;background:rgba(255,255,255,0.08);border-radius:16px;padding:20px;margin-bottom:14px">
+      <div class="form-group">
+        <label class="form-label" style="color:rgba(255,255,255,0.6)">Mobile Number</label>
+        <input type="tel" class="form-input" id="loginPhone" placeholder="10-digit number" inputmode="numeric" maxlength="10" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white">
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label" style="color:rgba(255,255,255,0.6)">Password</label>
+        <input type="password" class="form-input" id="loginPassword" placeholder="Password" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white">
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="doLogin()" style="margin-bottom:12px">🔐 Login Karo</button>
+    <button onclick="showPage('register')" style="width:100%;padding:14px;background:transparent;color:rgba(255,255,255,0.8);border:1.5px solid rgba(255,255,255,0.3);border-radius:14px;font-size:15px;font-weight:700;cursor:pointer">➕ Naya Account Banao</button>
+    <div id="loginMsg" class="msg" style="width:100%"></div>
+  </div>
+</div>
+
+<!-- REGISTER PAGE -->
+<div id="page-register" class="page">
+  <div style="min-height:100vh;background:linear-gradient(160deg,#0A1628,#1A3A6E);padding:28px 20px;color:white">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+      <button onclick="showPage('login')" style="background:rgba(255,255,255,0.15);border:none;color:white;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer">←</button>
+      <div style="font-size:20px;font-weight:800">Register Karo</div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.08);border-radius:16px;padding:20px">
+      <div class="form-group">
+        <label class="form-label" style="color:rgba(255,255,255,0.6)">Full Name</label>
+        <input type="text" class="form-input" id="regName" placeholder="Aapka naam" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white">
+      </div>
+      <div class="form-group">
+        <label class="form-label" style="color:rgba(255,255,255,0.6)">Mobile Number</label>
+        <input type="tel" class="form-input" id="regPhone" placeholder="10-digit number" inputmode="numeric" maxlength="10" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white">
+      </div>
+      <div class="form-group">
+        <label class="form-label" style="color:rgba(255,255,255,0.6)">Email</label>
+        <input type="email" class="form-input" id="regEmail" placeholder="Email address" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white">
+      </div>
+      <div class="form-group">
+        <label class="form-label" style="color:rgba(255,255,255,0.6)">Shop Name</label>
+        <input type="text" class="form-input" id="regShop" placeholder="Dukan ka naam" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white">
+      </div>
+      <div class="form-group">
+        <label class="form-label" style="color:rgba(255,255,255,0.6)">Address</label>
+        <input type="text" class="form-input" id="regAddress" placeholder="Dukan ka address" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white">
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label" style="color:rgba(255,255,255,0.6)">Password</label>
+        <input type="password" class="form-input" id="regPassword" placeholder="Password set karo" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white">
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="doRegister()" style="margin-top:14px">✅ Register Karo</button>
+    <div id="regMsg" class="msg" style="width:100%"></div>
+  </div>
+</div>
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page">
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div style="font-size:12px;opacity:0.7">Namaste 👋</div>
+        <div class="logo-text" id="dukandarName">Dukandar</div>
+      </div>
+      <button onclick="doLogout()" style="background:rgba(255,255,255,0.15);border:none;color:white;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer">Logout</button>
+    </div>
+    <div class="wallet-card">
+      <div class="wallet-label">Wallet Balance</div>
+      <div class="wallet-amount">₹<span id="walletBal">0.00</span></div>
+      <div style="font-size:11px;opacity:0.7;margin-top:6px">Total Earned: ₹<span id="totalEarned">0</span></div>
+    </div>
+  </div>
+
+  <div style="padding:14px;margin-top:-10px">
+    <!-- Stats -->
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-num" id="totalTxns">0</div>
+        <div class="stat-label">TOTAL TRANSACTIONS</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:#00C853" id="todayEarned">₹0</div>
+        <div class="stat-label">AAPKI KAMAI</div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <div onclick="showPage('aeps')" style="background:linear-gradient(135deg,#1A73E8,#0A3D8F);border-radius:14px;padding:16px;cursor:pointer;color:white">
+        <div style="font-size:24px;margin-bottom:6px">🏧</div>
+        <div style="font-size:13px;font-weight:800">AEPS</div>
+        <div style="font-size:10px;opacity:0.7;margin-top:2px">Cash Withdrawal</div>
+      </div>
+      <div onclick="showPage('recharge')" style="background:linear-gradient(135deg,#7C3AED,#4F46E5);border-radius:14px;padding:16px;cursor:pointer;color:white">
+        <div style="font-size:24px;margin-bottom:6px">📱</div>
+        <div style="font-size:13px;font-weight:800">Recharge</div>
+        <div style="font-size:10px;opacity:0.7;margin-top:2px">Mobile + DTH</div>
+      </div>
+      <div onclick="showPage('withdraw')" style="background:linear-gradient(135deg,#00897B,#00695C);border-radius:14px;padding:16px;cursor:pointer;color:white">
+        <div style="font-size:24px;margin-bottom:6px">💸</div>
+        <div style="font-size:13px;font-weight:800">Withdraw</div>
+        <div style="font-size:10px;opacity:0.7;margin-top:2px">Bank mein bhejo</div>
+      </div>
+      <div onclick="showPage('history')" style="background:linear-gradient(135deg,#FF6F00,#E65100);border-radius:14px;padding:16px;cursor:pointer;color:white">
+        <div style="font-size:24px;margin-bottom:6px">📊</div>
+        <div style="font-size:13px;font-weight:800">History</div>
+        <div style="font-size:10px;opacity:0.7;margin-top:2px">Sab transactions</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AEPS PAGE -->
+<div id="page-aeps" class="page">
+  <div class="header" style="padding-bottom:20px">
+    <div class="header-top">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button onclick="showPage('home')" style="background:rgba(255,255,255,0.15);border:none;color:white;width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer">←</button>
+        <div class="logo-text">AEPS — Cash Withdrawal</div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:16px">
+    <div class="card">
+      <div class="card-title">🏧 Customer AEPS</div>
+      <div style="background:#EBF3FF;border-radius:10px;padding:12px;margin-bottom:14px;font-size:12.5px;color:#1A73E8;font-weight:600">
+        ⚠️ Customer khud apni finger lagayega biometric device pe
+      </div>
+      <div class="form-group">
+        <label class="form-label">Customer Aadhaar Number</label>
+        <input type="text" class="form-input" id="aepsAadhaar" placeholder="12-digit Aadhaar number" inputmode="numeric" maxlength="12">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bank Select Karo</label>
+        <select class="form-input" id="aepsBank">
+          <option>SBI — State Bank of India</option>
+          <option>HDFC Bank</option>
+          <option>ICICI Bank</option>
+          <option>PNB</option>
+          <option>UCO Bank</option>
+          <option>Bank of Baroda</option>
+          <option>Canara Bank</option>
+          <option>Union Bank</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Amount (₹)</label>
+        <input type="number" class="form-input" id="aepsAmount" placeholder="Kitna nikalna hai?">
+      </div>
+      <div class="amount-pills">
+        <div class="pill" onclick="selectPill(this,'aepsAmount','100')">₹100</div>
+        <div class="pill" onclick="selectPill(this,'aepsAmount','200')">₹200</div>
+        <div class="pill" onclick="selectPill(this,'aepsAmount','500')">₹500</div>
+        <div class="pill" onclick="selectPill(this,'aepsAmount','1000')">₹1000</div>
+        <div class="pill" onclick="selectPill(this,'aepsAmount','2000')">₹2000</div>
+      </div>
+
+      <!-- Commission preview -->
+      <div id="aepsPreview" style="background:#F0FFF4;border-radius:10px;padding:12px;margin-bottom:14px;display:none">
+        <div style="font-size:12px;color:#2E7D32;font-weight:700">Commission Preview:</div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:12px">
+          <span>Total Commission (1%)</span><span id="previewCommission">₹0</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px">
+          <span>Aapka (30%)</span><span id="previewDukandar" style="color:#00C853;font-weight:700">₹0</span>
+        </div>
+      </div>
+
+      <button class="btn-green" onclick="doAeps()">🏧 AEPS Process Karo</button>
+      <div id="aepsMsg" class="msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- RECHARGE PAGE -->
+<div id="page-recharge" class="page">
+  <div class="header" style="padding-bottom:20px">
+    <div class="header-top">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button onclick="showPage('home')" style="background:rgba(255,255,255,0.15);border:none;color:white;width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer">←</button>
+        <div class="logo-text">Mobile Recharge</div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:16px">
+    <div class="card">
+      <div class="form-group">
+        <label class="form-label">Mobile Number</label>
+        <input type="tel" class="form-input" id="rechargeMobile" placeholder="10-digit number" inputmode="numeric" maxlength="10">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Operator</label>
+        <select class="form-input" id="rechargeOp">
+          <option>Jio</option>
+          <option>Airtel</option>
+          <option>Vi</option>
+          <option>BSNL</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Amount (₹)</label>
+        <input type="number" class="form-input" id="rechargeAmt" placeholder="Amount">
+      </div>
+      <div class="amount-pills">
+        <div class="pill" onclick="selectPill(this,'rechargeAmt','99')">₹99</div>
+        <div class="pill" onclick="selectPill(this,'rechargeAmt','199')">₹199</div>
+        <div class="pill" onclick="selectPill(this,'rechargeAmt','239')">₹239</div>
+        <div class="pill" onclick="selectPill(this,'rechargeAmt','299')">₹299</div>
+        <div class="pill" onclick="selectPill(this,'rechargeAmt','399')">₹399</div>
+      </div>
+      <button class="btn-primary" onclick="doRecharge()">📱 Recharge Karo</button>
+      <div id="rechargeMsg" class="msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WITHDRAW PAGE -->
+<div id="page-withdraw" class="page">
+  <div class="header" style="padding-bottom:20px">
+    <div class="header-top">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button onclick="showPage('home')" style="background:rgba(255,255,255,0.15);border:none;color:white;width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer">←</button>
+        <div class="logo-text">Withdraw</div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:16px">
+    <div style="background:linear-gradient(135deg,#1A73E8,#0A3D8F);border-radius:16px;padding:16px;margin-bottom:14px;color:white">
+      <div style="font-size:11px;opacity:0.7;margin-bottom:4px">Available Balance</div>
+      <div style="font-size:30px;font-weight:800">₹<span id="wdBalance">0</span></div>
+    </div>
+    <div class="card">
+      <div class="form-group">
+        <label class="form-label">Amount (₹)</label>
+        <input type="number" class="form-input" id="wdAmount" placeholder="Kitna nikalna hai?">
+      </div>
+      <div class="amount-pills">
+        <div class="pill" onclick="selectPill(this,'wdAmount','500')">₹500</div>
+        <div class="pill" onclick="selectPill(this,'wdAmount','1000')">₹1000</div>
+        <div class="pill" onclick="selectPill(this,'wdAmount','2000')">₹2000</div>
+        <div class="pill" onclick="selectPill(this,'wdAmount','5000')">₹5000</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bank Name</label>
+        <select class="form-input" id="wdBank">
+          <option>SBI — State Bank of India</option>
+          <option>HDFC Bank</option>
+          <option>ICICI Bank</option>
+          <option>PNB</option>
+          <option>UCO Bank</option>
+          <option>Bank of Baroda</option>
+          <option>Canara Bank</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Account Number</label>
+        <input type="text" class="form-input" id="wdAccNo" placeholder="Account number" inputmode="numeric">
+      </div>
+      <div class="form-group">
+        <label class="form-label">IFSC Code</label>
+        <input type="text" class="form-input" id="wdIfsc" placeholder="jaise: SBIN0001234" style="text-transform:uppercase">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Account Holder Name</label>
+        <input type="text" class="form-input" id="wdAccName" placeholder="Account holder naam">
+      </div>
+      <button class="btn-green" onclick="doWithdraw()">💸 Withdraw Request Bhejo</button>
+      <div id="wdMsg" class="msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY PAGE -->
+<div id="page-history" class="page">
+  <div class="header" style="padding-bottom:20px">
+    <div class="header-top">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button onclick="showPage('home')" style="background:rgba(255,255,255,0.15);border:none;color:white;width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer">←</button>
+        <div class="logo-text">Transaction History</div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:16px">
+    <div class="card" id="historyList">
+      <div style="text-align:center;padding:20px;color:var(--muted)">Loading...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'https://yt-sub-exchange.onrender.com';
+let dukandarId = localStorage.getItem('dukandarId');
+let dukandarData = null;
+
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  if (page === 'home') loadWallet();
+  if (page === 'history') loadHistory();
+  if (page === 'withdraw') {
+    document.getElementById('wdBalance').textContent = dukandarData?.walletBalance || 0;
+  }
+  window.scrollTo(0, 0);
+}
+
+function showMsg(id, text, success) {
+  const el = document.getElementById(id);
+  el.style.display = 'block';
+  el.className = 'msg ' + (success ? 'success' : 'error');
+  el.textContent = text;
+}
+
+function selectPill(pill, inputId, val) {
+  pill.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  document.getElementById(inputId).value = val;
+  if (inputId === 'aepsAmount') updateAepsPreview();
+}
+
+function updateAepsPreview() {
+  const amt = parseFloat(document.getElementById('aepsAmount').value);
+  if (!amt) { document.getElementById('aepsPreview').style.display = 'none'; return; }
+  const commission = Math.round(amt * 0.01);
+  const dukandarShare = Math.round(commission * 0.30);
+  document.getElementById('previewCommission').textContent = '₹' + commission;
+  document.getElementById('previewDukandar').textContent = '₹' + dukandarShare;
+  document.getElementById('aepsPreview').style.display = 'block';
+}
+
+document.getElementById('aepsAmount')?.addEventListener('input', updateAepsPreview);
+
+async function doLogin() {
+  const phone = document.getElementById('loginPhone').value;
+  const password = document.getElementById('loginPassword').value;
+  if (!phone || !password) { showMsg('loginMsg', '❌ Sab bharo!', false); return; }
+  try {
+    const r = await fetch(`${API}/api/dukandar/login`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ phone, password })
+    });
+    const d = await r.json();
+    if (d.success) {
+      dukandarId = d.dukandar.id;
+      dukandarData = d.dukandar;
+      localStorage.setItem('dukandarId', dukandarId);
+      localStorage.setItem('dukandarData', JSON.stringify(d.dukandar));
+      updateHomeUI();
+      showPage('home');
+    } else {
+      showMsg('loginMsg', '❌ ' + d.message, false);
+    }
+  } catch(e) { showMsg('loginMsg', '❌ Server error!', false); }
+}
+
+async function doRegister() {
+  const name = document.getElementById('regName').value;
+  const phone = document.getElementById('regPhone').value;
+  const email = document.getElementById('regEmail').value;
+  const shopName = document.getElementById('regShop').value;
+  const address = document.getElementById('regAddress').value;
+  const password = document.getElementById('regPassword').value;
+  if (!name || !phone || !email || !password) { showMsg('regMsg', '❌ Sab fields bharo!', false); return; }
+  try {
+    const r = await fetch(`${API}/api/dukandar/register`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ name, phone, email, shopName, address, password })
+    });
+    const d = await r.json();
+    showMsg('regMsg', d.success ? '✅ ' + d.message : '❌ ' + d.message, d.success);
+    if (d.success) setTimeout(() => showPage('login'), 2000);
+  } catch(e) { showMsg('regMsg', '❌ Server error!', false); }
+}
+
+function doLogout() {
+  localStorage.removeItem('dukandarId');
+  localStorage.removeItem('dukandarData');
+  dukandarId = null;
+  dukandarData = null;
+  showPage('login');
+}
+
+function updateHomeUI() {
+  if (!dukandarData) return;
+  document.getElementById('dukandarName').textContent = dukandarData.name || 'Dukandar';
+  document.getElementById('walletBal').textContent = (dukandarData.walletBalance || 0).toFixed(2);
+  document.getElementById('totalEarned').textContent = dukandarData.totalEarned || 0;
+  document.getElementById('totalTxns').textContent = dukandarData.totalTransactions || 0;
+  document.getElementById('todayEarned').textContent = '₹' + (dukandarData.totalEarned || 0);
+}
+
+async function loadWallet() {
+  if (!dukandarId) return;
+  try {
+    const r = await fetch(`${API}/api/dukandar/wallet/${dukandarId}`);
+    const d = await r.json();
+    if (d.success) {
+      dukandarData = {...dukandarData, ...d};
+      document.getElementById('walletBal').textContent = (d.balance || 0).toFixed(2);
+      document.getElementById('totalEarned').textContent = d.totalEarned || 0;
+      document.getElementById('totalTxns').textContent = d.totalTransactions || 0;
+      document.getElementById('todayEarned').textContent = '₹' + (d.totalEarned || 0);
+    }
+  } catch(e) {}
+}
+
+async function doAeps() {
+  const aadhaar = document.getElementById('aepsAadhaar').value;
+  const bank = document.getElementById('aepsBank').value;
+  const amount = parseFloat(document.getElementById('aepsAmount').value);
+  if (!aadhaar || aadhaar.length !== 12) { showMsg('aepsMsg', '❌ Valid 12-digit Aadhaar daalo!', false); return; }
+  if (!amount || amount < 100) { showMsg('aepsMsg', '❌ Minimum ₹100 amount daalo!', false); return; }
+  const btn = document.querySelector('#page-aeps .btn-green');
+  btn.textContent = '⏳ Processing...'; btn.disabled = true;
+  try {
+    const r = await fetch(`${API}/api/dukandar/aeps`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ dukandarId, customerAadhaar: aadhaar, bankName: bank, amount })
+    });
+    const d = await r.json();
+    if (d.success) {
+      showMsg('aepsMsg', `✅ ₹${amount} successfully nikala! Aapki kamai: ₹${d.dukandarEarning}`, true);
+      document.getElementById('aepsAadhaar').value = '';
+      document.getElementById('aepsAmount').value = '';
+      document.getElementById('aepsPreview').style.display = 'none';
+      loadWallet();
+    } else {
+      showMsg('aepsMsg', '❌ ' + d.message, false);
+    }
+  } catch(e) { showMsg('aepsMsg', '❌ Server error!', false); }
+  btn.textContent = '🏧 AEPS Process Karo'; btn.disabled = false;
+}
+
+async function doRecharge() {
+  const mobile = document.getElementById('rechargeMobile').value;
+  const op = document.getElementById('rechargeOp').value;
+  const amt = parseFloat(document.getElementById('rechargeAmt').value);
+  if (!mobile || mobile.length !== 10) { showMsg('rechargeMsg', '❌ Valid number daalo!', false); return; }
+  if (!amt) { showMsg('rechargeMsg', '❌ Amount daalo!', false); return; }
+  showMsg('rechargeMsg', '⏳ Processing...', true);
+  try {
+    const r = await fetch(`${API}/api/recharge/mobile`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ userId: dukandarId, number: mobile, operator: op, amount: amt })
+    });
+    const d = await r.json();
+    showMsg('rechargeMsg', d.success ? `✅ ${d.message}` : '❌ ' + d.message, d.success);
+    if (d.success) { loadWallet(); document.getElementById('rechargeMobile').value = ''; }
+  } catch(e) { showMsg('rechargeMsg', '❌ Server error!', false); }
+}
+
+async function doWithdraw() {
+  const amount = parseFloat(document.getElementById('wdAmount').value);
+  const bankName = document.getElementById('wdBank').value;
+  const accNo = document.getElementById('wdAccNo').value;
+  const ifsc = document.getElementById('wdIfsc').value;
+  const accName = document.getElementById('wdAccName').value;
+  if (!amount || amount < 100) { showMsg('wdMsg', '❌ Minimum ₹100 withdraw karo!', false); return; }
+  if (!accNo || !ifsc || !accName) { showMsg('wdMsg', '❌ Bank details bharo!', false); return; }
+  try {
+    const r = await fetch(`${API}/api/dukandar/withdraw`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ dukandarId, amount, bankName, accNo, ifsc, accName })
+    });
+    const d = await r.json();
+    showMsg('wdMsg', d.success ? '✅ ' + d.message : '❌ ' + d.message, d.success);
+    if (d.success) { loadWallet(); }
+  } catch(e) { showMsg('wdMsg', '❌ Server error!', false); }
+}
+
+async function loadHistory() {
+  if (!dukandarId) return;
+  const list = document.getElementById('historyList');
+  try {
+    const r = await fetch(`${API}/api/dukandar/history/${dukandarId}`);
+    const d = await r.json();
+    if (!d.success || !d.transactions.length) {
+      list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted)">Koi transaction nahi abhi</div>';
+      return;
+    }
+    list.innerHTML = d.transactions.map(t => {
+      const icon = t.type === 'aeps' ? '🏧' : t.type === 'recharge' ? '📱' : '📺';
+      const date = new Date(t.createdAt).toLocaleString('en-IN', {timeZone:'Asia/Kolkata', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
+      return `
+        <div class="txn-item">
+          <div class="txn-icon" style="background:#E8F5E9">${icon}</div>
+          <div class="txn-info">
+            <div class="txn-name">${t.type.toUpperCase()} — ₹${t.amount}</div>
+            <div class="txn-time">${date} · <span class="badge badge-success">${t.status}</span></div>
+          </div>
+          <div class="txn-amount">+₹${t.dukandarShare || 0}</div>
+        </div>`;
+    }).join('');
+  } catch(e) {
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:red">Error!</div>';
+  }
+}
+
+// Auto login if saved
+if (dukandarId) {
+  const saved = localStorage.getItem('dukandarData');
+  if (saved) { dukandarData = JSON.parse(saved); updateHomeUI(); }
+  showPage('home');
+} else {
+  showPage('login');
+}
+</script>
+</body>
+</html>
