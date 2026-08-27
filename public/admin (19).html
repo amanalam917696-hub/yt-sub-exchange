@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Admin Panel — Digital Seva</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',-apple-system,sans-serif}
+body{background:#0f172a;color:#e2e8f0;min-height:100vh;max-width:480px;margin:0 auto}
+.header{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);padding:20px 16px;border-radius:0 0 20px 20px}
+.header h1{font-size:20px;font-weight:800}
+.header p{font-size:12px;opacity:.7;margin-top:4px}
+.container{padding:14px}
+
+/* LOGIN */
+.login-box{background:#1e293b;border-radius:16px;padding:24px;margin-top:20px}
+.login-box h2{font-size:18px;margin-bottom:16px}
+input{width:100%;padding:13px;background:#0f172a;border:1.5px solid #334155;border-radius:10px;color:#e2e8f0;font-size:15px;outline:none;margin-bottom:12px}
+input:focus{border-color:#3b82f6}
+button{width:100%;padding:13px;background:#1d4ed8;color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer}
+button:hover{background:#1e40af}
+button:active{transform:scale(0.98)}
+
+/* TABS */
+.tabs{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px}
+.tab{padding:9px 16px;background:#1e293b;border:none;color:#94a3b8;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.tab.active{background:#1d4ed8;color:white}
+
+/* STAT GRID */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-card{background:#1e293b;border-radius:14px;padding:16px}
+.stat-card .label{font-size:11px;color:#94a3b8;margin-bottom:6px}
+.stat-card .value{font-size:28px;font-weight:800;color:white}
+.stat-card .sub{font-size:11px;color:#64748b;margin-top:4px}
+
+/* SECTION */
+.section{background:#1e293b;border-radius:14px;padding:14px;margin-bottom:12px}
+.section-title{font-size:14px;font-weight:700;margin-bottom:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px}
+
+/* USER ITEM */
+.user-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #0f172a}
+.user-item:last-child{border:none}
+.link-card{background:#0f172a;border:1px solid #334155;border-radius:12px;padding:14px;margin-bottom:10px}
+.link-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.link-card-title{font-weight:700;font-size:13.5px;color:#e2e8f0}
+.link-status{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap}
+.link-status.live{background:#052e16;color:#22c55e}
+.link-status.pending{background:#422006;color:#f59e0b}
+.link-input{width:100%;padding:9px 10px;border-radius:8px;border:1px solid #334155;background:#1e293b;color:white;font-size:12px;box-sizing:border-box;margin-bottom:8px}
+.link-input:focus{outline:none;border-color:#6366f1}
+.link-card-actions{display:flex;gap:8px}
+.link-card-actions button{flex:1}
+.user-avatar{width:42px;height:42px;border-radius:50%;background:#1d4ed8;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;overflow:hidden}
+.user-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.user-info{flex:1;min-width:0}
+.user-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-email{font-size:11px;color:#64748b;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-meta{font-size:10px;color:#475569;margin-top:3px}
+.badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.badge-active{background:#064e3b;color:#34d399}
+.badge-inactive{background:#1e293b;color:#64748b;border:1px solid #334155}
+
+/* PAYMENT ITEM */
+.pay-item{padding:12px 0;border-bottom:1px solid #0f172a}
+.pay-item:last-child{border:none}
+.pay-row{display:flex;justify-content:space-between;align-items:flex-start}
+.pay-name{font-size:13px;font-weight:700}
+.pay-amt{font-size:15px;font-weight:800;color:#34d399}
+.pay-meta{font-size:11px;color:#64748b;margin-top:3px}
+.pay-status{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-top:5px;display:inline-block}
+.s-completed{background:#064e3b;color:#34d399}
+.s-pending{background:#451a03;color:#fb923c}
+.s-pending_admin{background:#312e81;color:#a5b4fc}
+
+/* ACTION BUTTONS */
+.action-row{display:flex;gap:8px;margin-top:10px}
+.btn-approve{flex:1;padding:9px;background:#064e3b;color:#34d399;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
+.btn-reject{flex:1;padding:9px;background:#450a0a;color:#f87171;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
+.btn-sm{padding:8px 14px;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
+
+/* EMPTY */
+.empty{text-align:center;padding:30px;color:#475569;font-size:13px}
+
+/* REFRESH */
+.refresh-btn{width:100%;padding:11px;background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px}
+.refresh-btn:hover{background:#334155}
+
+/* TOAST */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#1d4ed8;color:white;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:700;z-index:200;display:none;max-width:320px;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- LOGIN -->
+<div id="loginSection">
+  <div class="header">
+    <h1>🔐 Admin Panel</h1>
+    <p>Digital Seva Panel — Admin Access</p>
+  </div>
+  <div class="container">
+    <div class="login-box">
+      <h2>Admin Login</h2>
+      <input type="password" id="adminPass" placeholder="Admin Password" onkeydown="if(event.key==='Enter')adminLogin()">
+      <button onclick="adminLogin()">🔐 Login Karo</button>
+      <div id="loginErr" style="color:#f87171;font-size:13px;margin-top:10px;text-align:center;display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none">
+  <div class="header">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <h1>⚙️ Admin Panel</h1>
+        <p>Digital Seva — Control Center</p>
+      </div>
+      <button onclick="adminLogout()" style="width:auto;padding:8px 14px;background:rgba(255,255,255,.1);font-size:12px;border-radius:20px;border:none;color:white;cursor:pointer">Logout</button>
+    </div>
+  </div>
+  <div class="container">
+    <button class="refresh-btn" onclick="loadAll()">🔄 Refresh Data</button>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
+      <button class="tab" onclick="switchTab('users',this)">👥 Users</button>
+      <button class="tab" onclick="switchTab('members',this)">💎 Memberships</button>
+      <button class="tab" onclick="switchTab('payments',this)">💳 Payments</button>
+      <button class="tab" onclick="switchTab('applications',this)">📋 Applications</button>
+      <button class="tab" onclick="switchTab('links',this)">🔗 Links</button>
+    </div>
+
+    <!-- DASHBOARD TAB -->
+    <div id="tab-dashboard">
+      <div class="stat-grid" id="statsGrid">
+        <div class="stat-card"><div class="label">Total Users</div><div class="value" id="dTotalUsers">—</div></div>
+        <div class="stat-card"><div class="label">Active Members</div><div class="value" id="dActiveMembers">—</div></div>
+        <div class="stat-card"><div class="label">Total Payments</div><div class="value" id="dTotalPayments">—</div></div>
+        <div class="stat-card"><div class="label">Revenue</div><div class="value" id="dRevenue">—</div></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">📊 Payment Status Breakdown <span id="liveIndicator" style="font-size:10px;color:#22c55e;font-weight:400">● LIVE</span></div>
+        <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="stat-card"><div class="label">✅ Completed</div><div class="value" id="payCompleted">—</div></div>
+          <div class="stat-card"><div class="label">⏳ Pending</div><div class="value" id="payPending">—</div></div>
+          <div class="stat-card"><div class="label">❌ Failed</div><div class="value" id="payFailed">—</div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">🎁 "जमीन की रसीद" Free Trial Link</div>
+        <p style="font-size:12px;color:#94a3b8;margin-bottom:10px">Jab ON hai, koi bhi non-member user "जमीन की रसीद" free mein khol sakta hai. OFF karne pe wo bhi normal locked ho jayega (₹10 membership maangega).</p>
+        <div style="display:flex;align-items:center;justify-content:space-between;background:#0f172a;border-radius:10px;padding:12px 14px">
+          <span style="font-size:13px;font-weight:700" id="trialStatusText">Loading...</span>
+          <div style="display:flex;gap:8px">
+            <button class="btn-approve" onclick="toggleTrialLink(true)">🟢 ON Karo</button>
+            <button class="btn-reject" onclick="toggleTrialLink(false)">🔴 OFF Karo</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">📢 Sab Users Ko Message Bhejo</div>
+        <p style="font-size:12px;color:#94a3b8;margin-bottom:10px">Ye message website khulte hi sabko banner ki tarah dikhega, jab tak tum khud hata na do.</p>
+        <textarea id="broadcastMsg" placeholder="Jaise: Kal server maintenance ke liye 2-4 baje site band rahegi"
+          style="width:100%;min-height:70px;padding:10px;border-radius:10px;border:1px solid #334155;background:#0f172a;color:white;font-size:13px;box-sizing:border-box;font-family:inherit"></textarea>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn-approve" style="flex:1" onclick="sendBroadcast()">📢 Bhejo (Sabko Dikhega)</button>
+          <button class="btn-reject" style="flex:1" onclick="clearBroadcast()">🗑️ Hatao</button>
+        </div>
+        <div id="broadcastStatus" style="font-size:12px;color:#94a3b8;margin-top:8px"></div>
+      </div>
+    </div>
+
+    <!-- USERS TAB -->
+    <div id="tab-users" style="display:none">
+      <div class="section">
+        <div class="section-title">👥 Registered Users</div>
+        <div id="usersList"><div class="empty">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- PAYMENTS TAB -->
+    <div id="tab-payments" style="display:none">
+      <div class="section">
+        <div class="section-title">⏳ Pending Payments</div>
+        <div id="pendingList"><div class="empty">Loading...</div></div>
+      </div>
+      <div class="section">
+        <div class="section-title">✅ Completed Payments</div>
+        <div id="completedList"><div class="empty">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- APPLICATIONS TAB -->
+    <div id="tab-applications" style="display:none">
+      <div class="section">
+        <div class="section-title">📋 Service Applications <span style="font-size:10px;color:#22c55e;font-weight:400">● LIVE</span></div>
+        <p style="font-size:12px;color:#94a3b8;margin-bottom:10px">Jab koi member kisi service pe click karta hai, yahan log hota hai — real time.</p>
+        <div id="applicationsList"><div class="empty">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- MEMBERS TAB -->
+    <div id="tab-members" style="display:none">
+      <div class="section">
+        <div class="section-title">💎 Active Members</div>
+        <div id="membersList"><div class="empty">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- LINKS TAB -->
+    <div id="tab-links" style="display:none">
+      <div class="section">
+        <div class="section-title">🔗 Service Links Manage Karo</div>
+        <p style="font-size:12px;color:#94a3b8;margin-bottom:10px">Har service ka real government website link yahan daalo/badlo. Khali chhod ke "Jald Aayega" dikha sakte ho.</p>
+        <div id="linksList"><div class="empty">Loading...</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const API = '';
+let adminPassword = '';
+
+function showToast(msg, isError=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isError ? '#7f1d1d' : '#1d4ed8';
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2500);
+}
+
+function adminLogin() {
+  const pass = document.getElementById('adminPass').value;
+  if(!pass) return;
+  adminPassword = pass;
+  fetch('/admin/full-stats', { headers: { 'x-admin-password': pass } })
+    .then(r => r.json())
+    .then(d => {
+      if(d.success) {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadAll();
+      } else {
+        document.getElementById('loginErr').style.display = 'block';
+        document.getElementById('loginErr').textContent = '❌ Wrong password!';
+      }
+    })
+    .catch(() => {
+      document.getElementById('loginErr').style.display = 'block';
+      document.getElementById('loginErr').textContent = '❌ Server error!';
+    });
+}
+
+function adminLogout() {
+  adminPassword = '';
+  document.getElementById('loginSection').style.display = 'block';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('adminPass').value = '';
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display = 'none');
+  document.getElementById('tab-' + tab).style.display = 'block';
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function headers() { return { 'x-admin-password': adminPassword, 'Content-Type': 'application/json' }; }
+
+async function loadAll() {
+  await loadStats();
+  await loadUsers();
+  await loadPayments();
+  await loadPaymentSummary();
+  await loadMembers();
+  await loadLinks();
+  await loadApplications();
+  await loadTrialToggleStatus();
+}
+
+async function loadTrialToggleStatus() {
+  try {
+    const r = await fetch('/api/trial-status');
+    const d = await r.json();
+    const el = document.getElementById('trialStatusText');
+    if(el) el.textContent = d.active ? '🟢 Abhi ON hai — sab non-member users free khol sakte hain' : '🔴 Abhi OFF hai — locked hai sabke liye';
+  } catch(e) {}
+}
+
+async function toggleTrialLink(active) {
+  try {
+    const r = await fetch('/admin/trial-toggle', {
+      method: 'POST', headers: headers(),
+      body: JSON.stringify({ active })
+    });
+    const d = await r.json();
+    if(d.success) { showToast(active ? '✅ Trial link ON kar diya!' : '✅ Trial link OFF kar diya!'); loadTrialToggleStatus(); }
+    else showToast('❌ Error!', true);
+  } catch(e) { showToast('❌ Error!', true); }
+}
+
+async function loadApplications() {
+  try {
+    const r = await fetch('/admin/applications', { headers: headers() });
+    const d = await r.json();
+    const list = document.getElementById('applicationsList');
+    if(!d.success || !d.applications?.length) { list.innerHTML = '<div class="empty">Abhi koi application nahi hai</div>'; return; }
+    list.innerHTML = d.applications.map(a => `
+      <div class="user-item">
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:13px">${a.userName || a.userEmail || 'Unknown'}</div>
+          <div style="font-size:11.5px;color:#94a3b8">${a.serviceKey} · ${new Date(a.clickedAt).toLocaleString('en-IN')}</div>
+        </div>
+      </div>`).join('');
+  } catch(e) { document.getElementById('applicationsList').innerHTML = '<div class="empty">Error!</div>'; }
+}
+
+async function sendBroadcast() {
+  const msg = document.getElementById('broadcastMsg').value.trim();
+  if(!msg) { alert('Message likho pehle!'); return; }
+  try {
+    const r = await fetch('/admin/announcement', {
+      method: 'POST', headers: headers(),
+      body: JSON.stringify({ message: msg, active: true })
+    });
+    const d = await r.json();
+    const status = document.getElementById('broadcastStatus');
+    if(d.success) { status.style.color = '#22c55e'; status.textContent = '✅ Bhej diya! Ab sabko website khulte hi dikhega.'; }
+    else { status.style.color = '#ef4444'; status.textContent = '❌ ' + d.message; }
+  } catch(e) {
+    document.getElementById('broadcastStatus').textContent = '❌ Error!';
+  }
+}
+
+async function clearBroadcast() {
+  try {
+    const r = await fetch('/admin/announcement', {
+      method: 'POST', headers: headers(),
+      body: JSON.stringify({ message: '', active: false })
+    });
+    const d = await r.json();
+    const status = document.getElementById('broadcastStatus');
+    if(d.success) { status.style.color = '#94a3b8'; status.textContent = 'Message hata diya gaya.'; document.getElementById('broadcastMsg').value = ''; }
+  } catch(e) {}
+}
+
+// Real-time auto-refresh — har 15 second mein Payments/Applications/Dashboard fresh ho jayenge
+setInterval(() => {
+  if(document.getElementById('dashboard').style.display === 'none') return; // login hi nahi hua to skip
+  loadPaymentSummary();
+  loadPayments();
+  loadApplications();
+}, 15000);
+
+async function loadPaymentSummary() {
+  try {
+    const r = await fetch('/admin/payment-summary', { headers: headers() });
+    const d = await r.json();
+    if(d.success) {
+      document.getElementById('payCompleted').textContent = d.completed;
+      document.getElementById('payPending').textContent = d.pending;
+      document.getElementById('payFailed').textContent = d.failed;
+    }
+  } catch(e) {}
+}
+
+async function loadLinks() {
+  try {
+    const r = await fetch('/admin/service-links', { headers: headers() });
+    const d = await r.json();
+    const list = document.getElementById('linksList');
+    if(!d.success || !d.links?.length) { list.innerHTML = '<div class="empty">Koi link nahi mila</div>'; return; }
+    list.innerHTML = d.links.map(l => {
+      const isLive = !!(l.url && l.url.trim());
+      return `
+      <div class="link-card">
+        <div class="link-card-head">
+          <div class="link-card-title">${l.name || l.key}</div>
+          <span class="link-status ${isLive ? 'live' : 'pending'}">${isLive ? '🟢 Live' : '🟡 Jald Aayega'}</span>
+        </div>
+        <input type="text" id="link-${l.key}" value="${l.url || ''}" placeholder="https://... (khali chhodo to 'Jald Aayega' dikhega)" class="link-input">
+        <div class="link-card-actions">
+          <button class="btn-approve" onclick="saveLink('${l.key}')">💾 Save</button>
+          <button class="btn-reject" onclick="clearLink('${l.key}')">🗑️ Remove</button>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) { document.getElementById('linksList').innerHTML = '<div class="empty">Error!</div>'; }
+}
+
+async function saveLink(key) {
+  const url = document.getElementById('link-' + key).value.trim();
+  try {
+    const r = await fetch('/admin/service-links/update', {
+      method: 'POST', headers: headers(),
+      body: JSON.stringify({ key, url })
+    });
+    const d = await r.json();
+    if(d.success) showToast('✅ Link save ho gaya!');
+    else showToast('❌ ' + d.message, true);
+  } catch(e) { showToast('❌ Error!', true); }
+}
+
+async function clearLink(key) {
+  if(!confirm('Ye link hataakar "Jald Aayega" dikhana hai?')) return;
+  document.getElementById('link-' + key).value = '';
+  await saveLink(key);
+  loadLinks();
+}
+
+async function loadStats() {
+  try {
+    const r = await fetch('/api/stats', { headers: headers() });
+    const d = await r.json();
+    if(d.success || d.totalUsers !== undefined) {
+      document.getElementById('dTotalUsers').textContent = d.totalUsers || 0;
+      document.getElementById('dActiveMembers').textContent = d.activeMembers || 0;
+      document.getElementById('dTotalPayments').textContent = d.totalPayments || 0;
+      document.getElementById('dRevenue').textContent = '₹' + (d.totalRevenue || 0);
+    }
+  } catch(e) {}
+}
+
+async function loadUsers() {
+  try {
+    const r = await fetch('/admin/users', { headers: headers() });
+    const d = await r.json();
+    const list = document.getElementById('usersList');
+    if(!d.success || !d.users?.length) { list.innerHTML = '<div class="empty">Koi user nahi</div>'; return; }
+    list.innerHTML = d.users.map(u => {
+      const isActive = u.memberExpiry && new Date(u.memberExpiry) > new Date();
+      const exp = u.memberExpiry ? new Date(u.memberExpiry).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : 'N/A';
+      return `<div class="user-item">
+        <div class="user-avatar">${u.photo ? `<img src="${u.photo}">` : '👤'}</div>
+        <div class="user-info">
+          <div class="user-name">${u.name || 'Unknown'}</div>
+          <div class="user-email">${u.email}</div>
+          <div class="user-meta">Joined: ${new Date(u.createdAt||Date.now()).toLocaleDateString('en-IN')}</div>
+        </div>
+        <div style="text-align:right">
+          <span class="badge ${isActive?'badge-active':'badge-inactive'}">${isActive?'ACTIVE':'INACTIVE'}</span>
+          ${isActive?`<div style="font-size:10px;color:#64748b;margin-top:4px">Till ${exp}</div>`:''}
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) { document.getElementById('usersList').innerHTML = '<div class="empty">Error!</div>'; }
+}
+
+async function loadPayments() {
+  try {
+    const r = await fetch('/admin/pending-payments', { headers: headers() });
+    const d = await r.json();
+    const pending = (d.payments || []).filter(p => p.status === 'pending_admin' || p.status === 'pending');
+    const completed = (d.payments || []).filter(p => p.status === 'completed');
+
+    document.getElementById('pendingList').innerHTML = pending.length ? pending.map(p => paymentHTML(p, true)).join('') : '<div class="empty">Koi pending payment nahi</div>';
+    document.getElementById('completedList').innerHTML = completed.length ? completed.map(p => paymentHTML(p, false)).join('') : '<div class="empty">Koi completed payment nahi</div>';
+  } catch(e) {
+    document.getElementById('pendingList').innerHTML = '<div class="empty">Error!</div>';
+  }
+}
+
+function paymentHTML(p, showActions) {
+  const date = new Date(p.createdAt||Date.now()).toLocaleString('en-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+  const sc = p.status==='completed'?'s-completed':p.status==='pending_admin'?'s-pending_admin':'s-pending';
+  return `<div class="pay-item">
+    <div class="pay-row">
+      <div>
+        <div class="pay-name">${p.userName||p.userEmail||'User'}</div>
+        <div class="pay-meta">${p.userEmail||''} · ${date}</div>
+        <div class="pay-meta">Plan: ${(p.plan||'').toUpperCase()} · TXN: ${p.transactionId||'—'}</div>
+      </div>
+      <div class="pay-amt">₹${p.amount||0}</div>
+    </div>
+    <span class="pay-status ${sc}">${p.status}</span>
+    ${showActions ? `<div class="action-row">
+      <button class="btn-approve" onclick="approvePayment('${p._id}','${p.userId}','${p.plan}')">✅ Approve</button>
+      <button class="btn-reject" onclick="rejectPayment('${p._id}')">❌ Reject</button>
+    </div>` : ''}
+  </div>`;
+}
+
+async function approvePayment(paymentId, userId, plan) {
+  if(!confirm('Approve karein?')) return;
+  try {
+    const r = await fetch('/admin/approve-payment', {
+      method: 'POST', headers: headers(),
+      body: JSON.stringify({ paymentId, userId, plan })
+    });
+    const d = await r.json();
+    if(d.success) { showToast('✅ Payment approved!'); loadAll(); }
+    else showToast('❌ ' + d.message, true);
+  } catch(e) { showToast('❌ Error!', true); }
+}
+
+async function rejectPayment(paymentId) {
+  if(!confirm('Reject karein?')) return;
+  try {
+    const r = await fetch('/admin/reject-payment', {
+      method: 'POST', headers: headers(),
+      body: JSON.stringify({ paymentId })
+    });
+    const d = await r.json();
+    if(d.success) { showToast('🗑️ Payment rejected'); loadAll(); }
+    else showToast('❌ ' + d.message, true);
+  } catch(e) { showToast('❌ Error!', true); }
+}
+
+async function loadMembers() {
+  try {
+    const r = await fetch('/admin/users', { headers: headers() });
+    const d = await r.json();
+    const list = document.getElementById('membersList');
+    const now = new Date();
+    const activeUsers = (d.users||[]).filter(u => u.memberExpiry && new Date(u.memberExpiry) > now);
+    if(!activeUsers.length) { list.innerHTML = '<div class="empty">Koi active member nahi</div>'; return; }
+    list.innerHTML = activeUsers.map(u => {
+      const exp = new Date(u.memberExpiry).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+      const daysLeft = Math.ceil((new Date(u.memberExpiry)-now)/(1000*60*60*24));
+      return `<div class="user-item">
+        <div class="user-avatar">${u.photo?`<img src="${u.photo}">`:'💎'}</div>
+        <div class="user-info">
+          <div class="user-name">${u.name||'Unknown'}</div>
+          <div class="user-email">${u.email}</div>
+          <div class="user-meta">Till: ${exp}</div>
+        </div>
+        <div style="text-align:right">
+          <span class="badge badge-active">ACTIVE</span>
+          <div style="font-size:11px;color:#34d399;margin-top:4px;font-weight:700">${daysLeft}d left</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) { document.getElementById('membersList').innerHTML = '<div class="empty">Error!</div>'; }
+}
+
+document.getElementById('adminPass').addEventListener('keydown', e => { if(e.key==='Enter') adminLogin(); });
+</script>
+</body>
+</html>
