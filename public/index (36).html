@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Bihar Seva Online — सरकारी सेवाएँ</title>
+<meta name="description" content="Bihar Seva Online पर सभी सरकारी सेवाएँ एक ही जगह — भूमि, प्रमाण-पत्र, पहचान और सरकारी योजनाएँ।">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8771359433113858" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
+<script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;font-family:'Inter',-apple-system,sans-serif}
+body{background:#f4f7fb;color:#172033;padding-bottom:70px;max-width:480px;margin:0 auto;min-height:100vh}
+.page{display:none;min-height:100vh}.page.active{display:block}
+.loading-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#0a1e4d,#0757c9);color:white}
+.spinner{width:48px;height:48px;border:4px solid rgba(255,255,255,.3);border-top:4px solid white;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:18px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.welcome-page{min-height:100vh;background:linear-gradient(160deg,#0a1e4d,#0757c9);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;color:white}
+.welcome-logo{width:76px;height:76px;background:white;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 18px;box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.welcome-feat{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.1);border-radius:14px;padding:13px;margin-bottom:9px}
+.welcome-feat-icon{font-size:20px;width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.enter-btn{display:flex;align-items:center;justify-content:center;gap:12px;background:white;color:#0757c9;padding:16px 24px;border-radius:14px;font-size:16px;font-weight:800;width:100%;box-shadow:0 4px 20px rgba(0,0,0,.3);margin-top:14px;border:0;cursor:pointer}
+.header{background:linear-gradient(135deg,#0757c9,#073b91);color:white;padding:18px 16px 28px;border-radius:0 0 25px 25px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:20px;font-weight:800}
+.menu-top-btn{width:40px;height:40px;border:0;border-radius:50%;background:rgba(255,255,255,0.2);color:white;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.membership{margin:-14px 15px 20px;background:white;border-radius:18px;padding:16px;box-shadow:0 6px 20px rgba(0,0,0,.09)}
+.member-row{display:flex;justify-content:space-between;align-items:center}
+.member-title{font-weight:bold;font-size:15px}
+.badge-active{background:#e8f8ef;color:#118247;padding:5px 10px;border-radius:20px;font-size:11px;font-weight:bold}
+.badge-expired{background:#fff0f0;color:#cc0000;padding:5px 10px;border-radius:20px;font-size:11px;font-weight:bold}
+.expiry{color:#747d8d;font-size:12px;margin-top:8px}
+.membership button{width:100%;margin-top:12px;padding:12px;border:0;border-radius:10px;background:linear-gradient(135deg,#0757c9,#073b91);color:white;font-weight:bold;cursor:pointer;font-size:14px}
+.container{padding:0 15px}
+.category{margin-bottom:22px}
+.category-title{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:800;margin-bottom:12px}
+.services{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.card{background:white;padding:14px 12px;border-radius:16px;box-shadow:0 3px 12px rgba(0,0,0,.05);position:relative;transition:transform .15s}
+.card:active{transform:scale(0.97)}
+.icon{width:44px;height:44px;border-radius:12px;background:#edf4ff;display:flex;align-items:center;justify-content:center;font-size:21px;margin-bottom:9px}
+.card h3{font-size:13.5px;margin-bottom:4px;font-weight:700}
+.card p{font-size:11px;line-height:1.4;color:#7a8290}
+.card button{width:100%;margin-top:10px;padding:9px;border:0;border-radius:8px;background:#0757c9;color:white;font-size:11px;font-weight:bold;cursor:pointer}
+.card button.locked{background:#e5e7eb;color:#6b7280}
+.lock{position:absolute;right:10px;top:10px;font-size:14px}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:white;border-top:1px solid #e4e7ec;display:grid;grid-template-columns:repeat(3,1fr);padding:8px 3px;z-index:50;box-shadow:0 -4px 15px rgba(0,0,0,.06)}
+.nav-btn{border:0;background:none;color:#707989;font-size:10px;cursor:pointer;padding:4px}
+.nav-btn span{display:block;font-size:20px;margin-bottom:3px}
+.nav-btn.active{color:#0757c9}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:flex-end}
+.modal.show{display:flex}
+.modal-box{width:100%;background:white;padding:26px 22px;border-radius:24px 24px 0 0;max-height:90vh;overflow-y:auto}
+.modal-box h2{font-size:21px;font-weight:800}
+.plan-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0}
+.plan-card{border:2px solid #e5e7eb;border-radius:14px;padding:14px;cursor:pointer;transition:all .2s;text-align:center}
+.plan-card.selected{border-color:#0757c9;background:#edf4ff}
+.plan-card .plan-days{font-size:22px;font-weight:900;color:#0757c9}
+.plan-card .plan-price{font-size:16px;font-weight:800;margin-top:4px}
+.plan-card .plan-label{font-size:11px;color:#6b7280;margin-top:2px}
+.btn-pay{width:100%;padding:15px;border:0;border-radius:12px;background:linear-gradient(135deg,#0757c9,#073b91);color:white;font-weight:800;cursor:pointer;font-size:15px;margin-top:12px;margin-bottom:8px}
+.btn-close{width:100%;padding:12px;border:0;border-radius:12px;background:#f3f4f6;cursor:pointer;font-size:14px;font-weight:600;color:#374151}
+.msg{padding:12px;border-radius:10px;font-size:13px;font-weight:600;margin-top:10px;display:none;text-align:center}
+.msg.success{background:#E8F5E9;color:#2E7D32}
+.msg.error{background:#FFEBEE;color:#C62828}
+.info-page{padding:16px}
+.info-btn{width:100%;margin-bottom:8px;padding:13px;border:0;border-radius:10px;background:#f3f4f6;color:#374151;font-weight:600;cursor:pointer;font-size:13px;text-align:left;display:block}
+textarea{width:100%;padding:12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;resize:none;outline:none}
+textarea:focus{border-color:#0757c9}
+input[type=text]{width:100%;padding:12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;outline:none;margin-bottom:10px}
+input[type=text]:focus{border-color:#0757c9}
+</style>
+</head>
+<body>
+
+<div id="page-loading" class="page active">
+  <div class="loading-page">
+    <div class="spinner"></div>
+    <div style="font-size:18px;font-weight:700">Bihar Seva Online</div>
+    <div style="font-size:13px;opacity:.7;margin-top:6px">Loading...</div>
+  </div>
+</div>
+
+<div id="page-welcome" class="page">
+  <div class="welcome-page">
+    <div class="welcome-logo">🏛️</div>
+    <div style="font-size:28px;font-weight:800;margin-bottom:5px;text-align:center">Bihar Seva Online</div>
+    <div style="font-size:13px;opacity:0.65;margin-bottom:26px;text-align:center">सरकारी सेवाएँ — सिर्फ ₹20 से शुरू</div>
+    <div style="width:100%;margin-bottom:8px">
+      <div class="welcome-feat"><div class="welcome-feat-icon">🏠</div><div style="font-size:13px;font-weight:600;opacity:.9">भूमि सेवाएं — जमीन की रसीद, भू-नक्शा</div></div>
+      <div class="welcome-feat"><div class="welcome-feat-icon">📄</div><div style="font-size:13px;font-weight:600;opacity:.9">प्रमाण-पत्र — जन्म, आय, जाति, निवास</div></div>
+      <div class="welcome-feat"><div class="welcome-feat-icon">🪪</div><div style="font-size:13px;font-weight:600;opacity:.9">पहचान सेवाएं — PAN, Voter ID, Aadhaar</div></div>
+      <div class="welcome-feat"><div class="welcome-feat-icon">🏛️</div><div style="font-size:13px;font-weight:600;opacity:.9">सरकारी योजनाएं — PM-Kisan, Pension</div></div>
+    </div>
+    <button class="enter-btn" onclick="enterSite()">🚀 सेवाएँ देखें — शुरू करें</button>
+    <div style="margin-top:12px;font-size:11px;opacity:.4;text-align:center">🔒 कोई login नहीं · कोई password नहीं</div>
+  </div>
+</div>
+
+<div id="page-home" class="page">
+  <header class="header">
+    <div class="top">
+      <div class="logo">🏛️ Bihar Seva</div>
+      <button class="menu-top-btn" onclick="showPage('info');setNav('nav-info')">☰</button>
+    </div>
+    <div style="margin-top:15px">
+      <h1 style="font-size:21px">Welcome 👋</h1>
+      <p style="margin-top:5px;font-size:13px;opacity:.8">आपकी सरकारी सेवाएँ एक ही जगह</p>
+    </div>
+  </header>
+
+  <div class="membership">
+    <div class="member-row">
+      <div class="member-title">💎 Membership</div>
+      <div id="memberBadge" class="badge-expired">INACTIVE</div>
+    </div>
+    <div class="expiry" id="memberExpiry">Membership active नहीं है — सेवाएँ locked हैं</div>
+    <button onclick="openModal()">🔓 Plan लें — ₹20 से शुरू</button>
+  </div>
+
+  <main class="container">
+    <section class="category">
+      <div class="category-title">🏠 भूमि सेवाएँ</div>
+      <div class="services" id="bhumi-services">
+        <div class="card"><span class="lock">🔒</span><div class="icon">🧾</div><h3>जमीन की रसीद</h3><p>भू-लगान रसीद ऑनलाइन चेक करें।</p><button class="locked" onclick="openService('jameen-rasid','https://www.bhulagan.bihar.gov.in/')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">🌐</div><h3>बिहार भूमि</h3><p>खाता-खेसरा और जमाबंदी की जानकारी।</p><button class="locked" onclick="openService('bihar-bhumi','https://biharbhumi.bihar.gov.in/')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">📖</div><h3>जमाबंदी</h3><p>जमाबंदी नंबर से जानकारी देखें।</p><button class="locked" onclick="openService('jamabandi','https://emutation.bihar.gov.in/biharBhumireport/ViewJamabandi.aspx')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">🔢</div><h3>खाता / खेसरा</h3><p>खाता-खेसरा नंबर से भूमि विवरण।</p><button class="locked" onclick="openService('khata-khesra','https://biharbhumi.bihar.gov.in/Biharbhumi/LandRecords')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">🗺️</div><h3>भू-नक्शा</h3><p>अपने प्लॉट का नक्शा ऑनलाइन देखें।</p><button class="locked" onclick="openService('bhu-naksha','https://bhunaksha.bihar.gov.in/')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">📄</div><h3>दाखिल-खारिज</h3><p>Mutation की स्थिति ट्रैक करें।</p><button class="locked" onclick="openService('dakhil-kharij','https://emutation.bihar.gov.in/')">Unlock करें</button></div>
+      </div>
+      <div style="margin:16px 0;text-align:center">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8771359433113858" data-ad-slot="1900287488" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </section>
+
+    <section class="category">
+      <div class="category-title">📄 प्रमाण-पत्र सेवाएँ</div>
+      <div class="services">
+        <div class="card"><span class="lock">🔒</span><div class="icon">👶</div><h3>जन्म प्रमाण पत्र</h3><p>जन्म प्रमाण पत्र आवेदन या डाउनलोड।</p><button class="locked" onclick="openService('birth-cert','https://serviceonline.bihar.gov.in/service/ServiceList?serviceId=2')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">💰</div><h3>आय प्रमाण पत्र</h3><p>आय प्रमाण पत्र ऑनलाइन बनवाएं।</p><button class="locked" onclick="openService('income-cert','https://serviceonline.bihar.gov.in/service/ServiceList?serviceId=5')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">📑</div><h3>जाति प्रमाण पत्र</h3><p>जाति प्रमाण पत्र ऑनलाइन बनवाएं।</p><button class="locked" onclick="openService('caste-cert','https://serviceonline.bihar.gov.in/service/ServiceList?serviceId=3')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">🏠</div><h3>निवास प्रमाण पत्र</h3><p>निवास प्रमाण पत्र ऑनलाइन बनवाएं।</p><button class="locked" onclick="openService('residence-cert','https://serviceonline.bihar.gov.in/service/ServiceList?serviceId=4')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">📃</div><h3>EWS प्रमाण पत्र</h3><p>EWS आरक्षण के लिए प्रमाण पत्र।</p><button class="locked" onclick="openService('ews-cert','https://serviceonline.bihar.gov.in/')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">📝</div><h3>चरित्र प्रमाण पत्र</h3><p>चरित्र प्रमाण पत्र आवेदन करें।</p><button class="locked" onclick="openService('character-cert','https://serviceonline.bihar.gov.in/')">Unlock करें</button></div>
+      </div>
+    </section>
+
+    <section class="category">
+      <div class="category-title">🪪 पहचान सेवाएँ</div>
+      <div class="services">
+        <div class="card"><span class="lock">🔒</span><div class="icon">🪪</div><h3>PAN Card</h3><p>नया PAN कार्ड बनवाएं या सुधार करवाएं।</p><button class="locked" onclick="openService('pan-card','https://onlineservices.tin.egov-nsdl.com/TIN/JSP/application/93Application.jsp')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">🗳️</div><h3>Voter ID</h3><p>Voter ID बनवाएं या नाम चेक करें।</p><button class="locked" onclick="openService('voter-id','https://voters.eci.gov.in/login')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">🆔</div><h3>Aadhaar Update</h3><p>आधार में नाम, पता अपडेट करें।</p><button class="locked" onclick="openService('aadhaar','https://myaadhaar.uidai.gov.in/')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">🚗</div><h3>Driving Licence</h3><p>DL बनवाएं या रिन्यू करें।</p><button class="locked" onclick="openService('driving-licence','https://sarathi.parivahan.gov.in/sarathiservice/stateSelection.do')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">✈️</div><h3>Passport</h3><p>पासपोर्ट के लिए आवेदन करें।</p><button class="locked" onclick="openService('passport','https://portal2.passportindia.gov.in/AppOnlineProject/online/feeCalCulationAction')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">👷</div><h3>e-Shram Card</h3><p>e-Shram कार्ड बनवाएं।</p><button class="locked" onclick="openService('eshram','https://register.eshram.gov.in/#/user/self')">Unlock करें</button></div>
+      </div>
+    </section>
+
+    <section class="category">
+      <div class="category-title">🏛️ सरकारी सेवाएँ</div>
+      <div class="services" id="sarkari-services">
+        <div class="card"><span class="lock">🔒</span><div class="icon">🌾</div><h3>PM-Kisan</h3><p>PM-Kisan किस्त स्टेटस चेक करें।</p><button class="locked" onclick="openService('pm-kisan','https://pmkisan.gov.in/BeneficiaryStatus.aspx')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">🍚</div><h3>Ration Card</h3><p>राशन कार्ड जानकारी चेक करें।</p><button class="locked" onclick="openService('ration-card','https://epds.bihar.gov.in/SearchRationCardDetails_Bihar.aspx')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">🏥</div><h3>Ayushman Card</h3><p>आयुष्मान कार्ड बनवाएं।</p><button class="locked" onclick="openService('ayushman-card','https://beneficiary.nha.gov.in/')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">🎓</div><h3>Scholarship</h3><p>सरकारी छात्रवृत्ति आवेदन करें।</p><button class="locked" onclick="openService('scholarship','https://scholarships.gov.in/fresh/loginPage.action')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">👴</div><h3>Pension Status</h3><p>पेंशन भुगतान स्थिति चेक करें।</p><button class="locked" onclick="openService('pension-status','https://sspmis.bihar.gov.in/BeneficiaryStatus.aspx')">Unlock करें</button></div>
+        <div class="card"><span class="lock">🔒</span><div class="icon">🏛️</div><h3>सरकारी योजनाएँ</h3><p>Bihar और केंद्र की सभी योजनाएं।</p><button class="locked" onclick="openService('sarkari-yojana','https://serviceonline.bihar.gov.in/')">Unlock करें</button></div>
+      </div>
+    </section>
+
+    <!-- Custom schemes loaded dynamically -->
+    <section class="category" id="custom-schemes-section" style="display:none">
+      <div class="category-title">⭐ अन्य सेवाएँ</div>
+      <div class="services" id="custom-schemes"></div>
+    </section>
+  </main>
+</div>
+
+<!-- INFO PAGE -->
+<div id="page-info" class="page">
+  <header class="header">
+    <div class="top">
+      <button onclick="showPage('home');setNav('nav-home')" style="background:none;border:0;color:white;font-size:22px;cursor:pointer">←</button>
+      <div class="logo">Bihar Seva</div>
+      <div style="width:40px"></div>
+    </div>
+  </header>
+  <div class="info-page">
+    <div class="card" style="display:block;padding:16px;margin-bottom:12px">
+      <h3 style="font-size:15px;margin-bottom:10px">📱 Bihar Seva Online के बारे में</h3>
+      <p style="font-size:13px;color:#4A4538;line-height:1.7">Bihar Seva Online एक platform है जहाँ आप बिहार और केंद्र सरकार की सभी प्रमुख सेवाओं तक आसानी से पहुँच सकते हैं।</p>
+    </div>
+    <div class="card" style="display:block;padding:16px;margin-bottom:12px">
+      <h3 style="font-size:15px;margin-bottom:10px">💎 Membership Plans</h3>
+      <div id="infoPlans" style="font-size:13px;color:#4A4538;line-height:2">
+        🔹 10 दिन — ₹20<br>🔹 20 दिन — ₹40<br>🔹 30 दिन — ₹49<br>🔹 60 दिन — ₹99
+      </div>
+    </div>
+    <button class="info-btn" onclick="showPage('contact')">📞 Contact Us</button>
+    <button class="info-btn" onclick="showPage('support')">💬 Help / Problem Report करें</button>
+    <button class="info-btn" onclick="showPage('terms')">📋 Terms & Conditions</button>
+    <button class="info-btn" onclick="showPage('refund')">💰 Refund & Cancellation Policy</button>
+    <button class="info-btn" onclick="showPage('privacy')">🔒 Privacy Policy</button>
+    <div style="text-align:center;margin-top:20px;font-size:11px;color:#9ca3af">Bihar Seva Online © 2025<br>सभी अधिकार सुरक्षित</div>
+  </div>
+</div>
+
+<!-- CONTACT PAGE -->
+<div id="page-contact" class="page">
+  <header class="header">
+    <div class="top">
+      <button onclick="showPage('info')" style="background:none;border:0;color:white;font-size:22px;cursor:pointer">←</button>
+      <div class="logo">Contact Us</div>
+      <div style="width:40px"></div>
+    </div>
+  </header>
+  <div class="info-page">
+    <div class="card" style="display:block;padding:16px;margin-bottom:12px">
+      <h3 style="font-size:15px;margin-bottom:10px">📞 Contact Us</h3>
+      <p style="font-size:13px;color:#4A4538;line-height:2">
+        <b>Website:</b> Bihar Seva Online<br>
+        <b>Email:</b> support@biharseva.online<br>
+        <b>Timing:</b> Mon–Sat, 9 AM – 6 PM
+      </p>
+      <button onclick="window.open('https://t.me/king76344','_blank')" style="width:100%;margin-top:14px;padding:12px;border:0;border-radius:10px;background:#0757c9;color:white;font-weight:bold;cursor:pointer">✈️ Telegram पर Contact करें</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUPPORT / PROBLEM REPORT PAGE -->
+<div id="page-support" class="page">
+  <header class="header">
+    <div class="top">
+      <button onclick="showPage('info')" style="background:none;border:0;color:white;font-size:22px;cursor:pointer">←</button>
+      <div class="logo">Help & Support</div>
+      <div style="width:40px"></div>
+    </div>
+  </header>
+  <div class="info-page">
+    <div class="card" style="display:block;padding:16px;margin-bottom:12px">
+      <h3 style="font-size:15px;margin-bottom:14px">💬 Problem Report करें</h3>
+      <p style="font-size:12px;color:#6b7280;margin-bottom:14px">Payment problem, service issue, या कोई भी सवाल — यहाँ message करें। हम जल्द जवाब देंगे।</p>
+      <input type="text" id="supportName" placeholder="आपका नाम (optional)">
+      <input type="text" id="supportOrder" placeholder="Order ID (अगर payment problem है)">
+      <textarea id="supportMsg" rows="4" placeholder="अपनी problem लिखें..." style="margin-bottom:12px"></textarea>
+      <button onclick="sendSupport()" style="width:100%;padding:13px;border:0;border-radius:10px;background:#0757c9;color:white;font-weight:bold;cursor:pointer;font-size:14px">📨 Message भेजें</button>
+      <div id="supportStatus" class="msg"></div>
+    </div>
+    <div class="card" style="display:block;padding:16px">
+      <h3 style="font-size:14px;margin-bottom:8px">⚡ Telegram पर Direct Message</h3>
+      <p style="font-size:12px;color:#6b7280;margin-bottom:12px">जल्दी जवाब के लिए Telegram पर message करें।</p>
+      <button onclick="window.open('https://t.me/king76344','_blank')" style="width:100%;padding:11px;border:0;border-radius:10px;background:#29a2d6;color:white;font-weight:bold;cursor:pointer">✈️ Telegram पर Contact करें</button>
+    </div>
+  </div>
+</div>
+
+<!-- TERMS PAGE -->
+<div id="page-terms" class="page">
+  <header class="header">
+    <div class="top">
+      <button onclick="showPage('info')" style="background:none;border:0;color:white;font-size:22px;cursor:pointer">←</button>
+      <div class="logo">Terms & Conditions</div>
+      <div style="width:40px"></div>
+    </div>
+  </header>
+  <div class="info-page">
+    <div class="card" style="display:block;padding:16px;margin-bottom:12px">
+      <h3 style="font-size:15px;margin-bottom:10px">📋 Terms & Conditions</h3>
+      <p style="font-size:13px;color:#4A4538;line-height:1.9">
+        <b>1. सेवा का उपयोग</b><br>
+        Bihar Seva Online एक सूचना और मार्गदर्शन प्लेटफॉर्म है। हम सरकारी वेबसाइटों तक आसान पहुँच प्रदान करते हैं।<br><br>
+        <b>2. Membership</b><br>
+        Membership खरीदने के बाद सभी सेवाएँ unlock हो जाती हैं। Membership की अवधि plan के अनुसार होती है।<br><br>
+        <b>3. Payment</b><br>
+        सभी payments Cashfree Payment Gateway के माध्यम से सुरक्षित रूप से होती हैं। सभी prices INR में हैं।<br><br>
+        <b>4. सेवाएँ</b><br>
+        हम सरकारी websites के links provide करते हैं। Original data उन्हीं websites का है।<br><br>
+        <b>5. बदलाव</b><br>
+        Bihar Seva Online किसी भी समय terms में बदलाव करने का अधिकार रखता है।
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- REFUND PAGE -->
+<div id="page-refund" class="page">
+  <header class="header">
+    <div class="top">
+      <button onclick="showPage('info')" style="background:none;border:0;color:white;font-size:22px;cursor:pointer">←</button>
+      <div class="logo">Refund Policy</div>
+      <div style="width:40px"></div>
+    </div>
+  </header>
+  <div class="info-page">
+    <div class="card" style="display:block;padding:16px;margin-bottom:12px">
+      <h3 style="font-size:15px;margin-bottom:10px">💰 Refund & Cancellation Policy</h3>
+      <p style="font-size:13px;color:#4A4538;line-height:1.9">
+        <b>Refund Policy:</b><br>
+        Digital membership के लिए सामान्यतः refund नहीं दिया जाता।<br><br>
+        <b>Refund के योग्य cases:</b><br>
+        • Payment deduct हुआ लेकिन membership activate नहीं हुई<br>
+        • Double payment हो गई<br>
+        • Technical error की वजह से service नहीं मिली<br><br>
+        <b>Refund Process:</b><br>
+        Telegram पर contact करें, Order ID और payment screenshot भेजें। 72 घंटे में review होगा। Approved refund 5-7 working days में वापस आएगा।<br><br>
+        <b>Cancellation:</b><br>
+        Membership cancel नहीं होती — खरीदी गई अवधि तक active रहती है।
+      </p>
+      <button onclick="showPage('support')" style="width:100%;margin-top:14px;padding:12px;border:0;border-radius:10px;background:#0757c9;color:white;font-weight:bold;cursor:pointer">💬 Refund Request करें</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRIVACY PAGE -->
+<div id="page-privacy" class="page">
+  <header class="header">
+    <div class="top">
+      <button onclick="showPage('info')" style="background:none;border:0;color:white;font-size:22px;cursor:pointer">←</button>
+      <div class="logo">Privacy Policy</div>
+      <div style="width:40px"></div>
+    </div>
+  </header>
+  <div class="info-page">
+    <div class="card" style="display:block;padding:16px;margin-bottom:12px">
+      <h3 style="font-size:15px;margin-bottom:10px">🔒 Privacy Policy</h3>
+      <p style="font-size:13px;color:#4A4538;line-height:1.9">
+        <b>Data Collection:</b><br>
+        हम कोई personal data collect नहीं करते। केवल एक anonymous device fingerprint store होती है।<br><br>
+        <b>Payment Data:</b><br>
+        Payment Cashfree द्वारा process होती है। हम card/UPI data store नहीं करते।<br><br>
+        <b>Cookies:</b><br>
+        हम केवल आपकी visit याद रखने के लिए browser storage use करते हैं।<br><br>
+        <b>Third Party:</b><br>
+        हम Google AdSense और Cashfree Payment Gateway use करते हैं।
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottomNav" style="display:none">
+  <button class="nav-btn active" id="nav-home" onclick="showPage('home');setNav('nav-home')"><span>🏠</span>Home</button>
+  <button class="nav-btn" id="nav-membership" onclick="openModal()"><span>💎</span>Membership</button>
+  <button class="nav-btn" id="nav-info" onclick="showPage('info');setNav('nav-info')"><span>☰</span>Menu</button>
+</nav>
+
+<!-- PLAN MODAL -->
+<div class="modal" id="memberModal">
+  <div class="modal-box">
+    <h2>💎 Membership Plan चुनें</h2>
+    <p style="color:#6B7280;font-size:13px;margin-top:6px">सभी सरकारी सेवाएँ unlock करें</p>
+    <div class="plan-cards" id="planCards">
+      <div class="plan-card" id="plan-10" onclick="selectPlan(10,20)"><div class="plan-days">10</div><div class="plan-label">दिन</div><div class="plan-price">₹20</div></div>
+      <div class="plan-card" id="plan-20" onclick="selectPlan(20,40)"><div class="plan-days">20</div><div class="plan-label">दिन</div><div class="plan-price">₹40</div></div>
+      <div class="plan-card" id="plan-30" onclick="selectPlan(30,49)"><div class="plan-days">30</div><div class="plan-label">दिन</div><div class="plan-price">₹49</div></div>
+      <div class="plan-card" id="plan-60" onclick="selectPlan(60,99)"><div class="plan-days">60</div><div class="plan-label">दिन</div><div class="plan-price">₹99</div></div>
+    </div>
+    <div id="selectedPlanInfo" style="display:none;background:#edf4ff;border-radius:10px;padding:12px;margin-bottom:8px;font-size:13px;font-weight:600;color:#0757c9;text-align:center"></div>
+    <button class="btn-pay" onclick="payMembership()" id="payBtn" disabled style="opacity:0.5">💳 Plan चुनें और Pay करें</button>
+    <button class="btn-close" onclick="closeModal()">Cancel</button>
+    <div id="payMsg" class="msg"></div>
+  </div>
+</div>
+
+<script>
+let memberActive = false;
+let fingerprintId = null;
+let selectedDays = 0;
+let selectedAmount = 0;
+let serviceLinks = {};
+
+async function getFingerprint() {
+  try {
+    const fp = await FingerprintJS.load();
+    const result = await fp.get();
+    return result.visitorId;
+  } catch(e) {
+    let id = localStorage.getItem('_bsid');
+    if (!id) { id = Math.random().toString(36).substr(2,16) + Date.now().toString(36); localStorage.setItem('_bsid', id); }
+    return id;
+  }
+}
+
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('page-' + page);
+  if (el) el.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function setNav(id) {
+  document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+}
+
+function openModal() { document.getElementById('memberModal').classList.add('show'); }
+function closeModal() { document.getElementById('memberModal').classList.remove('show'); }
+
+function selectPlan(days, amount) {
+  selectedDays = days; selectedAmount = amount;
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  const planEl = document.getElementById('plan-' + days);
+  if (planEl) planEl.classList.add('selected');
+  const info = document.getElementById('selectedPlanInfo');
+  info.style.display = 'block';
+  info.textContent = `${days} दिन की Membership — ₹${amount}`;
+  const btn = document.getElementById('payBtn');
+  btn.textContent = `💳 ₹${amount} Pay करें`;
+  btn.disabled = false; btn.style.opacity = '1';
+}
+
+function openService(key, defaultUrl) {
+  if (!memberActive) {
+    alert('🔒 यह सेवा locked है!\n\nPlan लें और सभी सेवाएँ unlock करें।');
+    openModal(); return;
+  }
+  // Use admin-set URL if available, else default
+  const url = (serviceLinks[key] && serviceLinks[key].trim()) ? serviceLinks[key] : defaultUrl;
+  if (url) window.open(url, '_blank');
+}
+
+async function checkMemberStatus() {
+  try {
+    const r = await fetch('/api/fp-status', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({fingerprint:fingerprintId}) });
+    const d = await r.json();
+    if (d.active) {
+      memberActive = true;
+      document.getElementById('memberBadge').className = 'badge-active';
+      document.getElementById('memberBadge').textContent = 'ACTIVE ✅';
+      const exp = new Date(d.expiryDate).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+      document.getElementById('memberExpiry').innerHTML = `Valid Till: <b>${exp}</b> — सभी सेवाएँ Unlocked 🔓`;
+      document.querySelectorAll('.card button.locked').forEach(btn => {
+        btn.className = ''; btn.style.background = '#0757c9'; btn.style.color = 'white'; btn.textContent = 'खोलें';
+      });
+      document.querySelectorAll('.lock').forEach(l => { l.textContent = '🔓'; });
+    }
+  } catch(e) {}
+}
+
+async function loadServiceLinks() {
+  try {
+    const r = await fetch('/api/service-links');
+    const d = await r.json();
+    serviceLinks = d.links || {};
+  } catch(e) {}
+}
+
+async function loadPlans() {
+  try {
+    const r = await fetch('/api/plans');
+    const d = await r.json();
+    if (!d.plans?.length) return;
+    const container = document.getElementById('planCards');
+    if (!container) return;
+    container.innerHTML = d.plans.map(p =>
+      `<div class="plan-card" id="plan-${p.days}" onclick="selectPlan(${p.days},${p.amount})">
+        <div class="plan-days">${p.days}</div><div class="plan-label">दिन</div><div class="plan-price">₹${p.amount}</div>
+      </div>`).join('');
+    // Update info page plans
+    const infoPlans = document.getElementById('infoPlans');
+    if (infoPlans) infoPlans.innerHTML = d.plans.map(p => `🔹 ${p.days} दिन — ₹${p.amount}`).join('<br>');
+  } catch(e) {}
+}
+
+async function loadCustomSchemes() {
+  try {
+    const r = await fetch('/api/schemes');
+    const d = await r.json();
+    if (!d.schemes?.length) return;
+    const section = document.getElementById('custom-schemes-section');
+    const container = document.getElementById('custom-schemes');
+    if (!section || !container) return;
+    section.style.display = 'block';
+    container.innerHTML = d.schemes.map(s =>
+      `<div class="card"><span class="lock">🔒</span><div class="icon">${s.icon||'🏛️'}</div><h3>${s.name}</h3><p>${s.description||'सरकारी सेवा'}</p><button class="locked" onclick="openService('scheme-${s._id}','${s.url}')">Unlock करें</button></div>`
+    ).join('');
+    // Register links
+    d.schemes.forEach(s => { serviceLinks['scheme-' + s._id] = s.url; });
+  } catch(e) {}
+}
+
+async function loadAnnouncement() {
+  try {
+    const r = await fetch('/api/announcement');
+    const d = await r.json();
+    if (d.message) {
+      const banner = document.createElement('div');
+      banner.style.cssText = 'background:#1d4ed8;color:white;padding:12px 16px;font-size:13px;font-weight:600;text-align:center;position:sticky;top:0;z-index:40;left:0;right:0';
+      banner.innerHTML = `📢 ${d.message} <span onclick="this.parentElement.remove()" style="float:right;cursor:pointer;font-size:16px;margin-left:8px">✕</span>`;
+      document.body.insertBefore(banner, document.body.firstChild);
+    }
+  } catch(e) {}
+}
+
+async function enterSite() {
+  localStorage.setItem('_visited', '1');
+  document.getElementById('bottomNav').style.display = 'grid';
+  showPage('home');
+  await loadServiceLinks();
+  await checkMemberStatus();
+  await loadCustomSchemes();
+}
+
+async function payMembership() {
+  if (!selectedDays || !selectedAmount) { alert('पहले कोई plan चुनें!'); return; }
+  const btn = document.getElementById('payBtn');
+  btn.textContent = '⏳ Loading...'; btn.disabled = true;
+  document.getElementById('payMsg').style.display = 'none';
+  try {
+    const r = await fetch('/api/fp-payment/create', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({fingerprint:fingerprintId, days:selectedDays, amount:selectedAmount})
+    });
+    const d = await r.json();
+    if (d.success && d.paymentSessionId) {
+      const cashfree = Cashfree({mode:'production'});
+      cashfree.checkout({paymentSessionId:d.paymentSessionId, redirectTarget:'_modal'})
+        .then(async () => { await verifyPayment(d.orderId); })
+        .catch(async () => { await verifyPayment(d.orderId); });
+    } else {
+      const msg = document.getElementById('payMsg');
+      msg.style.display='block'; msg.className='msg error'; msg.textContent='❌ '+(d.message||'Error!');
+      btn.textContent=`💳 ₹${selectedAmount} Pay करें`; btn.disabled=false;
+    }
+  } catch(e) {
+    const msg = document.getElementById('payMsg');
+    msg.style.display='block'; msg.className='msg error'; msg.textContent='❌ Server error!';
+    btn.textContent=`💳 ₹${selectedAmount} Pay करें`; btn.disabled=false;
+  }
+}
+
+async function verifyPayment(orderId) {
+  const btn = document.getElementById('payBtn');
+  const msg = document.getElementById('payMsg');
+  btn.textContent = '⏳ Checking payment...';
+  try {
+    const r = await fetch('/api/fp-payment/verify', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({orderId, fingerprint:fingerprintId})
+    });
+    const d = await r.json();
+    if (d.success) {
+      msg.style.display='block'; msg.className='msg success'; msg.textContent=`✅ Membership activate ho gayi!`;
+      await checkMemberStatus();
+      setTimeout(() => { closeModal(); }, 1500);
+    } else {
+      msg.style.display='block'; msg.className='msg error'; msg.textContent='⏳ '+d.message;
+      btn.textContent='🔄 Dobara Check Karo'; btn.disabled=false;
+      btn.onclick = () => verifyPayment(orderId);
+    }
+  } catch(e) {
+    msg.style.display='block'; msg.className='msg error'; msg.textContent='❌ Verify nahi hua';
+    btn.textContent='🔄 Dobara Check Karo'; btn.disabled=false;
+    btn.onclick = () => verifyPayment(orderId);
+  }
+}
+
+async function sendSupport() {
+  const name = document.getElementById('supportName').value.trim();
+  const orderId = document.getElementById('supportOrder').value.trim();
+  const message = document.getElementById('supportMsg').value.trim();
+  const status = document.getElementById('supportStatus');
+  if (!message) { status.style.display='block'; status.className='msg error'; status.textContent='❌ Message likho!'; return; }
+  try {
+    const r = await fetch('/api/support', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({fingerprint:fingerprintId, name, message, orderId})
+    });
+    const d = await r.json();
+    status.style.display = 'block';
+    if (d.success) {
+      status.className='msg success'; status.textContent='✅ Message bhej diya! Jald jawab milega.';
+      document.getElementById('supportMsg').value='';
+      document.getElementById('supportName').value='';
+      document.getElementById('supportOrder').value='';
+    } else {
+      status.className='msg error'; status.textContent='❌ '+(d.message||'Error!');
+    }
+  } catch(e) { status.style.display='block'; status.className='msg error'; status.textContent='❌ Server error!'; }
+}
+
+window.onload = async function() {
+  fingerprintId = await getFingerprint();
+  await loadAnnouncement();
+  await loadPlans();
+  const visited = localStorage.getItem('_visited');
+  if (visited) {
+    document.getElementById('bottomNav').style.display = 'grid';
+    showPage('home');
+    await loadServiceLinks();
+    await checkMemberStatus();
+    await loadCustomSchemes();
+  } else {
+    showPage('welcome');
+  }
+};
+</script>
+</body>
+</html>
