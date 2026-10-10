@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Admin Panel — Bihar Seva</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',-apple-system,sans-serif}
+body{background:#0f172a;color:#e2e8f0;min-height:100vh;max-width:480px;margin:0 auto}
+.header{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);padding:20px 16px;border-radius:0 0 20px 20px}
+.header h1{font-size:20px;font-weight:800}
+.header p{font-size:12px;opacity:.7;margin-top:4px}
+.container{padding:14px}
+.login-box{background:#1e293b;border-radius:16px;padding:24px;margin-top:20px}
+.login-box h2{font-size:18px;margin-bottom:16px}
+input{width:100%;padding:13px;background:#0f172a;border:1.5px solid #334155;border-radius:10px;color:#e2e8f0;font-size:15px;outline:none;margin-bottom:12px}
+input:focus{border-color:#3b82f6}
+button{width:100%;padding:13px;background:#1d4ed8;color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer}
+button:hover{background:#1e40af}
+button:active{transform:scale(0.98)}
+.tabs{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px}
+.tab{padding:9px 16px;background:#1e293b;border:none;color:#94a3b8;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.tab.active{background:#1d4ed8;color:white}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-card{background:#1e293b;border-radius:14px;padding:16px}
+.stat-card .label{font-size:11px;color:#94a3b8;margin-bottom:6px}
+.stat-card .value{font-size:28px;font-weight:800;color:white}
+.stat-card .sub{font-size:11px;color:#64748b;margin-top:4px}
+.section{background:#1e293b;border-radius:14px;padding:14px;margin-bottom:12px}
+.section-title{font-size:14px;font-weight:700;margin-bottom:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px}
+.user-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #0f172a}
+.user-item:last-child{border:none}
+.link-card{background:#0f172a;border:1px solid #334155;border-radius:12px;padding:14px;margin-bottom:10px}
+.link-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.link-card-title{font-weight:700;font-size:13.5px;color:#e2e8f0}
+.link-status{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap}
+.link-status.live{background:#052e16;color:#22c55e}
+.link-status.pending{background:#422006;color:#f59e0b}
+.link-input{width:100%;padding:9px 10px;border-radius:8px;border:1px solid #334155;background:#1e293b;color:white;font-size:12px;box-sizing:border-box;margin-bottom:8px}
+.link-input:focus{outline:none;border-color:#6366f1}
+.link-card-actions{display:flex;gap:8px}
+.link-card-actions button{flex:1}
+.user-avatar{width:42px;height:42px;border-radius:50%;background:#1d4ed8;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.user-info{flex:1;min-width:0}
+.user-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-email{font-size:11px;color:#64748b;margin-top:2px}
+.user-meta{font-size:10px;color:#475569;margin-top:3px}
+.badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.badge-active{background:#064e3b;color:#34d399}
+.badge-inactive{background:#1e293b;color:#64748b;border:1px solid #334155}
+.pay-item{padding:12px 0;border-bottom:1px solid #0f172a}
+.pay-item:last-child{border:none}
+.pay-row{display:flex;justify-content:space-between;align-items:flex-start}
+.pay-name{font-size:13px;font-weight:700}
+.pay-amt{font-size:15px;font-weight:800;color:#34d399}
+.pay-meta{font-size:11px;color:#64748b;margin-top:3px}
+.pay-status{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-top:5px;display:inline-block}
+.s-completed{background:#064e3b;color:#34d399}
+.s-pending{background:#451a03;color:#fb923c}
+.action-row{display:flex;gap:8px;margin-top:10px}
+.btn-approve{flex:1;padding:9px;background:#064e3b;color:#34d399;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
+.btn-reject{flex:1;padding:9px;background:#450a0a;color:#f87171;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
+.empty{text-align:center;padding:30px;color:#475569;font-size:13px}
+.refresh-btn{width:100%;padding:11px;background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#1d4ed8;color:white;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:700;z-index:200;display:none;max-width:320px;text-align:center}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<!-- LOGIN -->
+<div id="loginSection">
+  <div class="header">
+    <h1>🔐 Admin Panel</h1>
+    <p>Bihar Seva — Admin Access</p>
+  </div>
+  <div class="container">
+    <div class="login-box">
+      <h2>Admin Login</h2>
+      <input type="password" id="adminPass" placeholder="Admin Password" onkeydown="if(event.key==='Enter')adminLogin()">
+      <button onclick="adminLogin()">🔐 Login Karo</button>
+      <div id="loginErr" style="color:#f87171;font-size:13px;margin-top:10px;text-align:center;display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none">
+  <div class="header">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div><h1>⚙️ Admin Panel</h1><p>Bihar Seva — Control Center</p></div>
+      <button onclick="adminLogout()" style="width:auto;padding:8px 14px;background:rgba(255,255,255,.1);font-size:12px;border-radius:20px;border:none;color:white;cursor:pointer">Logout</button>
+    </div>
+  </div>
+  <div class="container">
+    <button class="refresh-btn" onclick="loadAll()">🔄 Refresh Data</button>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
+      <button class="tab" onclick="switchTab('users',this)">👥 Users</button>
+      <button class="tab" onclick="switchTab('members',this)">💎 Members</button>
+      <button class="tab" onclick="switchTab('payments',this)">💳 Payments</button>
+      <button class="tab" onclick="switchTab('activate',this)">✅ Activate</button>
+      <button class="tab" onclick="switchTab('links',this)">🔗 Links</button>
+      <button class="tab" onclick="switchTab('broadcast',this)">📢 Message</button>
+      <button class="tab" onclick="switchTab('schemes',this)">➕ Schemes</button>
+      <button class="tab" onclick="switchTab('plans',this)">💰 Plans</button>
+      <button class="tab" onclick="switchTab('support',this)">📩 Support</button>
+    </div>
+
+    <!-- DASHBOARD TAB -->
+    <div id="tab-dashboard">
+      <div class="stat-grid">
+        <div class="stat-card"><div class="label">Total Users</div><div class="value" id="dTotalUsers">—</div></div>
+        <div class="stat-card"><div class="label">Active Members</div><div class="value" id="dActiveMembers">—</div></div>
+        <div class="stat-card"><div class="label">Total Payments</div><div class="value" id="dTotalPayments">—</div></div>
+        <div class="stat-card"><div class="label">💰 Revenue</div><div class="value" id="dRevenue">—</div></div>
+      </div>
+      <div class="section">
+        <div class="section-title">📊 Payment Breakdown <span style="font-size:10px;color:#22c55e;font-weight:400">● LIVE</span></div>
+        <div class="stat-grid" style="grid-template-columns:repeat(2,1fr)">
+          <div class="stat-card"><div class="label">✅ Completed</div><div class="value" id="payCompleted">—</div></div>
+          <div class="stat-card"><div class="label">⏳ Pending</div><div class="value" id="payPending">—</div></div>
+        </div>
+      </div>
+      <!-- SITE MODE TOGGLE -->
+      <div class="section">
+        <div class="section-title">⚙️ Site Mode</div>
+        <p style="font-size:12px;color:#94a3b8;margin-bottom:14px">Free mode mein sab links seedha khulenge. Paid mode mein membership chahiye hogi.</p>
+        <div style="display:flex;gap:10px">
+          <button id="btnFreeMode" onclick="setSiteMode('free')" style="flex:1;padding:13px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:#064e3b;color:#34d399">🆓 Free Mode</button>
+          <button id="btnPaidMode" onclick="setSiteMode('paid')" style="flex:1;padding:13px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:#1e293b;color:#94a3b8">💰 Paid Mode</button>
+        </div>
+        <div id="siteModeStatus" style="font-size:12px;margin-top:10px;text-align:center;color:#94a3b8"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">📢 Broadcast Message</div>
+        <p style="font-size:12px;color:#94a3b8;margin-bottom:10px">Ye message website khulte hi sabko dikhega.</p>
+        <textarea id="broadcastMsg" placeholder="Jaise: Kal server 2-4 baje band rahega..."
+          style="width:100%;min-height:70px;padding:10px;border-radius:10px;border:1px solid #334155;background:#0f172a;color:white;font-size:13px;box-sizing:border-box;font-family:inherit;resize:none"></textarea>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn-approve" style="flex:1" onclick="sendBroadcast()">📢 Bhejo</button>
+          <button class="btn-reject" style="flex:1" onclick="clearBroadcast()">🗑️ Hatao</button>
+        </div>
+        <div id="broadcastStatus" style="font-size:12px;color:#94a3b8;margin-top:8px"></div>
+      </div>
+    </div>
+
+    <!-- USERS TAB -->
+    <div id="tab-users" style="display:none">
+      <div class="section">
+        <div class="section-title">👥 Registered Users</div>
+        <div id="usersList"><div class="empty">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- MEMBERS TAB -->
+    <div id="tab-members" style="display:none">
+      <div class="section">
+        <div class="section-title">💎 Active Members</div>
+        <div id="membersList"><div class="empty">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- PAYMENTS TAB -->
+    <div id="tab-payments" style="display:none">
+      <div class="section">
+        <div class="section-title">⏳ Pending Payments</div>
+        <div id="pendingList"><div class="empty">Loading...</div></div>
+      </div>
+      <div class="section" style="margin-top:12px">
+        <div class="section-title">✅ Completed Payments</div>
+        <div id="completedList"><div class="empty">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- ACTIVATE TAB -->
+    <div id="tab-activate" style="display:none">
+      <div class="section">
+        <div class="section-title">✅ Manually Activate</div>
+        <p style="font-size:12px;color:#94a3b8;margin-bottom:14px">User ka Fingerprint ID daalo aur kitne din ka membership dena hai.</p>
+        <input type="text" id="actFp" placeholder="Fingerprint ID">
+        <input type="number" id="actDays" placeholder="Kitne din? (jaise 30)" min="1" max="365">
+        <button class="btn-approve" style="width:100%" onclick="manualActivate()">✅ Activate Karo</button>
+        <div id="actMsg" style="display:none;margin-top:10px;text-align:center;font-size:13px;font-weight:600"></div>
+      </div>
+    </div>
+
+    <!-- LINKS TAB -->
+    <div id="tab-links" style="display:none">
+      <div class="section">
+        <div class="section-title">🔗 Service Links</div>
+        <p style="font-size:12px;color:#94a3b8;margin-bottom:10px">Har service ka government link daalo. Khali chhodo to "Jald Aayega" dikhega.</p>
+        <div id="linksList"><div class="empty">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- BROADCAST TAB -->
+    <div id="tab-broadcast" style="display:none">
+      <div class="section">
+        <div class="section-title">📢 Website Message</div>
+        <p style="font-size:12px;color:#94a3b8;margin-bottom:14px">Yeh message sabko website pe dikhega.</p>
+        <textarea id="broadcastMsg2" placeholder="Jaise: Kal 2-4 baje maintenance hogi..."
+          style="width:100%;min-height:90px;padding:10px;border-radius:10px;border:1px solid #334155;background:#0f172a;color:white;font-size:13px;box-sizing:border-box;font-family:inherit;resize:none"></textarea>
+        <button class="btn-approve" style="width:100%;margin-top:8px" onclick="sendBroadcast2()">📢 Message Bhejo</button>
+        <button class="btn-reject" style="width:100%;margin-top:8px" onclick="clearBroadcast()">🗑️ Message Hatao</button>
+        <div id="broadcastStatus2" style="font-size:12px;color:#94a3b8;margin-top:10px;text-align:center"></div>
+      </div>
+    </div>
+
+    <!-- SUPPORT TAB -->
+    <div id="tab-support" style="display:none">
+      <div class="section">
+        <div class="section-title">📩 User Support Messages</div>
+        <div id="supportMsgList"><div class="empty">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- SCHEMES TAB -->
+    <div id="tab-schemes" style="display:none">
+      <div class="section">
+        <div class="section-title">➕ Naya Scheme Add Karo</div>
+        <input type="text" id="schName" placeholder="Scheme ka naam (jaise: Mukhyamantri Kanya Vivah)">
+        <input type="text" id="schIcon" placeholder="Emoji icon (jaise: 👰 🌾 🏠)">
+        <input type="text" id="schDesc" placeholder="Short description">
+        <input type="url" id="schUrl" placeholder="Direct government link https://...">
+        <select id="schCat" style="width:100%;padding:12px;background:#0f172a;border:1.5px solid #334155;border-radius:10px;color:#e2e8f0;font-size:14px;margin-bottom:12px">
+          <option value="sarkari">🏛️ Sarkari Seva</option>
+          <option value="bhumi">🏠 Bhumi Seva</option>
+          <option value="praman">📄 Praman Patra</option>
+          <option value="pahchan">🪪 Pahchan</option>
+        </select>
+        <button class="btn-approve" style="width:100%" onclick="addScheme()">➕ Scheme Add Karo</button>
+        <div id="schMsg" style="display:none;margin-top:10px;text-align:center;font-size:13px;font-weight:600"></div>
+      </div>
+      <div class="section" style="margin-top:12px">
+        <div class="section-title">📋 Added Schemes</div>
+        <div id="schemesList"><div class="empty">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- PLANS TAB -->
+    <div id="tab-plans" style="display:none">
+      <div class="section">
+        <div class="section-title">💰 Plans Change Karo</div>
+        <p style="font-size:12px;color:#94a3b8;margin-bottom:14px">Membership plans ke din aur price change kar sako.</p>
+        <div id="plansEditor"><div class="empty">Loading...</div></div>
+        <button class="btn-approve" style="width:100%;margin-top:12px" onclick="savePlans()">💾 Plans Save Karo</button>
+        <button onclick="addPlanRow()" style="width:100%;margin-top:8px;background:#334155;font-size:13px">➕ Naya Plan Add Karo</button>
+        <div id="planMsg" style="display:none;margin-top:10px;text-align:center;font-size:13px;font-weight:600"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let adminPassword = '';
+function hdrs() { return { 'x-admin-password': adminPassword, 'Content-Type': 'application/json' }; }
+
+function showToast(msg, isErr) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isErr ? '#7f1d1d' : '#166534';
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2500);
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display = 'none');
+  document.getElementById('tab-' + tab).style.display = 'block';
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+async function adminLogin() {
+  const pass = document.getElementById('adminPass').value;
+  if (!pass) return;
+  try {
+    const r = await fetch('/admin/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pass })
+    });
+    const d = await r.json();
+    if (d.success) {
+      adminPassword = pass;
+      document.getElementById('loginSection').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      loadAll();
+    } else {
+      document.getElementById('loginErr').style.display = 'block';
+      document.getElementById('loginErr').textContent = '❌ Wrong password!';
+    }
+  } catch(e) {
+    document.getElementById('loginErr').style.display = 'block';
+    document.getElementById('loginErr').textContent = '❌ Server error!';
+  }
+}
+
+function adminLogout() {
+  adminPassword = '';
+  document.getElementById('loginSection').style.display = 'block';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('adminPass').value = '';
+}
+
+function loadAll() { loadStats(); loadUsers(); loadPayments(); loadMembers(); loadLinks(); loadSchemes(); loadPlans(); loadSupportMsgs(); loadSiteMode(); }
+
+async function loadSupportMsgs() {
+  try {
+    const r = await fetch('/admin/support-messages', { headers: hdrs() });
+    const d = await r.json();
+    const list = document.getElementById('supportMsgList');
+    if (!d.messages?.length) { list.innerHTML = '<div class="empty">Koi support message nahi abhi ✅</div>'; return; }
+    list.innerHTML = d.messages.map(m => {
+      const date = new Date(m.createdAt||Date.now()).toLocaleString('en-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+      const isUnread = m.status === 'unread';
+      return `<div class="pay-item" style="${isUnread?'border-left:3px solid #3b82f6;padding-left:10px':''}">
+        <div class="pay-row">
+          <div>
+            <div class="pay-name">👤 ${m.name||'Anonymous'} ${isUnread?'<span style="background:#1d4ed8;color:white;padding:2px 6px;border-radius:10px;font-size:9px;font-weight:700">NEW</span>':''}</div>
+            <div class="pay-meta">FP: ${(m.fingerprint||'').substring(0,10)}... · ${date}</div>
+            ${m.orderId?`<div class="pay-meta">Order: ${m.orderId}</div>`:''}
+          </div>
+        </div>
+        <div style="background:#0f172a;border-radius:8px;padding:10px;margin-top:8px;font-size:13px;color:#e2e8f0;line-height:1.5">${m.message}</div>
+        ${isUnread?`<button class="btn-approve" style="margin-top:8px;padding:6px 12px;width:auto;font-size:11px" onclick="markRead('${m._id}',this)">✅ Read Mark Karo</button>`:'<div style="font-size:10px;color:#475569;margin-top:6px">✅ Read</div>'}
+      </div>`;
+    }).join('');
+  } catch(e) { document.getElementById('supportMsgList').innerHTML = '<div class="empty">Error!</div>'; }
+}
+
+async function markRead(id, btn) {
+  try {
+    const r = await fetch('/admin/support/read', { method:'POST', headers:hdrs(), body:JSON.stringify({id}) });
+    const d = await r.json();
+    if (d.success) { showToast('✅ Read mark ho gaya!'); loadSupportMsgs(); }
+  } catch(e) { showToast('❌ Error!', true); }
+}
+
+async function loadSiteMode() {
+  try {
+    const r = await fetch('/api/site-mode');
+    const d = await r.json();
+    updateSiteModeUI(d.mode || 'free');
+  } catch(e) {}
+}
+
+function updateSiteModeUI(mode) {
+  const freeBtn = document.getElementById('btnFreeMode');
+  const paidBtn = document.getElementById('btnPaidMode');
+  const status = document.getElementById('siteModeStatus');
+  if (mode === 'free') {
+    freeBtn.style.background = '#064e3b'; freeBtn.style.color = '#34d399';
+    paidBtn.style.background = '#1e293b'; paidBtn.style.color = '#94a3b8';
+    status.textContent = '✅ Abhi FREE mode active hai — sab links direct khul rahe hain';
+    status.style.color = '#34d399';
+  } else {
+    paidBtn.style.background = '#1d4ed8'; paidBtn.style.color = 'white';
+    freeBtn.style.background = '#1e293b'; freeBtn.style.color = '#94a3b8';
+    status.textContent = '💰 Abhi PAID mode active hai — membership chahiye hogi';
+    status.style.color = '#f59e0b';
+  }
+}
+
+async function setSiteMode(mode) {
+  try {
+    const r = await fetch('/admin/site-mode', {
+      method: 'POST', headers: hdrs(),
+      body: JSON.stringify({ mode })
+    });
+    const d = await r.json();
+    if (d.success) {
+      updateSiteModeUI(mode);
+      showToast(mode === 'free' ? '✅ Free mode on!' : '💰 Paid mode on!');
+    } else {
+      showToast('❌ Error!', true);
+    }
+  } catch(e) { showToast('❌ Server error!', true); }
+}
+
+async function loadStats() {
+  try {
+    const r = await fetch('/api/stats', { headers: hdrs() });
+    const d = await r.json();
+    document.getElementById('dTotalUsers').textContent = d.totalUsers ?? '—';
+    document.getElementById('dActiveMembers').textContent = d.activeMembers ?? '—';
+    document.getElementById('dTotalPayments').textContent = d.totalPayments ?? '—';
+    document.getElementById('dRevenue').textContent = '₹' + (d.totalRevenue ?? 0);
+    const r2 = await fetch('/admin/payment-breakdown', { headers: hdrs() });
+    const d2 = await r2.json();
+    if (d2.success) {
+      document.getElementById('payCompleted').textContent = d2.completed ?? 0;
+      document.getElementById('payPending').textContent = d2.pending ?? 0;
+    }
+  } catch(e) {}
+}
+
+async function loadUsers() {
+  try {
+    const r = await fetch('/admin/users', { headers: hdrs() });
+    const d = await r.json();
+    const list = document.getElementById('usersList');
+    if (!d.success || !d.users?.length) { list.innerHTML = '<div class="empty">Koi user nahi abhi</div>'; return; }
+    const now = new Date();
+    list.innerHTML = d.users.map(u => {
+      const active = u.memberExpiry && new Date(u.memberExpiry) > now;
+      const exp = u.memberExpiry ? new Date(u.memberExpiry).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : 'N/A';
+      const fp = u.fingerprint ? u.fingerprint.substring(0,14) + '...' : 'N/A';
+      return `<div class="user-item">
+        <div class="user-avatar">👤</div>
+        <div class="user-info">
+          <div class="user-name">FP: ${fp}</div>
+          <div class="user-email">Joined: ${new Date(u.joinedAt||Date.now()).toLocaleDateString('en-IN')}</div>
+          <div class="user-meta">Last seen: ${new Date(u.lastSeen||Date.now()).toLocaleDateString('en-IN')}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <span class="badge ${active?'badge-active':'badge-inactive'}">${active?'ACTIVE':'INACTIVE'}</span>
+          ${active?`<div style="font-size:10px;color:#34d399;margin-top:4px">Till ${exp}</div>`:''}
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) { document.getElementById('usersList').innerHTML = '<div class="empty">Error!</div>'; }
+}
+
+async function loadMembers() {
+  try {
+    const r = await fetch('/admin/users', { headers: hdrs() });
+    const d = await r.json();
+    const list = document.getElementById('membersList');
+    const now = new Date();
+    const active = (d.users||[]).filter(u => u.memberExpiry && new Date(u.memberExpiry) > now);
+    if (!active.length) { list.innerHTML = '<div class="empty">Koi active member nahi</div>'; return; }
+    list.innerHTML = active.map(u => {
+      const exp = new Date(u.memberExpiry).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+      const daysLeft = Math.ceil((new Date(u.memberExpiry)-now)/(1000*60*60*24));
+      const fp = u.fingerprint ? u.fingerprint.substring(0,14) + '...' : 'N/A';
+      return `<div class="user-item">
+        <div class="user-avatar">💎</div>
+        <div class="user-info">
+          <div class="user-name">FP: ${fp}</div>
+          <div class="user-email">Till: ${exp}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <span class="badge badge-active">ACTIVE</span>
+          <div style="font-size:11px;color:#34d399;margin-top:4px;font-weight:700">${daysLeft}d left</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) { document.getElementById('membersList').innerHTML = '<div class="empty">Error!</div>'; }
+}
+
+async function loadPayments() {
+  try {
+    const r = await fetch('/admin/payments', { headers: hdrs() });
+    const d = await r.json();
+    const all = d.payments || [];
+    const pending = all.filter(p => p.status !== 'completed');
+    const completed = all.filter(p => p.status === 'completed');
+    document.getElementById('pendingList').innerHTML = pending.length ? pending.map(payHTML).join('') : '<div class="empty">Koi pending payment nahi ✅</div>';
+    document.getElementById('completedList').innerHTML = completed.length ? completed.map(payHTML).join('') : '<div class="empty">Koi completed payment nahi abhi</div>';
+  } catch(e) { document.getElementById('pendingList').innerHTML = '<div class="empty">Error!</div>'; }
+}
+
+function payHTML(p) {
+  const date = new Date(p.createdAt||Date.now()).toLocaleString('en-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+  const fp = p.fingerprint ? p.fingerprint.substring(0,14)+'...' : 'N/A';
+  const sc = p.status==='completed'?'s-completed':'s-pending';
+  return `<div class="pay-item">
+    <div class="pay-row">
+      <div>
+        <div class="pay-name">FP: ${fp}</div>
+        <div class="pay-meta">${p.days} din · ${date}</div>
+        <div class="pay-meta" style="font-size:10px">Order: ${p.orderId||'—'}</div>
+      </div>
+      <div class="pay-amt">₹${p.amount||0}</div>
+    </div>
+    <span class="pay-status ${sc}">${p.status}</span>
+  </div>`;
+}
+
+async function manualActivate() {
+  const fp = document.getElementById('actFp').value.trim();
+  const days = parseInt(document.getElementById('actDays').value);
+  const msg = document.getElementById('actMsg');
+  msg.style.display = 'none';
+  if (!fp || !days) { msg.style.display='block'; msg.style.color='#f87171'; msg.textContent='❌ FP aur Days dono bharo!'; return; }
+  try {
+    const r = await fetch('/admin/activate-fp', {
+      method: 'POST', headers: hdrs(),
+      body: JSON.stringify({ fingerprint: fp, days })
+    });
+    const d = await r.json();
+    msg.style.display = 'block';
+    if (d.success) { msg.style.color='#34d399'; msg.textContent='✅ '+d.message; document.getElementById('actFp').value=''; document.getElementById('actDays').value=''; showToast('✅ Activated!'); }
+    else { msg.style.color='#f87171'; msg.textContent='❌ '+(d.message||'Error!'); }
+  } catch(e) { msg.style.display='block'; msg.style.color='#f87171'; msg.textContent='❌ Server error!'; }
+}
+
+const SERVICE_KEYS = [
+  {key:'jameen-rasid',name:'जमीन की रसीद'},{key:'bihar-bhumi',name:'बिहार भूमि'},
+  {key:'jamabandi',name:'जमाबंदी'},{key:'khata-khesra',name:'खाता/खेसरा'},
+  {key:'bhu-naksha',name:'भू-नक्शा'},{key:'dakhil-kharij',name:'दाखिल-खारिज'},
+  {key:'birth-cert',name:'जन्म प्रमाण पत्र'},{key:'income-cert',name:'आय प्रमाण पत्र'},
+  {key:'caste-cert',name:'जाति प्रमाण पत्र'},{key:'residence-cert',name:'निवास प्रमाण पत्र'},
+  {key:'ews-cert',name:'EWS प्रमाण पत्र'},{key:'character-cert',name:'चरित्र प्रमाण पत्र'},
+  {key:'pan-card',name:'PAN Card'},{key:'voter-id',name:'Voter ID'},
+  {key:'aadhaar',name:'Aadhaar'},{key:'driving-licence',name:'Driving Licence'},
+  {key:'passport',name:'Passport'},{key:'eshram',name:'e-Shram Card'},
+  {key:'pm-kisan',name:'PM-Kisan'},{key:'ration-card',name:'Ration Card'},
+  {key:'ayushman-card',name:'Ayushman Card'},{key:'scholarship',name:'Scholarship'},
+  {key:'pension-status',name:'Pension Status'},{key:'sarkari-yojana',name:'सरकारी योजनाएँ'}
+];
+
+async function loadLinks() {
+  try {
+    const r = await fetch('/api/service-links');
+    const d = await r.json();
+    const links = d.links || {};
+    document.getElementById('linksList').innerHTML = SERVICE_KEYS.map(s => {
+      const url = links[s.key] || '';
+      const isLive = !!url;
+      return `<div class="link-card">
+        <div class="link-card-head">
+          <div class="link-card-title">${s.name}</div>
+          <span class="link-status ${isLive?'live':'pending'}">${isLive?'🟢 Live':'🟡 Jald Aayega'}</span>
+        </div>
+        <input type="url" id="link-${s.key}" value="${url}" placeholder="https://..." class="link-input">
+        <div class="link-card-actions">
+          <button class="btn-approve" onclick="saveLink('${s.key}','${s.name}')">💾 Save</button>
+          <button class="btn-reject" onclick="clearLink('${s.key}','${s.name}')">🗑️ Remove</button>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) { document.getElementById('linksList').innerHTML = '<div class="empty">Error!</div>'; }
+}
+
+async function saveLink(key, name) {
+  const url = document.getElementById('link-'+key)?.value.trim() || '';
+  try {
+    const r = await fetch('/admin/service-link', {
+      method: 'POST', headers: hdrs(),
+      body: JSON.stringify({ key, name, url })
+    });
+    const d = await r.json();
+    if (d.success) { showToast('✅ '+name+' link save ho gaya!'); loadLinks(); }
+    else showToast('❌ Save nahi hua!', true);
+  } catch(e) { showToast('❌ Server error!', true); }
+}
+
+async function clearLink(key, name) {
+  if (!confirm('Ye link hatao?')) return;
+  document.getElementById('link-'+key).value = '';
+  await saveLink(key, name);
+}
+
+async function sendBroadcast() {
+  const msg = document.getElementById('broadcastMsg').value.trim();
+  if (!msg) { alert('Message likho!'); return; }
+  try {
+    const r = await fetch('/admin/announcement', { method:'POST', headers:hdrs(), body:JSON.stringify({message:msg,active:true}) });
+    const d = await r.json();
+    const st = document.getElementById('broadcastStatus');
+    if (d.success) { st.style.color='#22c55e'; st.textContent='✅ Message bhej diya!'; showToast('✅ Message bheja!'); }
+    else { st.style.color='#ef4444'; st.textContent='❌ Error!'; }
+  } catch(e) { document.getElementById('broadcastStatus').textContent='❌ Server error!'; }
+}
+
+async function sendBroadcast2() {
+  const msg = document.getElementById('broadcastMsg2').value.trim();
+  if (!msg) { alert('Message likho!'); return; }
+  try {
+    const r = await fetch('/admin/announcement', { method:'POST', headers:hdrs(), body:JSON.stringify({message:msg,active:true}) });
+    const d = await r.json();
+    const st = document.getElementById('broadcastStatus2');
+    if (d.success) { st.style.color='#22c55e'; st.textContent='✅ Message sab users ko dikhega!'; showToast('✅ Message bheja!'); }
+    else { st.style.color='#ef4444'; st.textContent='❌ Error!'; }
+  } catch(e) { document.getElementById('broadcastStatus2').textContent='❌ Server error!'; }
+}
+
+async function clearBroadcast() {
+  try {
+    const r = await fetch('/admin/announcement', { method:'POST', headers:hdrs(), body:JSON.stringify({message:'',active:false}) });
+    const d = await r.json();
+    if (d.success) {
+      document.getElementById('broadcastStatus').style.color='#94a3b8';
+      document.getElementById('broadcastStatus').textContent='Message hata diya.';
+      document.getElementById('broadcastStatus2').textContent='Message hata diya.';
+      document.getElementById('broadcastMsg').value='';
+      if(document.getElementById('broadcastMsg2')) document.getElementById('broadcastMsg2').value='';
+      showToast('✅ Message hata diya!');
+    }
+  } catch(e) { showToast('❌ Error!', true); }
+}
+
+setInterval(() => {
+  if (document.getElementById('dashboard').style.display !== 'none') { loadStats(); loadPayments(); }
+}, 15000);
+
+// ===== SCHEMES =====
+async function addScheme() {
+  const name = document.getElementById('schName').value.trim();
+  const icon = document.getElementById('schIcon').value.trim();
+  const desc = document.getElementById('schDesc').value.trim();
+  const url = document.getElementById('schUrl').value.trim();
+  const category = document.getElementById('schCat').value;
+  const msg = document.getElementById('schMsg');
+  msg.style.display = 'none';
+  if (!name || !url) { msg.style.display='block'; msg.style.color='#f87171'; msg.textContent='❌ Naam aur URL zaroori hai!'; return; }
+  try {
+    const r = await fetch('/admin/scheme/add', {
+      method: 'POST', headers: hdrs(),
+      body: JSON.stringify({ name, icon, description: desc, url, category })
+    });
+    const d = await r.json();
+    if (d.success) {
+      msg.style.display='block'; msg.style.color='#34d399'; msg.textContent='✅ Scheme add ho gayi!';
+      document.getElementById('schName').value='';
+      document.getElementById('schIcon').value='';
+      document.getElementById('schDesc').value='';
+      document.getElementById('schUrl').value='';
+      showToast('✅ Scheme add ho gayi!');
+      loadSchemes();
+    } else {
+      msg.style.display='block'; msg.style.color='#f87171'; msg.textContent='❌ '+(d.message||'Error!');
+    }
+  } catch(e) { msg.style.display='block'; msg.style.color='#f87171'; msg.textContent='❌ Server error!'; }
+}
+
+async function loadSchemes() {
+  try {
+    const r = await fetch('/admin/schemes', { headers: hdrs() });
+    const d = await r.json();
+    const list = document.getElementById('schemesList');
+    if (!d.schemes?.length) { list.innerHTML = '<div class="empty">Koi custom scheme nahi abhi</div>'; return; }
+    list.innerHTML = d.schemes.map(s => `
+      <div class="link-card">
+        <div class="link-card-head">
+          <div class="link-card-title">${s.icon||'🏛️'} ${s.name}</div>
+          <span class="link-status live">🟢 Live</span>
+        </div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:6px">${s.description||''}</div>
+        <div style="font-size:11px;color:#475569;word-break:break-all;margin-bottom:8px">${s.url}</div>
+        <button class="btn-reject" onclick="deleteScheme('${s._id}')">🗑️ Hatao</button>
+      </div>`).join('');
+  } catch(e) { document.getElementById('schemesList').innerHTML = '<div class="empty">Error!</div>'; }
+}
+
+async function deleteScheme(id) {
+  if (!confirm('Ye scheme hatao?')) return;
+  try {
+    const r = await fetch('/admin/scheme/delete', { method:'POST', headers:hdrs(), body:JSON.stringify({id}) });
+    const d = await r.json();
+    if (d.success) { showToast('✅ Scheme hata di!'); loadSchemes(); }
+    else showToast('❌ Error!', true);
+  } catch(e) { showToast('❌ Error!', true); }
+}
+
+// ===== PLANS =====
+let currentPlans = [];
+
+async function loadPlans() {
+  try {
+    const r = await fetch('/api/plans');
+    const d = await r.json();
+    currentPlans = d.plans || [];
+    renderPlansEditor();
+  } catch(e) { document.getElementById('plansEditor').innerHTML = '<div class="empty">Error!</div>'; }
+}
+
+function renderPlansEditor() {
+  document.getElementById('plansEditor').innerHTML = currentPlans.map((p, i) => `
+    <div style="background:#0f172a;border:1px solid #334155;border-radius:12px;padding:14px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div style="font-weight:700;font-size:13px;color:#e2e8f0">Plan ${i+1}</div>
+        <button class="btn-reject" style="width:auto;padding:5px 12px;font-size:11px" onclick="removePlan(${i})">🗑️</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div>
+          <div style="font-size:11px;color:#94a3b8;margin-bottom:4px">Din</div>
+          <input type="number" id="plan-days-${i}" value="${p.days}" min="1" max="365"
+            style="width:100%;padding:9px;background:#1e293b;border:1px solid #334155;border-radius:8px;color:white;font-size:13px">
+        </div>
+        <div>
+          <div style="font-size:11px;color:#94a3b8;margin-bottom:4px">Price (₹)</div>
+          <input type="number" id="plan-amt-${i}" value="${p.amount}" min="1"
+            style="width:100%;padding:9px;background:#1e293b;border:1px solid #334155;border-radius:8px;color:white;font-size:13px">
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function addPlanRow() {
+  currentPlans.push({ days: 7, amount: 10, label: '7 दिन' });
+  renderPlansEditor();
+}
+
+function removePlan(i) {
+  currentPlans.splice(i, 1);
+  renderPlansEditor();
+}
+
+async function savePlans() {
+  const msg = document.getElementById('planMsg');
+  msg.style.display = 'none';
+  const plans = currentPlans.map((p, i) => ({
+    days: parseInt(document.getElementById('plan-days-'+i)?.value || p.days),
+    amount: parseInt(document.getElementById('plan-amt-'+i)?.value || p.amount),
+    label: document.getElementById('plan-days-'+i)?.value + ' दिन'
+  }));
+  if (plans.some(p => !p.days || !p.amount)) {
+    msg.style.display='block'; msg.style.color='#f87171'; msg.textContent='❌ Sab fields bharo!'; return;
+  }
+  try {
+    const r = await fetch('/admin/plans/update', { method:'POST', headers:hdrs(), body:JSON.stringify({plans}) });
+    const d = await r.json();
+    if (d.success) {
+      msg.style.display='block'; msg.style.color='#34d399'; msg.textContent='✅ Plans update ho gaye!';
+      currentPlans = plans;
+      showToast('✅ Plans save ho gaye!');
+    } else {
+      msg.style.display='block'; msg.style.color='#f87171'; msg.textContent='❌ '+(d.message||'Error!');
+    }
+  } catch(e) { msg.style.display='block'; msg.style.color='#f87171'; msg.textContent='❌ Server error!'; }
+}
+</script>
+</body>
+</html>
