@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Bihar Seva Info — सरकारी सेवाएँ एक जगह</title>
+<meta name="description" content="बिहार भूमि रसीद, भू-नक्शा, प्रमाण-पत्र, PAN, Voter ID — सब FREE।">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8771359433113858" crossorigin="anonymous"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#EEF2FF;min-height:100vh;max-width:480px;margin:0 auto;padding-bottom:75px}
+.page{display:none}.page.active{display:block}
+
+/* HEADER */
+.header{background:linear-gradient(160deg,#1a1f5e,#2d35a0);padding:20px 18px 50px;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;right:-30px;top:-30px;width:160px;height:160px;background:rgba(255,255,255,.05);border-radius:50%}
+.header::after{content:'';position:absolute;right:40px;top:60px;width:80px;height:80px;background:rgba(255,255,255,.05);border-radius:50%}
+.header-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.site-logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:38px;height:38px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo-text{color:white;font-size:17px;font-weight:700;letter-spacing:-.3px}
+.header-menu{width:38px;height:38px;background:rgba(255,255,255,.15);border:none;border-radius:10px;color:white;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.header-body{margin-top:16px;position:relative;z-index:1}
+.header-body h1{color:white;font-size:22px;font-weight:800;line-height:1.3}
+.header-body p{color:rgba(255,255,255,.75);font-size:12px;margin-top:6px}
+.header-badge{display:inline-block;background:rgba(255,255,255,.15);color:white;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;margin-top:10px;border:1px solid rgba(255,255,255,.2)}
+
+/* SEARCH */
+.search-wrap{margin:-22px 16px 0;position:relative;z-index:10}
+.search-box{background:white;border-radius:14px;padding:0;box-shadow:0 8px 30px rgba(26,31,94,.15);display:flex;align-items:center;overflow:hidden}
+.search-box input{flex:1;border:0;outline:0;font-size:14px;color:#1a1f5e;padding:14px 16px;background:transparent}
+.search-box input::placeholder{color:#aab}
+.search-icon{padding:14px 14px 14px 4px;color:#6b7280;font-size:18px}
+
+/* NOTICE */
+.notice{margin:14px 16px 0;background:#FFF9C4;border-left:3px solid #F59E0B;border-radius:10px;padding:8px 12px;font-size:11px;color:#856404;line-height:1.5}
+
+/* CAT TABS */
+.cat-scroll{overflow-x:auto;padding:14px 16px 4px;scrollbar-width:none;display:flex;gap:8px}
+.cat-scroll::-webkit-scrollbar{display:none}
+.cat-btn{padding:7px 16px;border:2px solid #e0e4ff;border-radius:22px;background:white;color:#4b5099;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s}
+.cat-btn.active{background:#1a1f5e;border-color:#1a1f5e;color:white}
+
+/* CONTENT */
+.content{padding:6px 16px 0}
+.sec-head{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800;color:#1a1f5e;margin:16px 0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
+
+/* SERVICE CARD */
+.scard{background:white;border-radius:16px;padding:14px;box-shadow:0 2px 12px rgba(26,31,94,.08);cursor:pointer;transition:all .2s;border:2px solid transparent;text-decoration:none;display:block}
+.scard:active{transform:scale(.97);border-color:#2d35a0}
+.scard-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:10px}
+.scard h3{font-size:12.5px;font-weight:700;color:#1a1f5e;margin-bottom:3px;line-height:1.3}
+.scard p{font-size:10px;color:#8b90b8;line-height:1.4}
+.scard-source{font-size:9px;color:#c4c9e8;margin-top:5px}
+.scard-btn{display:block;width:100%;margin-top:10px;padding:8px;background:#1a1f5e;color:white;border:0;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;text-align:center}
+
+/* GUIDE CARD */
+.guide{background:white;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 2px 12px rgba(26,31,94,.08)}
+.guide h3{font-size:13px;font-weight:700;color:#1a1f5e;margin-bottom:12px}
+.step{display:flex;gap:10px;margin-bottom:10px}
+.step-n{width:22px;height:22px;background:#2d35a0;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;margin-top:1px}
+.step p{font-size:12px;color:#374151;line-height:1.5}
+
+/* AD */
+.ad{background:white;border-radius:14px;padding:8px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+
+/* BANNERS */
+.tg-card{background:linear-gradient(135deg,#0088cc,#005fa3);border-radius:16px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;color:white}
+.tg-card-info{flex:1}
+.tg-card-info h4{font-size:13px;font-weight:800}
+.tg-card-info p{font-size:11px;opacity:.8;margin-top:2px}
+.tg-card button{padding:9px 14px;border:0;border-radius:10px;background:white;color:#0088cc;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap}
+
+.share-card{background:linear-gradient(135deg,#064e3b,#047857);border-radius:16px;padding:16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;color:white}
+.share-card-info{flex:1}
+.share-card-info h4{font-size:13px;font-weight:800}
+.share-card-info p{font-size:11px;opacity:.8;margin-top:2px}
+.share-card button{padding:9px 14px;border:0;border-radius:10px;background:white;color:#064e3b;font-weight:700;font-size:12px;cursor:pointer}
+
+/* FOOTER */
+.footer{background:#1a1f5e;border-radius:16px;padding:18px;margin-bottom:16px}
+.footer-title{color:#f59e0b;font-size:12px;font-weight:800;margin-bottom:8px}
+.footer p{color:#8b90b8;font-size:11px;line-height:1.8}
+.footer-copy{color:#4b5099;font-size:10px;margin-top:10px;text-align:center}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:white;border-top:1px solid #e8eaff;display:grid;grid-template-columns:repeat(3,1fr);padding:6px 0 10px;z-index:50;box-shadow:0 -4px 20px rgba(26,31,94,.08)}
+.bnav-btn{border:0;background:none;color:#8b90b8;font-size:10px;font-weight:600;cursor:pointer;padding:4px}
+.bnav-btn span{display:block;font-size:22px;margin-bottom:2px}
+.bnav-btn.active{color:#1a1f5e}
+
+/* INFO PAGES */
+.ipage-header{background:linear-gradient(160deg,#1a1f5e,#2d35a0);padding:18px;display:flex;align-items:center;gap:14px;color:white}
+.ipage-header button{background:rgba(255,255,255,.15);border:none;width:36px;height:36px;border-radius:10px;color:white;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ipage-header h2{font-size:16px;font-weight:800}
+.ipage-body{padding:16px}
+.icard{background:white;border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 10px rgba(26,31,94,.07)}
+.icard h3{font-size:14px;font-weight:700;color:#1a1f5e;margin-bottom:8px}
+.icard p{font-size:12px;color:#6b7280;line-height:1.7}
+.imenu-btn{width:100%;margin-bottom:8px;padding:14px;border:0;border-radius:12px;background:white;color:#1a1f5e;font-weight:700;cursor:pointer;font-size:13px;text-align:left;display:flex;align-items:center;gap:10px;box-shadow:0 2px 10px rgba(26,31,94,.07)}
+.imenu-btn span{font-size:18px}
+textarea,input[type=text]{width:100%;padding:12px;border:2px solid #e8eaff;border-radius:12px;font-size:13px;font-family:inherit;resize:none;outline:none;margin-bottom:10px;color:#1a1f5e;background:#f8f9ff}
+textarea:focus,input[type=text]:focus{border-color:#2d35a0}
+.submit-btn{width:100%;padding:13px;border:0;border-radius:12px;background:#1a1f5e;color:white;font-weight:800;cursor:pointer;font-size:14px}
+.msg{padding:12px;border-radius:10px;font-size:13px;font-weight:600;margin-top:10px;display:none;text-align:center}
+.msg.ok{background:#E8F5E9;color:#2E7D32}
+.msg.err{background:#FFEBEE;color:#C62828}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="pg-home" class="page active">
+  <header class="header">
+    <div class="header-top">
+      <div class="site-logo">
+        <div class="logo-icon">🌐</div>
+        <div class="logo-text">Bihar Seva Info</div>
+      </div>
+      <button class="header-menu" onclick="showPage('info');setNav('n-info')">☰</button>
+    </div>
+    <div class="header-body">
+      <h1>सरकारी सेवाएँ<br>एक ही जगह 🏛️</h1>
+      <p>बिहार भूमि, प्रमाण-पत्र, पहचान — सब FREE</p>
+      <span class="header-badge">🆓 बिल्कुल मुफ्त · कोई login नहीं</span>
+    </div>
+  </header>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <input type="text" id="srch" placeholder="सेवा खोजें... जैसे जमीन, PAN, Pension" oninput="doSearch(this.value)">
+      <div class="search-icon">🔍</div>
+    </div>
+  </div>
+
+  <div class="notice">⚠️ यह एक निजी सूचना वेबसाइट है। बिहार सरकार से कोई संबंध नहीं।</div>
+
+  <div class="cat-scroll">
+    <button class="cat-btn active" onclick="showCat('all',this)">🌐 सभी</button>
+    <button class="cat-btn" onclick="showCat('bhumi',this)">🏠 भूमि</button>
+    <button class="cat-btn" onclick="showCat('praman',this)">📄 प्रमाण-पत्र</button>
+    <button class="cat-btn" onclick="showCat('pahchan',this)">🪪 पहचान</button>
+    <button class="cat-btn" onclick="showCat('sarkari',this)">🏛️ सरकारी</button>
+  </div>
+
+  <div class="content">
+
+    <div class="ad">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8771359433113858" data-ad-slot="1900287488" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+
+    <!-- BHUMI -->
+    <div class="cat-sec" data-cat="bhumi">
+      <div class="sec-head">🏠 भूमि सेवाएँ</div>
+      <div class="grid">
+        <a class="scard" data-name="जमीन रसीद भूलगान" href="https://www.bhulagan.bihar.gov.in/" target="_blank">
+          <div class="scard-icon" style="background:#fff7ed">🧾</div>
+          <h3>जमीन की रसीद</h3><p>भू-लगान रसीद चेक करें</p>
+          <div class="scard-source">bhulagan.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="बिहार भूमि खाता खेसरा" href="https://bhuabhilekh.bihar.gov.in/" target="_blank">
+          <div class="scard-icon" style="background:#f0fdf4">🌐</div>
+          <h3>बिहार भूमि</h3><p>खाता-खेसरा जानकारी</p>
+          <div class="scard-source">bhuabhilekh.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="जमाबंदी" href="https://bhuabhilekh.bihar.gov.in/" target="_blank">
+          <div class="scard-icon" style="background:#eff6ff">📖</div>
+          <h3>जमाबंदी</h3><p>जमाबंदी जानकारी देखें</p>
+          <div class="scard-source">bhuabhilekh.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="भू नक्शा" href="https://bhunaksha.bihar.gov.in/" target="_blank">
+          <div class="scard-icon" style="background:#f5f3ff">🗺️</div>
+          <h3>भू-नक्शा</h3><p>प्लॉट का नक्शा देखें</p>
+          <div class="scard-source">bhunaksha.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="खाता खेसरा" href="https://bhuabhilekh.bihar.gov.in/" target="_blank">
+          <div class="scard-icon" style="background:#fef9c3">🔢</div>
+          <h3>खाता / खेसरा</h3><p>नंबर से विवरण देखें</p>
+          <div class="scard-source">bhuabhilekh.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="mutation दाखिल खारिज" href="https://parimarjan.bihar.gov.in/" target="_blank">
+          <div class="scard-icon" style="background:#fff1f2">📄</div>
+          <h3>Mutation Status</h3><p>दाखिल-खारिज स्थिति</p>
+          <div class="scard-source">parimarjan.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+      </div>
+
+      <div class="guide">
+        <h3>📚 जमीन रसीद कैसे निकालें?</h3>
+        <div class="step"><div class="step-n">1</div><p>ऊपर <b>"जमीन की रसीद"</b> पर click करें</p></div>
+        <div class="step"><div class="step-n">2</div><p>अपना <b>जिला</b> और <b>अंचल</b> चुनें</p></div>
+        <div class="step"><div class="step-n">3</div><p>अपना <b>मौजा</b> और <b>खाता नंबर</b> डालें</p></div>
+        <div class="step"><div class="step-n">4</div><p>रसीद देखें और <b>Download</b> करें ✅</p></div>
+      </div>
+    </div>
+
+    <div class="ad">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8771359433113858" data-ad-slot="1900287488" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+
+    <!-- PRAMAN -->
+    <div class="cat-sec" data-cat="praman">
+      <div class="sec-head">📄 प्रमाण-पत्र सेवाएँ</div>
+      <div class="grid">
+        <a class="scard" data-name="जन्म प्रमाण पत्र birth" href="https://serviceonline.bihar.gov.in/service/ServiceList?serviceId=2" target="_blank">
+          <div class="scard-icon" style="background:#f0fdf4">👶</div>
+          <h3>जन्म प्रमाण पत्र</h3><p>आवेदन या डाउनलोड</p>
+          <div class="scard-source">serviceonline.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="आय प्रमाण पत्र income" href="https://serviceonline.bihar.gov.in/service/ServiceList?serviceId=5" target="_blank">
+          <div class="scard-icon" style="background:#fefce8">💰</div>
+          <h3>आय प्रमाण पत्र</h3><p>ऑनलाइन बनवाएं</p>
+          <div class="scard-source">serviceonline.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="जाति प्रमाण पत्र caste" href="https://serviceonline.bihar.gov.in/service/ServiceList?serviceId=3" target="_blank">
+          <div class="scard-icon" style="background:#fdf4ff">📑</div>
+          <h3>जाति प्रमाण पत्र</h3><p>ऑनलाइन बनवाएं</p>
+          <div class="scard-source">serviceonline.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="निवास प्रमाण पत्र residence" href="https://serviceonline.bihar.gov.in/service/ServiceList?serviceId=4" target="_blank">
+          <div class="scard-icon" style="background:#fff7ed">🏠</div>
+          <h3>निवास प्रमाण पत्र</h3><p>ऑनलाइन बनवाएं</p>
+          <div class="scard-source">serviceonline.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="EWS certificate" href="https://serviceonline.bihar.gov.in/" target="_blank">
+          <div class="scard-icon" style="background:#f0f9ff">📃</div>
+          <h3>EWS प्रमाण पत्र</h3><p>आरक्षण के लिए</p>
+          <div class="scard-source">serviceonline.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="चरित्र प्रमाण पत्र character" href="https://serviceonline.bihar.gov.in/" target="_blank">
+          <div class="scard-icon" style="background:#fff1f2">📝</div>
+          <h3>चरित्र प्रमाण पत्र</h3><p>ऑनलाइन आवेदन</p>
+          <div class="scard-source">serviceonline.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="ad">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8771359433113858" data-ad-slot="1900287488" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+
+    <!-- PAHCHAN -->
+    <div class="cat-sec" data-cat="pahchan">
+      <div class="sec-head">🪪 पहचान सेवाएँ</div>
+      <div class="grid">
+        <a class="scard" data-name="PAN card पैन" href="https://onlineservices.tin.egov-nsdl.com/TIN/JSP/application/93Application.jsp" target="_blank">
+          <div class="scard-icon" style="background:#fef9c3">🪪</div>
+          <h3>PAN Card</h3><p>नया बनवाएं या सुधार</p>
+          <div class="scard-source">nsdl.com</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="voter ID मतदाता" href="https://voters.eci.gov.in/login" target="_blank">
+          <div class="scard-icon" style="background:#eff6ff">🗳️</div>
+          <h3>Voter ID</h3><p>बनवाएं या चेक करें</p>
+          <div class="scard-source">eci.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="aadhaar आधार" href="https://myaadhaar.uidai.gov.in/" target="_blank">
+          <div class="scard-icon" style="background:#fff7ed">🆔</div>
+          <h3>Aadhaar Update</h3><p>नाम, पता अपडेट करें</p>
+          <div class="scard-source">uidai.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="driving licence DL" href="https://sarathi.parivahan.gov.in/sarathiservice/stateSelection.do" target="_blank">
+          <div class="scard-icon" style="background:#f0fdf4">🚗</div>
+          <h3>Driving Licence</h3><p>DL बनवाएं या रिन्यू</p>
+          <div class="scard-source">sarathi.parivahan.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="passport पासपोर्ट" href="https://portal2.passportindia.gov.in/AppOnlineProject/online/feeCalCulationAction" target="_blank">
+          <div class="scard-icon" style="background:#fdf4ff">✈️</div>
+          <h3>Passport</h3><p>आवेदन करें</p>
+          <div class="scard-source">passportindia.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="e-shram card श्रम" href="https://register.eshram.gov.in/#/user/self" target="_blank">
+          <div class="scard-icon" style="background:#f0f9ff">👷</div>
+          <h3>e-Shram Card</h3><p>कार्ड बनवाएं</p>
+          <div class="scard-source">eshram.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="ad">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8771359433113858" data-ad-slot="1900287488" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+
+    <!-- SARKARI -->
+    <div class="cat-sec" data-cat="sarkari">
+      <div class="sec-head">🏛️ सरकारी सेवाएँ</div>
+      <div class="grid">
+        <a class="scard" data-name="PM Kisan किसान किस्त" href="https://pmkisan.gov.in/BeneficiaryStatus.aspx" target="_blank">
+          <div class="scard-icon" style="background:#f0fdf4">🌾</div>
+          <h3>PM-Kisan</h3><p>किस्त स्टेटस चेक करें</p>
+          <div class="scard-source">pmkisan.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="ration card राशन" href="https://epds.bihar.gov.in/SearchRationCardDetails_Bihar.aspx" target="_blank">
+          <div class="scard-icon" style="background:#fef9c3">🍚</div>
+          <h3>Ration Card</h3><p>जानकारी चेक करें</p>
+          <div class="scard-source">epds.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="ayushman card आयुष्मान" href="https://beneficiary.nha.gov.in/" target="_blank">
+          <div class="scard-icon" style="background:#fff1f2">🏥</div>
+          <h3>Ayushman Card</h3><p>कार्ड बनवाएं</p>
+          <div class="scard-source">nha.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="scholarship छात्रवृत्ति" href="https://scholarships.gov.in/fresh/loginPage.action" target="_blank">
+          <div class="scard-icon" style="background:#eff6ff">🎓</div>
+          <h3>Scholarship</h3><p>छात्रवृत्ति आवेदन</p>
+          <div class="scard-source">scholarships.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="pension पेंशन" href="https://sspmis.bihar.gov.in/BeneficiaryStatus.aspx" target="_blank">
+          <div class="scard-icon" style="background:#fdf4ff">👴</div>
+          <h3>Pension Status</h3><p>पेंशन स्थिति चेक करें</p>
+          <div class="scard-source">sspmis.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+        <a class="scard" data-name="सरकारी योजना yojana" href="https://serviceonline.bihar.gov.in/" target="_blank">
+          <div class="scard-icon" style="background:#fff7ed">🏛️</div>
+          <h3>सरकारी योजनाएँ</h3><p>सभी योजनाएं देखें</p>
+          <div class="scard-source">serviceonline.bihar.gov.in</div>
+          <button class="scard-btn">🔗 खोलें</button>
+        </a>
+      </div>
+    </div>
+
+    <!-- TELEGRAM -->
+    <div class="tg-card">
+      <div style="font-size:32px">✈️</div>
+      <div class="tg-card-info">
+        <h4>Bihar Seva Telegram</h4>
+        <p>Updates aur help ke liye join karo</p>
+      </div>
+      <button onclick="window.open('https://t.me/king76344','_blank')">Join करें</button>
+    </div>
+
+    <!-- SHARE -->
+    <div class="share-card">
+      <div style="font-size:32px">📤</div>
+      <div class="share-card-info">
+        <h4>दोस्तों को बताएं</h4>
+        <p>WhatsApp पर share करें</p>
+      </div>
+      <button onclick="shareApp()">Share</button>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-title">⚠️ Disclaimer / अस्वीकरण</div>
+      <p>biharseva.online एक निजी (Private) इनफार्मेशन ब्लॉग है। बिहार सरकार या किसी सरकारी संगठन से कोई संबंध नहीं। हम केवल आधिकारिक सरकारी वेबसाइटों के लिंक्स प्रदान करते हैं।</p>
+      <div class="footer-copy">Bihar Seva Info © 2025 · biharseva.online</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- INFO PAGE -->
+<div id="pg-info" class="page">
+  <div class="ipage-header">
+    <button onclick="showPage('home');setNav('n-home')">←</button>
+    <h2>Bihar Seva Info</h2>
+  </div>
+  <div class="ipage-body">
+    <div class="icard">
+      <h3>🌐 Bihar Seva Info के बारे में</h3>
+      <p>यह एक निजी सूचना वेबसाइट है जहाँ बिहार और केंद्र सरकार की सेवाओं के डायरेक्ट लिंक्स मिलते हैं। सभी सेवाएँ बिल्कुल मुफ्त हैं।</p>
+    </div>
+    <button class="imenu-btn" onclick="showPage('contact')"><span>📞</span> Contact Us</button>
+    <button class="imenu-btn" onclick="showPage('support')"><span>💬</span> Help / Problem Report</button>
+    <button class="imenu-btn" onclick="showPage('terms')"><span>📋</span> Terms & Conditions</button>
+    <button class="imenu-btn" onclick="showPage('refund')"><span>💰</span> Refund Policy</button>
+    <button class="imenu-btn" onclick="showPage('privacy')"><span>🔒</span> Privacy Policy</button>
+    <p style="text-align:center;font-size:11px;color:#9ca3af;margin-top:16px">Bihar Seva Info © 2025</p>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="pg-contact" class="page">
+  <div class="ipage-header">
+    <button onclick="showPage('info')">←</button>
+    <h2>Contact Us</h2>
+  </div>
+  <div class="ipage-body">
+    <div class="icard">
+      <p style="line-height:2"><b>Email:</b> support@biharseva.online<br><b>Timing:</b> Mon–Sat, 9 AM – 6 PM</p>
+      <button class="submit-btn" style="margin-top:12px" onclick="window.open('https://t.me/king76344','_blank')">✈️ Telegram पर Contact करें</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUPPORT -->
+<div id="pg-support" class="page">
+  <div class="ipage-header">
+    <button onclick="showPage('info')">←</button>
+    <h2>Help & Support</h2>
+  </div>
+  <div class="ipage-body">
+    <div class="icard">
+      <h3 style="margin-bottom:12px">💬 Problem Report करें</h3>
+      <input type="text" id="sName" placeholder="आपका नाम (optional)">
+      <textarea id="sMsg" rows="4" placeholder="अपनी problem लिखें..."></textarea>
+      <button class="submit-btn" onclick="sendMsg()">📨 Message भेजें</button>
+      <div id="sStatus" class="msg"></div>
+    </div>
+    <div class="icard" style="margin-top:10px">
+      <button class="submit-btn" style="background:#29a2d6" onclick="window.open('https://t.me/king76344','_blank')">✈️ Telegram पर Contact करें</button>
+    </div>
+  </div>
+</div>
+
+<!-- TERMS -->
+<div id="pg-terms" class="page">
+  <div class="ipage-header"><button onclick="showPage('info')">←</button><h2>Terms & Conditions</h2></div>
+  <div class="ipage-body">
+    <div class="icard">
+      <p style="font-size:13px;line-height:1.9;color:#374151"><b>1. सेवा</b><br>Bihar Seva Info निजी सूचना वेबसाइट है।<br><br><b>2. सामग्री</b><br>हम केवल सरकारी वेबसाइटों के लिंक्स प्रदान करते हैं।<br><br><b>3. बदलाव</b><br>Bihar Seva Info terms बदलने का अधिकार रखता है।</p>
+    </div>
+  </div>
+</div>
+
+<!-- REFUND -->
+<div id="pg-refund" class="page">
+  <div class="ipage-header"><button onclick="showPage('refund')">←</button><h2>Refund Policy</h2></div>
+  <div class="ipage-body">
+    <div class="icard"><p style="font-size:13px;line-height:1.9;color:#374151">यह वेबसाइट पूरी तरह निःशुल्क है। कोई भुगतान नहीं लिया जाता।</p></div>
+  </div>
+</div>
+
+<!-- PRIVACY -->
+<div id="pg-privacy" class="page">
+  <div class="ipage-header"><button onclick="showPage('privacy')">←</button><h2>Privacy Policy</h2></div>
+  <div class="ipage-body">
+    <div class="icard"><p style="font-size:13px;line-height:1.9;color:#374151">Bihar Seva Info कोई personal data collect नहीं करता।</p></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="bnav-btn active" id="n-home" onclick="showPage('home');setNav('n-home')"><span>🏠</span>Home</button>
+  <button class="bnav-btn" id="n-search" onclick="showPage('home');setNav('n-search');setTimeout(()=>document.getElementById('srch').focus(),100)"><span>🔍</span>Search</button>
+  <button class="bnav-btn" id="n-info" onclick="showPage('info');setNav('n-info')"><span>☰</span>Menu</button>
+</nav>
+
+<script>
+function showPage(pg) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('pg-' + pg);
+  if (el) el.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function setNav(id) {
+  document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+}
+
+function showCat(cat, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.cat-sec').forEach(s => {
+    s.style.display = (cat === 'all' || s.dataset.cat === cat) ? 'block' : 'none';
+  });
+}
+
+function doSearch(q) {
+  q = q.toLowerCase().trim();
+  document.querySelectorAll('.cat-sec').forEach(s => s.style.display = 'block');
+  document.querySelectorAll('.scard').forEach(c => {
+    const match = (c.dataset.name || '').toLowerCase().includes(q) || (c.querySelector('h3')?.textContent || '').toLowerCase().includes(q);
+    c.style.display = (!q || match) ? 'block' : 'none';
+  });
+}
+
+function shareApp() {
+  const text = `🌐 *Bihar Seva Info* — सरकारी सेवाएँ एक ही जगह!\n\n✅ जमीन रसीद, भू-नक्शा\n✅ जन्म, आय, जाति प्रमाण पत्र\n✅ PM-Kisan, Ration Card\n✅ PAN, Voter ID, Aadhaar\n\nबिल्कुल FREE! 👇\nbiharseva.online`;
+  window.location.href = 'https://wa.me/?text=' + encodeURIComponent(text);
+}
+
+async function sendMsg() {
+  const name = document.getElementById('sName').value.trim();
+  const msg = document.getElementById('sMsg').value.trim();
+  const st = document.getElementById('sStatus');
+  if (!msg) { st.style.display='block'; st.className='msg err'; st.textContent='❌ Message likho!'; return; }
+  try {
+    const r = await fetch('/api/support', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name, message:msg, fingerprint:'anonymous'}) });
+    const d = await r.json();
+    st.style.display = 'block';
+    if (d.success) { st.className='msg ok'; st.textContent='✅ Message bhej diya!'; document.getElementById('sMsg').value=''; document.getElementById('sName').value=''; }
+    else { st.className='msg err'; st.textContent='❌ Error!'; }
+  } catch(e) { st.style.display='block'; st.className='msg err'; st.textContent='❌ Server error!'; }
+}
+
+async function loadAnnouncement() {
+  try {
+    const r = await fetch('/api/announcement');
+    const d = await r.json();
+    if (d.message) {
+      const b = document.createElement('div');
+      b.style.cssText = 'background:#1a1f5e;color:white;padding:10px 16px;font-size:12px;font-weight:600;text-align:center;position:sticky;top:0;z-index:40';
+      b.innerHTML = `📢 ${d.message} <span onclick="this.parentElement.remove()" style="float:right;cursor:pointer">✕</span>`;
+      document.body.insertBefore(b, document.body.firstChild);
+    }
+  } catch(e) {}
+}
+
+window.onload = function() { loadAnnouncement(); };
+</script>
+</body>
+</html>
