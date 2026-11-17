@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin — Bihar Seva Online</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#0A0F2C;color:#E8EAFF;min-height:100vh;max-width:480px;margin:0 auto;padding-bottom:30px}
+.top{background:linear-gradient(150deg,#141B5E,#283593);padding:18px 18px 26px;border-radius:0 0 26px 26px;position:relative;overflow:hidden}
+.top::before{content:'';position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.06)}
+.top-row{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-ico{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:21px}
+.brand h1{font-size:16px;font-weight:800}
+.brand p{font-size:10px;opacity:.65;margin-top:1px}
+.btn-out{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.2);color:white;padding:8px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer}
+.wrap{padding:14px}
+input,textarea{width:100%;padding:13px 14px;background:#0F1640;border:2px solid #232C6B;border-radius:12px;color:#E8EAFF;font-size:13px;outline:none;margin-bottom:10px;font-family:inherit}
+input:focus,textarea:focus{border-color:#5C6BC0}
+input::placeholder,textarea::placeholder{color:#6B74B5}
+button{font-family:inherit}
+.btn{width:100%;padding:13px;border:0;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;color:white;background:linear-gradient(135deg,#3949AB,#5C6BC0);box-shadow:0 6px 18px rgba(57,73,171,.35)}
+.btn:active{transform:scale(.98)}
+.btn.green{background:linear-gradient(135deg,#2E7D32,#43A047);box-shadow:0 6px 18px rgba(46,125,50,.3)}
+.btn.red{background:linear-gradient(135deg,#B71C1C,#E53935);box-shadow:0 6px 18px rgba(183,28,28,.3)}
+.btn.grey{background:#232C6B;box-shadow:none;color:#B8C0FF}
+.btn.sm{padding:9px;font-size:11px;border-radius:10px;box-shadow:none}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:9px 16px;border:2px solid #232C6B;border-radius:22px;background:#0F1640;color:#8F98D8;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.tab.on{background:linear-gradient(135deg,#3949AB,#5C6BC0);border-color:transparent;color:white;box-shadow:0 6px 18px rgba(57,73,171,.4)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat{background:linear-gradient(145deg,#141B5E,#1B2478);border:1.5px solid #232C6B;border-radius:18px;padding:16px}
+.stat .l{font-size:11px;color:#8F98D8;font-weight:600}
+.stat .v{font-size:28px;font-weight:900;margin-top:6px}
+.stat.gold .v{color:#FFD54F}
+.stat.grn .v{color:#69F0AE}
+.card{background:#0F1640;border:1.5px solid #232C6B;border-radius:18px;padding:16px;margin-bottom:12px}
+.card h2{font-size:12px;font-weight:800;color:#8F98D8;text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px}
+.hint{font-size:11px;color:#7C86C8;margin-bottom:12px;line-height:1.6}
+.grp{font-size:12px;font-weight:800;color:#FFD54F;margin:14px 0 8px}
+.lk{background:#0A0F2C;border:1.5px solid #232C6B;border-radius:14px;padding:12px;margin-bottom:10px}
+.lk-t{font-size:12.5px;font-weight:700;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tag{font-size:9px;font-weight:800;padding:3px 8px;border-radius:12px;white-space:nowrap}
+.tag.on{background:#1B5E20;color:#A5D6A7}
+.tag.off{background:#232C6B;color:#9FA8DA}
+.lk input{margin-bottom:8px;font-size:11.5px;padding:10px 12px}
+.row{display:flex;gap:8px}
+.row .btn{flex:1}
+.item{padding:12px 0;border-bottom:1px solid #1B2370}
+.item:last-child{border:0}
+.item b{font-size:13px}
+.meta{font-size:10px;color:#7C86C8;margin-top:3px;word-break:break-all}
+.amt{font-size:16px;font-weight:900;color:#69F0AE}
+.pill{display:inline-block;font-size:10px;font-weight:800;padding:3px 9px;border-radius:12px;margin-top:6px}
+.pill.ok{background:#1B5E20;color:#A5D6A7}
+.pill.wait{background:#5D4037;color:#FFCC80}
+.pill.off{background:#232C6B;color:#9FA8DA}
+.msgbox{background:#0A0F2C;border-radius:10px;padding:10px;margin-top:8px;font-size:12px;line-height:1.6;color:#C5CAFF;word-break:break-word}
+.empty{text-align:center;padding:26px;color:#6B74B5;font-size:12px}
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#2E7D32;color:white;padding:11px 20px;border-radius:14px;font-size:12px;font-weight:800;z-index:99;display:none;box-shadow:0 8px 24px rgba(0,0,0,.4);max-width:320px;text-align:center}
+.login{margin:40px 16px;background:linear-gradient(145deg,#141B5E,#1B2478);border:1.5px solid #232C6B;border-radius:24px;padding:26px}
+.login h2{font-size:20px;font-weight:900;margin-bottom:4px}
+.login p{font-size:12px;color:#8F98D8;margin-bottom:18px}
+.err{color:#FF8A80;font-size:12px;text-align:center;margin-top:10px;display:none}
+.live{display:inline-block;width:8px;height:8px;border-radius:50%;background:#69F0AE;margin-right:6px;box-shadow:0 0 10px #69F0AE}
+.mode{display:flex;gap:8px;margin-bottom:10px}
+.mode button{flex:1;padding:14px;border:2px solid #232C6B;border-radius:14px;background:#0A0F2C;color:#8F98D8;font-size:13px;font-weight:800;cursor:pointer}
+.mode button.free{background:linear-gradient(135deg,#2E7D32,#43A047);border-color:transparent;color:white;box-shadow:0 6px 18px rgba(46,125,50,.35)}
+.mode button.paid{background:linear-gradient(135deg,#3949AB,#5C6BC0);border-color:transparent;color:white;box-shadow:0 6px 18px rgba(57,73,171,.4)}
+.plan{background:#0A0F2C;border:1.5px solid #232C6B;border-radius:14px;padding:12px;margin-bottom:10px}
+.plan-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:12px;font-weight:800}
+.plan-g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.plan-g label{font-size:10px;color:#8F98D8;display:block;margin-bottom:4px}
+.plan-g input{margin:0}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<div id="loginBox">
+  <div class="top"><div class="top-row"><div class="brand"><div class="brand-ico">🔐</div><div><h1>Admin Panel</h1><p>Bihar Seva Online</p></div></div></div></div>
+  <div class="login">
+    <h2>Welcome Admin 👋</h2>
+    <p>Password daalke login karo</p>
+    <input type="password" id="pw" placeholder="Admin Password" onkeydown="if(event.key==='Enter')login()">
+    <button class="btn" onclick="login()">🔐 Login Karo</button>
+    <div class="err" id="err"></div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <div class="top">
+    <div class="top-row">
+      <div class="brand"><div class="brand-ico">⚙️</div><div><h1>Control Center</h1><p><span class="live"></span>Bihar Seva Online · Live</p></div></div>
+      <button class="btn-out" onclick="logout()">Logout</button>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="tabs" id="tabs">
+      <button class="tab on" data-t="home">📊 Home</button>
+      <button class="tab" data-t="users">👥 Users</button>
+      <button class="tab" data-t="pay">💳 Payments</button>
+      <button class="tab" data-t="act">✅ Activate</button>
+      <button class="tab" data-t="plans">💰 Plans</button>
+      <button class="tab" data-t="links">🔗 Links</button>
+      <button class="tab" data-t="schemes">➕ Schemes</button>
+      <button class="tab" data-t="msg">📢 Message</button>
+      <button class="tab" data-t="support">📩 Support</button>
+    </div>
+
+    <div id="t-home">
+      <div class="grid2">
+        <div class="stat"><div class="l">Total Users</div><div class="v" id="sUsers">—</div></div>
+        <div class="stat grn"><div class="l">Active Members</div><div class="v" id="sAct">—</div></div>
+        <div class="stat gold"><div class="l">Total Revenue</div><div class="v" id="sRev">—</div></div>
+        <div class="stat"><div class="l">Paid / Pending</div><div class="v" id="sPay">—</div></div>
+      </div>
+      <div class="card"><h2>⚙️ Site Mode</h2>
+        <div class="hint"><b>Free</b> — sab links seedha khulenge, koi membership nahi.<br><b>Paid</b> — membership lene par hi links khulenge. Badalte hi website par turant asar hota hai.</div>
+        <div class="mode"><button id="mFree" onclick="setMode('free')">🆓 Free Mode</button><button id="mPaid" onclick="setMode('paid')">💰 Paid Mode</button></div>
+        <div class="hint" id="modeNote" style="margin:0;text-align:center"></div>
+      </div>
+    </div>
+
+    <div id="t-users" style="display:none">
+      <div class="card"><h2>👥 Users (Latest 50)</h2><div id="usersBox"><div class="empty">Loading...</div></div></div>
+    </div>
+
+    <div id="t-pay" style="display:none">
+      <div class="card"><h2>💳 Payment Records</h2><div id="payBox"><div class="empty">Loading...</div></div></div>
+    </div>
+
+    <div id="t-act" style="display:none">
+      <div class="card"><h2>✅ Manually Membership Do</h2>
+        <div class="hint">User ka Fingerprint ID aur kitne din dene hain. (Users tab se Fingerprint chun sakte ho.)</div>
+        <input type="text" id="aFp" placeholder="Fingerprint ID">
+        <input type="number" id="aDays" placeholder="Kitne din? (jaise 30)" min="1" max="365">
+        <button class="btn green" onclick="activate()">✅ Activate Karo</button>
+      </div>
+    </div>
+
+    <div id="t-plans" style="display:none">
+      <div class="card"><h2>💰 Plans</h2>
+        <div class="hint">Din aur price badlo, phir Save karo. Website ke plan cards turant badal jayenge.</div>
+        <div id="plansBox"><div class="empty">Loading...</div></div>
+        <button class="btn grey sm" style="margin-bottom:8px" onclick="addPlan()">➕ Naya Plan</button>
+        <button class="btn green" onclick="savePlans()">💾 Save Karo</button>
+      </div>
+    </div>
+
+    <div id="t-links" style="display:none">
+      <div class="card"><h2>🔗 Service Links</h2>
+        <div class="hint">Naya link daalke Save karo. <b>Reset</b> dabaoge to website apna original link use karegi.</div>
+        <div id="linksBox"><div class="empty">Loading...</div></div>
+      </div>
+    </div>
+
+    <div id="t-schemes" style="display:none">
+      <div class="card"><h2>➕ Nayi Service Add Karo</h2>
+        <input type="text" id="scName" placeholder="Naam (jaise: Kanya Vivah Yojana)">
+        <input type="text" id="scIcon" placeholder="Emoji (jaise: 👰 🌾 🏠)">
+        <input type="text" id="scDesc" placeholder="Chhota description">
+        <input type="text" id="scUrl" placeholder="https://... (direct link)">
+        <button class="btn green" onclick="addScheme()">➕ Add Karo</button>
+      </div>
+      <div class="card"><h2>📋 Added Services</h2><div id="schBox"><div class="empty">Loading...</div></div></div>
+    </div>
+
+    <div id="t-msg" style="display:none">
+      <div class="card"><h2>📢 Website Banner Message</h2>
+        <div class="hint">Yeh message website khulte hi sabko upar dikhega.</div>
+        <textarea id="bcText" rows="3" placeholder="Jaise: Kal 2-4 baje maintenance hogi..."></textarea>
+        <div class="row"><button class="btn green" onclick="sendBc()">📢 Bhejo</button><button class="btn red" onclick="clearBc()">🗑️ Hatao</button></div>
+      </div>
+    </div>
+
+    <div id="t-support" style="display:none">
+      <div class="card"><h2>📩 User Messages</h2><div id="supBox"><div class="empty">Loading...</div></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+var PW='';
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function H(){return{'Content-Type':'application/json','x-admin-password':PW};}
+function toast(m,bad){var t=document.getElementById('toast');t.textContent=m;t.style.background=bad?'#B71C1C':'#2E7D32';t.style.display='block';setTimeout(function(){t.style.display='none';},2400);}
+async function api(path,method,body){var o={method:method||'GET',headers:H()};if(body)o.body=JSON.stringify(body);var r=await fetch(path,o);return r.json();}
+function dt(x){return x?new Date(x).toLocaleString('en-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';}
+
+var TABS=['home','users','pay','act','plans','links','schemes','msg','support'];
+document.getElementById('tabs').addEventListener('click',function(e){
+  var b=e.target.closest('.tab');if(!b)return;
+  document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});b.classList.add('on');
+  TABS.forEach(function(n){document.getElementById('t-'+n).style.display=(n===b.dataset.t)?'block':'none';});
+});
+
+async function login(){
+  var p=document.getElementById('pw').value.trim();if(!p)return;
+  var err=document.getElementById('err');
+  try{
+    var r=await fetch('/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:p})});
+    var d=await r.json();
+    if(d.success){PW=p;document.getElementById('loginBox').style.display='none';document.getElementById('app').style.display='block';loadAll();}
+    else{err.style.display='block';err.textContent='❌ Galat password!';}
+  }catch(e){err.style.display='block';err.textContent='❌ Server se connect nahi hua';}
+}
+function logout(){PW='';document.getElementById('app').style.display='none';document.getElementById('loginBox').style.display='block';document.getElementById('pw').value='';}
+function loadAll(){loadStats();loadMode();loadUsers();loadPay();loadPlans();loadLinks();loadSchemes();loadSupport();}
+
+async function loadStats(){
+  try{
+    var s=await api('/api/stats');var b=await api('/admin/payment-breakdown');
+    document.getElementById('sUsers').textContent=s.totalUsers||0;
+    document.getElementById('sAct').textContent=s.activeMembers||0;
+    document.getElementById('sRev').textContent='₹'+(s.totalRevenue||0);
+    document.getElementById('sPay').textContent=(b.completed||0)+' / '+(b.pending||0);
+  }catch(e){}
+}
+
+async function loadMode(){try{var d=await (await fetch('/api/site-mode')).json();paintMode(d.mode);}catch(e){}}
+function paintMode(m){
+  document.getElementById('mFree').className=(m==='free')?'free':'';
+  document.getElementById('mPaid').className=(m==='paid')?'paid':'';
+  document.getElementById('modeNote').textContent=(m==='free')?'✅ Abhi FREE mode chal raha hai':'💰 Abhi PAID mode chal raha hai';
+}
+async function setMode(m){
+  try{var d=await api('/admin/site-mode','POST',{mode:m});if(d.success){paintMode(m);toast(m==='free'?'✅ Free mode on':'💰 Paid mode on');}else toast('❌ Error',true);}catch(e){toast('❌ Server error',true);}
+}
+
+async function loadUsers(){
+  try{
+    var d=await api('/admin/users');var a=d.users||[];var box=document.getElementById('usersBox');
+    if(!a.length){box.innerHTML='<div class="empty">Abhi koi user nahi</div>';return;}
+    var now=new Date();
+    box.innerHTML=a.map(function(u){
+      var on=u.memberExpiry&&new Date(u.memberExpiry)>now;
+      return '<div class="item"><div style="display:flex;justify-content:space-between;gap:8px"><div><b>'+(on?'💎':'👤')+' '+esc((u.fingerprint||'').substring(0,16))+'…</b><div class="meta">Joined: '+dt(u.joinedAt)+'</div>'+(on?'<div class="meta" style="color:#69F0AE">Valid till: '+dt(u.memberExpiry)+'</div>':'')+'</div><span class="pill '+(on?'ok':'off')+'" style="height:fit-content">'+(on?'ACTIVE':'INACTIVE')+'</span></div>'
+        +'<button class="btn grey sm" style="margin-top:8px" data-fp="'+esc(u.fingerprint)+'" onclick="useFp(this.dataset.fp)">📋 Activate ke liye chuno</button></div>';
+    }).join('');
+  }catch(e){document.getElementById('usersBox').innerHTML='<div class="empty">Error</div>';}
+}
+function useFp(fp){document.getElementById('aFp').value=fp;document.querySelector('.tab[data-t="act"]').click();toast('Fingerprint bhar diya');}
+
+async function loadPay(){
+  try{
+    var d=await api('/admin/payments');var a=d.payments||[];var box=document.getElementById('payBox');
+    if(!a.length){box.innerHTML='<div class="empty">Koi payment record nahi</div>';return;}
+    box.innerHTML=a.map(function(p){
+      var ok=p.status==='completed';
+      return '<div class="item"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><b>'+esc(p.days)+' din plan</b><div class="meta">'+dt(p.createdAt)+'</div><div class="meta">'+esc(p.orderId||'')+'</div></div><div class="amt">₹'+esc(p.amount||0)+'</div></div><span class="pill '+(ok?'ok':'wait')+'">'+(ok?'COMPLETED':'PENDING')+'</span></div>';
+    }).join('');
+  }catch(e){document.getElementById('payBox').innerHTML='<div class="empty">Error</div>';}
+}
+
+async function activate(){
+  var fp=document.getElementById('aFp').value.trim(),days=parseInt(document.getElementById('aDays').value,10);
+  if(!fp||!days||days<1){toast('❌ Fingerprint aur din dono bharo',true);return;}
+  try{var d=await api('/admin/activate-fp','POST',{fingerprint:fp,days:days});
+    if(d.success){toast('✅ '+d.message);document.getElementById('aFp').value='';document.getElementById('aDays').value='';loadUsers();loadStats();}
+    else toast('❌ '+(d.message||'Error'),true);
+  }catch(e){toast('❌ Server error',true);}
+}
+
+var PLANS=[];
+async function loadPlans(){try{var d=await (await fetch('/api/plans')).json();PLANS=d.plans||[];drawPlans();}catch(e){document.getElementById('plansBox').innerHTML='<div class="empty">Error</div>';}}
+function drawPlans(){
+  document.getElementById('plansBox').innerHTML=PLANS.map(function(p,i){
+    return '<div class="plan"><div class="plan-h"><span>Plan '+(i+1)+'</span><button class="btn red sm" style="width:auto;padding:5px 12px" onclick="rmPlan('+i+')">🗑️</button></div>'
+     +'<div class="plan-g"><div><label>Din</label><input type="number" min="1" id="pd'+i+'" value="'+esc(p.days)+'"></div><div><label>Price (₹)</label><input type="number" min="1" id="pa'+i+'" value="'+esc(p.amount)+'"></div></div></div>';
+  }).join('')||'<div class="empty">Koi plan nahi — Naya Plan dabao</div>';
+}
+function syncPlans(){PLANS=PLANS.map(function(p,i){var d=document.getElementById('pd'+i),a=document.getElementById('pa'+i);return{days:d?parseInt(d.value,10):p.days,amount:a?parseInt(a.value,10):p.amount};});}
+function addPlan(){syncPlans();PLANS.push({days:7,amount:10});drawPlans();}
+function rmPlan(i){syncPlans();PLANS.splice(i,1);drawPlans();}
+async function savePlans(){
+  syncPlans();
+  if(!PLANS.length){toast('❌ Kam se kam ek plan chahiye',true);return;}
+  if(PLANS.some(function(p){return !(p.days>0)||!(p.amount>0);})){toast('❌ Din aur price 1 se zyada hone chahiye',true);return;}
+  var days=PLANS.map(function(p){return p.days;});
+  if(new Set(days).size!==days.length){toast('❌ Ek hi din ke do plan nahi ho sakte',true);return;}
+  var out=PLANS.map(function(p){return{days:p.days,amount:p.amount,label:p.days+' दिन'};});
+  try{var d=await api('/admin/plans/update','POST',{plans:out});if(d.success){PLANS=out;toast('✅ Plans save ho gaye');}else toast('❌ '+(d.message||'Error'),true);}catch(e){toast('❌ Server error',true);}
+}
+
+var GROUPS=[
+ ['🏠 भूमि सेवाएँ',[['jameen-rasid','जमीन की रसीद'],['bihar-bhumi','बिहार भूमि'],['jamabandi','जमाबंदी'],['khata-khesra','खाता / खेसरा'],['bhu-naksha','भू-नक्शा'],['dakhil-kharij','दाखिल-खारिज']]],
+ ['📄 प्रमाण-पत्र',[['birth-cert','जन्म प्रमाण पत्र'],['income-cert','आय प्रमाण पत्र'],['caste-cert','जाति प्रमाण पत्र'],['residence-cert','निवास प्रमाण पत्र'],['ews-cert','EWS प्रमाण पत्र'],['character-cert','चरित्र प्रमाण पत्र']]],
+ ['🪪 पहचान',[['pan-card','PAN Card'],['voter-id','Voter ID'],['aadhaar','Aadhaar Update'],['driving-licence','Driving Licence'],['passport','Passport'],['eshram','e-Shram Card']]],
+ ['🏛️ सरकारी',[['pm-kisan','PM-Kisan'],['ration-card','Ration Card'],['ayushman-card','Ayushman Card'],['scholarship','Scholarship'],['pension-status','Pension Status'],['sarkari-yojana','सरकारी योजनाएँ']]]
+];
+var NAMES={};GROUPS.forEach(function(g){g[1].forEach(function(x){NAMES[x[0]]=x[1];});});
+
+async function loadLinks(){
+  try{
+    var d=await (await fetch('/api/service-links')).json();var L=d.links||{};var h='';
+    GROUPS.forEach(function(g){
+      h+='<div class="grp">'+g[0]+'</div>';
+      g[1].forEach(function(x){
+        var v=L[x[0]]||'';
+        h+='<div class="lk"><div class="lk-t"><span>'+esc(x[1])+'</span><span class="tag '+(v?'on':'off')+'">'+(v?'CUSTOM':'DEFAULT')+'</span></div>'
+         +'<input type="text" id="lk-'+x[0]+'" value="'+esc(v)+'" placeholder="https://... (khali = original link)">'
+         +'<div class="row"><button class="btn green sm" onclick="saveLink(\''+x[0]+'\')">💾 Save</button><button class="btn red sm" onclick="resetLink(\''+x[0]+'\')">↩️ Reset</button></div></div>';
+      });
+    });
+    document.getElementById('linksBox').innerHTML=h;
+  }catch(e){document.getElementById('linksBox').innerHTML='<div class="empty">Error loading</div>';}
+}
+async function saveLink(k){
+  var v=document.getElementById('lk-'+k).value.trim();
+  if(v&&!/^https?:\/\//i.test(v)){toast('❌ Link https:// se shuru hona chahiye',true);return;}
+  try{var d=await api('/admin/service-link','POST',{key:k,name:NAMES[k]||k,url:v});
+    if(d.success){toast('✅ '+(NAMES[k]||k)+' save ho gaya');loadLinks();}else toast('❌ Save nahi hua',true);
+  }catch(e){toast('❌ Server error',true);}
+}
+async function resetLink(k){document.getElementById('lk-'+k).value='';await saveLink(k);}
+
+async function loadSchemes(){
+  try{
+    var d=await api('/admin/schemes');var a=d.schemes||[];var box=document.getElementById('schBox');
+    if(!a.length){box.innerHTML='<div class="empty">Abhi koi custom service nahi</div>';return;}
+    box.innerHTML=a.map(function(s){
+      return '<div class="item"><b>'+esc(s.icon||'🏛️')+' '+esc(s.name)+'</b><div class="meta">'+esc(s.description||'')+'</div><div class="meta">'+esc(s.url)+'</div>'
+        +'<button class="btn red sm" style="margin-top:8px" data-id="'+esc(s._id)+'" onclick="delScheme(this.dataset.id)">🗑️ Hatao</button></div>';
+    }).join('');
+  }catch(e){document.getElementById('schBox').innerHTML='<div class="empty">Error</div>';}
+}
+async function addScheme(){
+  var n=document.getElementById('scName').value.trim(),u=document.getElementById('scUrl').value.trim();
+  if(!n||!u){toast('❌ Naam aur link zaroori hai',true);return;}
+  if(!/^https?:\/\//i.test(u)){toast('❌ Link https:// se shuru hona chahiye',true);return;}
+  try{var d=await api('/admin/scheme/add','POST',{name:n,icon:document.getElementById('scIcon').value.trim(),description:document.getElementById('scDesc').value.trim(),url:u});
+    if(d.success){toast('✅ Service add ho gayi');['scName','scIcon','scDesc','scUrl'].forEach(function(i){document.getElementById(i).value='';});loadSchemes();}
+    else toast('❌ '+(d.message||'Error'),true);
+  }catch(e){toast('❌ Server error',true);}
+}
+async function delScheme(id){
+  if(!confirm('Ye service hatao?'))return;
+  try{var d=await api('/admin/scheme/delete','POST',{id:id});if(d.success){toast('✅ Hata di');loadSchemes();}}catch(e){toast('❌ Error',true);}
+}
+
+async function sendBc(){
+  var m=document.getElementById('bcText').value.trim();if(!m){toast('❌ Message likho',true);return;}
+  try{var d=await api('/admin/announcement','POST',{message:m,active:true});toast(d.success?'✅ Banner live ho gaya':'❌ Error',!d.success);}catch(e){toast('❌ Server error',true);}
+}
+async function clearBc(){
+  try{var d=await api('/admin/announcement','POST',{message:'',active:false});if(d.success){document.getElementById('bcText').value='';toast('✅ Banner hata diya');}}catch(e){toast('❌ Error',true);}
+}
+
+async function loadSupport(){
+  try{
+    var d=await api('/admin/support-messages');var a=d.messages||[];var box=document.getElementById('supBox');
+    if(!a.length){box.innerHTML='<div class="empty">Koi message nahi ✅</div>';return;}
+    box.innerHTML=a.map(function(m){
+      var un=m.status==='unread';
+      return '<div class="item"><b>👤 '+esc(m.name||'Anonymous')+'</b> '+(un?'<span class="pill ok" style="margin:0 0 0 6px">NEW</span>':'')
+       +'<div class="meta">'+dt(m.createdAt)+(m.orderId?' · Order: '+esc(m.orderId):'')+'</div><div class="msgbox">'+esc(m.message)+'</div>'
+       +(un?'<button class="btn green sm" style="margin-top:8px" data-id="'+esc(m._id)+'" onclick="markRead(this.dataset.id)">✅ Read Mark Karo</button>':'')+'</div>';
+    }).join('');
+  }catch(e){document.getElementById('supBox').innerHTML='<div class="empty">Error</div>';}
+}
+async function markRead(id){try{await api('/admin/support/read','POST',{id:id});toast('✅ Done');loadSupport();}catch(e){toast('❌ Error',true);}}
+</script>
+</body>
+</html>
